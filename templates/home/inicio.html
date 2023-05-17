@@ -1,7 +1,12 @@
-{% extends 'layouts/base.html' %}
+{% extends 'layouts/dashboard.html' %}
+
+{% comment %} {% include 'registration/login.html' %} {% endcomment %}
+
+{% block metadata %}
+    <title>Inicio - SGN1302</title>
+{% endblock %}
 
 {% block content %}
-<h2>Bienvenido Inicio</h2>
-
-
+    {% load static %}
+    {% include 'layouts/table.html'%}
 {% endblock %}
