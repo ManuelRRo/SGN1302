@@ -20,7 +20,7 @@ class Alumno(models.Model):
         managed = False
         db_table = 'alumno'
     def __str__(self) -> str:
-        return self.nombres_alumno + '|' + self.apellidos_alumno
+        return self.nombres_alumno + ' ' + self.apellidos_alumno
 
 
 class Categoria(models.Model):
