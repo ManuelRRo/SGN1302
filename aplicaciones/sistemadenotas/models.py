@@ -35,7 +35,7 @@ class Categoria(models.Model):
 class Docente(models.Model):
     id_docente = models.AutoField(db_column='ID_DOCENTE', primary_key=True)  # Field name made lowercase.
     numidentificacion = models.CharField(db_column='NUMIDENTIFICACION', max_length=8, blank=True, null=True)  # Field name made lowercase.
-    dui = models.CharField(db_column='DUI', max_length=8, blank=True, null=True)  # Field name made lowercase.
+    dui = models.CharField(db_column='DUI', max_length=9, blank=True, null=True)  # Field name made lowercase.
     nombre_docente = models.CharField(db_column='NOMBRE_DOCENTE', max_length=50, blank=True, null=True)  # Field name made lowercase.
     apellido_docente = models.CharField(db_column='APELLIDO_DOCENTE', max_length=50, blank=True, null=True)  # Field name made lowercase.
 
