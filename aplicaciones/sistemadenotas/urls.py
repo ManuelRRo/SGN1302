@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib.auth.decorators import login_required
 from . import  views
 app_name = "sgn_app"
 urlpatterns = [
@@ -21,5 +22,15 @@ urlpatterns = [
         'estudiante/edit-evas-not/<int:pk>/',
         views.ActualizarEvaluacionesAlumno.as_view(),
         name="edit_evas_not"
+    ),
+    # Gestión de Docentes
+    path(
+        'listado_docentes/',
+        login_required(views.ListarDocentes.as_view()),
+        name='listado_docentes'
+    ),
+    path('crear_docente/',
+        login_required(views.CrearDocentes.as_view()),
+        name='crear_docente'
     ),
 ]

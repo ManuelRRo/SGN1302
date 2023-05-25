@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from .models import Evaluacion,Evaluacionalumno
+from .models import Evaluacion,Evaluacionalumno,Docente
 from django.core.exceptions import ValidationError
 
 class EvaluacionForm(ModelForm):
@@ -20,7 +20,16 @@ class EvaluacionAlumnoForm(ModelForm):
         model = Evaluacionalumno
         fields = ['id_evaluacionalumno','id_evaluacion','id_alumno','nota']
 
-                 
+# Formulario DOCENTE
+class DocenteForm(ModelForm):
+	class Meta:
+		model = Docente
+		fields = [
+            'numidentificacion',
+            'dui',
+            'nombre_docente',
+            'apellido_docente'
+        ]
 
     
            
