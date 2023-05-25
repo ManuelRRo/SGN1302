@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
-from .models import Evaluacion,Evaluacionalumno,Alumno,Gradoseccion
-from .forms import EvaluacionForm,EvaluacionAlumnoForm
+from .models import Evaluacion,Evaluacionalumno,Alumno,Gradoseccion,Docente
+from .forms import EvaluacionForm,EvaluacionAlumnoForm,DocenteForm
+from aplicaciones.usuarios.forms import RegisterUserForm
 from django.views.generic import ListView,CreateView,UpdateView,DeleteView,View
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
@@ -77,6 +78,40 @@ class ActualizarEvaluacionesAlumno(UpdateView):
         return context
 
 
+# Gestión de Docentes:
+class ListarDocentes(ListView):
+    model = Docente
+    template_name = 'docente/listar_docentes.html'
+    context_object_name = 'docentes'
+    queryset = model.objects.all()
+
+
+class CrearDocentes(View):
+    model = Docente
+    form_teacher = DocenteForm
+    form_user = RegisterUserForm
+    template_name = 'docente/crear_docente.html'
+
+    def get_queryset(self):
+        return self.model.objects.all()
+    
+    def get_context_data(self, **kwargs):
+        context = {}
+        context['docente'] = self.get_queryset()
+        context['docente_form'] = self.form_teacher
+        context['user_form'] = self.form_user
+        return context
+    
+    def get(self,request ,*args, **kwargs):
+        return render(request,self.template_name,self.get_context_data())
+    
+    def post(self,request ,*args, **kwargs):
+        form_teacher = self.form_teacher(request.POST)
+        form_user = self.form_user(request.POST)
+        if form_teacher.is_valid() and form_user.is_valid():
+            form_teacher.save()
+            form_user.save()
+            return redirect('sgn_app:listado_docentes')
 
 
 
