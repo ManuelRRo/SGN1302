@@ -6,6 +6,7 @@ from django.views.generic import ListView,CreateView,UpdateView,DeleteView,View
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 # Create your views here.
 @login_required()
@@ -112,6 +113,10 @@ class CrearDocentes(View):
             form_teacher.save()
             form_user.save()
             return redirect('sgn_app:listado_docentes')
+        else:
+            messages.error(request, 'Ocurrio un error')
+            return render(request,self.template_name,self.get_context_data())
+
 
 
 
