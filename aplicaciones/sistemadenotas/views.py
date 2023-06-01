@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 @login_required()
@@ -16,10 +17,12 @@ def home(request):
     usuarios = User.objects.all()
     for usuario in usuarios:
         docente = Docente.objects.filter(nombre_docente=usuario.first_name,apellido_docente=usuario.last_name)
-    idmateria = Materia.objects.get(id_docente=docente[0].id_docente)
-    
-    context["gradsec"] = Gradoseccionmateria.objects.filter(id_materia=idmateria.id_materia)
-    print(context["gradsec"])
+    try:
+        idmateria = Materia.objects.get(id_docente=docente[0].id_docente)
+        context["gradsec"] = Gradoseccionmateria.objects.filter(id_materia=idmateria.id_materia)
+    except ObjectDoesNotExist:
+        print("no hay materias ingresadas")
+
     return render (request,'home/inicio.html',context)
 
 #VISTAS HU-03 o HU-09
