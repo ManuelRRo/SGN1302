@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Evaluacion,Evaluacionalumno,Alumno,Gradoseccion,Docente
+from .models import Evaluacion,Evaluacionalumno,Alumno,Gradoseccion,Docente,Materia,Gradoseccionmateria
 from .forms import EvaluacionForm,EvaluacionAlumnoForm,DocenteForm
 from aplicaciones.usuarios.forms import RegisterUserForm
 from django.views.generic import ListView,CreateView,UpdateView,DeleteView,View
@@ -7,11 +7,20 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.models import User
 
 # Create your views here.
 @login_required()
 def home(request):
-    return render (request,'home/inicio.html',{})
+    context = {}
+    usuarios = User.objects.all()
+    for usuario in usuarios:
+        docente = Docente.objects.filter(nombre_docente=usuario.first_name,apellido_docente=usuario.last_name)
+    idmateria = Materia.objects.get(id_docente=docente[0].id_docente)
+    
+    context["gradsec"] = Gradoseccionmateria.objects.filter(id_materia=idmateria.id_materia)
+    print(context["gradsec"])
+    return render (request,'home/inicio.html',context)
 
 #VISTAS HU-03 o HU-09
 def CrearEvaluacionAlumno(request):
@@ -77,7 +86,19 @@ class ActualizarEvaluacionesAlumno(UpdateView):
         context = super().get_context_data(**kwargs)
         context['estudiantes'] = Evaluacionalumno.objects.all
         return context
-
+#HU-01 Listar grados asignados
+class ListarEvaluacionesGrados(ListView):
+    model = Evaluacion
+    context_object_name = 'evas'
+    template_name = 'evaluacion/evaluacion.html'
+    
+    def get_queryset(self):
+        #self.idgrado = get_object_or_404(Evaluacion,id_gradoseccionmateria_id=self.kwargs["idgrado"])
+        #print()
+        self.idgrado = self.kwargs["idgrado"]
+        if self.idgrado!=None:
+            return self.model.objects.filter(id_gradoseccionmateria=self.idgrado)
+        return self.model.objects.all()
 
 # Gestión de Docentes:
 class ListarDocentes(ListView):

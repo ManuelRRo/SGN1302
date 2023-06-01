@@ -9,9 +9,9 @@ urlpatterns = [
         name="home"
     ),
     path(
-        'estudiante/crear-eva-est',
-        views.CrearEvaluacionAlumno,
-        name="crear_eva_est"
+        'evaluacion/listar-evas-grado/<idgrado>/',
+        views.ListarEvaluacionesGrados.as_view(),
+        name="listar_evas_grado"
     ),
     path(
         'estudiante/list-evas-not/',
@@ -23,6 +23,12 @@ urlpatterns = [
         views.ActualizarEvaluacionesAlumno.as_view(),
         name="edit_evas_not"
     ),
+    path(
+        'estudiante/crear-eva-est',
+        views.CrearEvaluacionAlumno,
+        name="crear_eva_est"
+    ),
+    
     # Gestión de Docentes
     path(
         'listado_docentes/',
