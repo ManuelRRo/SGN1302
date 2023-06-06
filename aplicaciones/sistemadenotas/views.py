@@ -10,20 +10,34 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 
-# Create your views here.
-@login_required()
+# HU_01 Listar Grados asignados | Materias impartidas
+# Posee dos comportamientos:
+#   - Rol profesor -> cumple HU-01
+#   - Rol Administrador -> no se ejecuta HU-01
+@login_required
 def home(request):
     context = {}
-    usuarios = User.objects.all()
-    for usuario in usuarios:
-        docente = Docente.objects.filter(nombre_docente=usuario.first_name,apellido_docente=usuario.last_name)
-    try:
-        idmateria = Materia.objects.get(id_docente=docente[0].id_docente)
-        context["gradsec"] = Gradoseccionmateria.objects.filter(id_materia=idmateria.id_materia)
-    except ObjectDoesNotExist:
-        print("no hay materias ingresadas")
-
+    # Al no ser admin se cumple la HU-01
+    if not request.user.is_superuser:
+        docente = Docente.objects.get(numidentificacion=request.user.username)
+        materia = Materia.objects.filter(id_docente=docente)
+        context["gradsec"] = Gradoseccionmateria.objects.filter(id_materia__in=materia)
+    
     return render (request,'home/inicio.html',context)
+
+
+# HU-02 Listar Evaluaciones de Grado
+# De acuerdo a la materia seleccionada de ese grado
+class ListarEvaluacionesGrados(ListView):
+    model = Evaluacion
+    context_object_name = 'evas'
+    template_name = 'evaluacion/evaluacion.html'
+    
+    def get_queryset(self):
+        self.idgrado = self.kwargs["idgrado"]
+        if self.idgrado!=None:
+            return self.model.objects.filter(id_gradoseccionmateria=self.idgrado)
+        return self.model.objects.all()
 
 #VISTAS HU-03 o HU-09
 def CrearEvaluacionAlumno(request):
@@ -51,21 +65,22 @@ def CrearEvaluacionAlumno(request):
     }
     return render(request,'estudiante/crear-evaluacion.html',context)
 
+
+# Permite listar los alumnos de esta evalucion
+# a la vez actualizar
 class ListarEvaluacionesAlumnos(View):
     model = Evaluacionalumno
     form_class = EvaluacionAlumnoForm
     template_name = 'estudiante/listar-evas-alumnos.html'
 
     def get_queryset(self):
-        return self.model.objects.all()
+        self.evaluacion = self.kwargs["idEvaluacion"]
+        self.alumnos = Evaluacionalumno.objects.filter(id_evaluacion=self.evaluacion)
+        return self.alumnos
 
     def get_context_data(self,**kwargs):
         contexto = {}
-        # pone un nuevo elemento en el diccionario
-        # y enviar el queryset defino en get_queryset
-        #aqui puedo agregar mas modelos a enviar a la vista
         contexto['estudiantes'] = self.get_queryset()
-        #pasar un formulario al contexto de la vista
         contexto['form'] = self.form_class
         return contexto
 
@@ -73,37 +88,32 @@ class ListarEvaluacionesAlumnos(View):
         return render(request,self.template_name,self.get_context_data())
     
     def post(self,request,*args,**kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('sgn_app:list_evas_not')
-        
-class ActualizarEvaluacionesAlumno(UpdateView):
-    model = Evaluacionalumno
-    form_class = EvaluacionAlumnoForm
-    #usar mismo template para que lo carge en el form
-    template_name = 'estudiante/listar-evas-alumnos.html'
-    success_url = reverse_lazy('sgn_app:list_evas_not')
-    #esto permite seguir manteniendo lista estudiantes aun cuando se actualiza
-    def get_context_data(self,**kwargs):
-        context = super().get_context_data(**kwargs)
-        context['estudiantes'] = Evaluacionalumno.objects.all
-        return context
-#HU-01 Listar grados asignados
-class ListarEvaluacionesGrados(ListView):
-    model = Evaluacion
-    context_object_name = 'evas'
-    template_name = 'evaluacion/evaluacion.html'
-    
-    def get_queryset(self):
-        #self.idgrado = get_object_or_404(Evaluacion,id_gradoseccionmateria_id=self.kwargs["idgrado"])
-        #print()
-        self.idgrado = self.kwargs["idgrado"]
-        if self.idgrado!=None:
-            return self.model.objects.filter(id_gradoseccionmateria=self.idgrado)
-        return self.model.objects.all()
+        if request.method == 'POST':
+            try:
+                idevaluacion = request.POST['idEvaluacion']
+                print(idevaluacion)
+                self.Evaluacion = Evaluacion.objects.get(id_evaluacion=idevaluacion)
+                idAlumno = request.POST.get('idAlumno', None)
+                nota = request.POST['nota']
+                if idAlumno is not None and idAlumno != '':
+                    self.Alumno = Alumno.objects.get(id_alumno=idAlumno)
+                    self.EvaluacionAlumno = Evaluacionalumno.objects.get(id_evaluacion=self.Evaluacion, id_alumno=self.Alumno)
+                    self.EvaluacionAlumno.nota = nota
+                    self.EvaluacionAlumno.save()
+                    i = 0
+                else:
+                    # Mostrar mensaje de error o realizar alguna otra acción
+                    # ...
+                    m = 0
+            except Exception:
+                messages.error(request, 'Ocurrio un error')
+                
+        # ID de evaluación que deseas pasar a la URL
+        return redirect('sgn_app:list_evas_not', idEvaluacion=idevaluacion)
 
-# Gestión de Docentes:
+
+# Gestión de Docentes: 
+# HU-32 Listar Docentes
 class ListarDocentes(ListView):
     model = Docente
     template_name = 'docente/listar_docentes.html'
@@ -111,6 +121,7 @@ class ListarDocentes(ListView):
     queryset = model.objects.all()
 
 
+# HU-29 Agrega Docentes
 class CrearDocentes(View):
     model = Docente
     form_teacher = DocenteForm
