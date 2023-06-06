@@ -39,4 +39,22 @@ urlpatterns = [
         login_required(views.CrearDocentes.as_view()),
         name='crear_docente'
     ),
+    path(
+        'actualizarTrimestre/<pk>/',
+        views.ActualizarTrimestre.as_view(),
+        name='modificar_trimestre'
+    ),
+    path(
+        'correcto/',
+        views.Correcto.as_view(),
+        name='correcto'
+    ),
+    path(
+        'editarEvaluacion/<pk>/',
+        views.EvaluacionEditar.as_view(),
+        name='actualizar_evaluacion'
+
+    ),
+    # Vista de habilitar o deshabilitar alumnos
+    
 ]

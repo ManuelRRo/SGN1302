@@ -1,7 +1,8 @@
 from django.forms import ModelForm
 from django import forms
-from .models import Evaluacion, Evaluacionalumno, Docente
+from .models import Evaluacion, Evaluacionalumno, Docente, Trimestre
 from django.core.exceptions import ValidationError
+
 
 
 class EvaluacionForm(ModelForm):
@@ -43,3 +44,30 @@ class DocenteForm(ModelForm):
         if lista:
             self.add_error('numidentificacion', 'Esa username ya existe')
         return username
+
+class TrimestreActualizarForm(forms.ModelForm):
+    """Form definition for TrimestreActualizar."""
+
+    class Meta:
+        model = Trimestre
+        fields = ('trimestre',
+                  'anio')
+        widgets={
+            'trimestre': forms.TextInput(
+               attrs= {
+                'placeholder': 'Nombre Trimestre',
+                'class':'entradaTxt'
+
+                }
+            ),
+            'anio': forms.NumberInput(
+               attrs= {
+                'placeholder': 'año Trimestre',
+                'class':'entradaTxt',
+                'id':'actualizar'
+                }
+            )
+        }
+
+
+

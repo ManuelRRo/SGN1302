@@ -1,8 +1,8 @@
 from django.shortcuts import render,redirect
-from .models import Evaluacion,Evaluacionalumno,Alumno,Gradoseccion,Docente,Materia,Gradoseccionmateria
-from .forms import EvaluacionForm,EvaluacionAlumnoForm,DocenteForm
+from .models import Evaluacion,Evaluacionalumno,Alumno,Gradoseccion,Docente,Materia,Gradoseccionmateria,Trimestre
+from .forms import EvaluacionForm,EvaluacionAlumnoForm,DocenteForm,TrimestreActualizarForm
 from aplicaciones.usuarios.forms import RegisterUserForm
-from django.views.generic import ListView,CreateView,UpdateView,DeleteView,View
+from django.views.generic import ListView,CreateView,UpdateView,DeleteView,View,TemplateView
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
@@ -142,8 +142,27 @@ class CrearDocentes(View):
             return render(request,self.template_name,self.get_context_data())
 
 
+class Correcto(TemplateView):
+    template_name = "trimestre/correcto.html"
+
+class ActualizarTrimestre(UpdateView):
+    model = Trimestre
+    template_name = "trimestre/actualizarTrim.html"
+    form_class = TrimestreActualizarForm
+    success_url = reverse_lazy('sgn_app:correcto')
+    
 
 
+class EvaluacionEditar(UpdateView):
+    model = Evaluacion
+    template_name = "evaluacion/editarEvaluacion.html"
+    fields=[
+        'nombre_evaluacion',
+        'porcentaje',
+        'id_categoria',
+        'id_gradoseccionmateria'
+    ]
+    success_url = reverse_lazy('sgn_app:correcto')
 
 
 
