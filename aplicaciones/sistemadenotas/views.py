@@ -1,11 +1,6 @@
 from django.shortcuts import render,redirect
-<<<<<<< HEAD
 from .models import Evaluacion,Evaluacionalumno,Alumno,Gradoseccion,Docente,Materia,Gradoseccionmateria,Trimestre
-from .forms import EvaluacionForm,EvaluacionAlumnoForm,DocenteForm,TrimestreActualizarForm
-=======
-from .models import Evaluacion,Evaluacionalumno,Alumno,Gradoseccion,Docente,Materia,Gradoseccionmateria
-from .forms import EvaluacionForm,EvaluacionAlumnoForm,DocenteForm,AlumnoForm
->>>>>>> 5649f4090e0ee97ab4a8a160862fbef5eba7fb6b
+from .forms import EvaluacionForm,EvaluacionAlumnoForm,DocenteForm,AlumnoForm,TrimestreActualizarForm
 from aplicaciones.usuarios.forms import RegisterUserForm
 from django.views.generic import ListView,CreateView,UpdateView,DeleteView,View,TemplateView
 from django.urls import reverse_lazy
@@ -157,7 +152,7 @@ class CrearDocentes(View):
             messages.error(request, 'Ocurrio un error')
             return render(request,self.template_name,self.get_context_data())
 
-<<<<<<< HEAD
+
 
 class Correcto(TemplateView):
     template_name = "trimestre/correcto.html"
@@ -180,7 +175,7 @@ class EvaluacionEditar(UpdateView):
         'id_gradoseccionmateria'
     ]
     success_url = reverse_lazy('sgn_app:correcto')
-=======
+
 #HU-21
 class CrearAlumno(CreateView):
     form_class = AlumnoForm
@@ -188,7 +183,6 @@ class CrearAlumno(CreateView):
     success_url = reverse_lazy('sgn_app:home')
 
 
->>>>>>> 5649f4090e0ee97ab4a8a160862fbef5eba7fb6b
 
 
 

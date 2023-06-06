@@ -40,7 +40,6 @@ urlpatterns = [
         login_required(views.CrearDocentes.as_view()),
         name='crear_docente'
     ),
-<<<<<<< HEAD
     path(
         'actualizarTrimestre/<pk>/',
         views.ActualizarTrimestre.as_view(),
@@ -59,7 +58,6 @@ urlpatterns = [
     ),
     # Vista de habilitar o deshabilitar alumnos
     
-=======
 
->>>>>>> 5649f4090e0ee97ab4a8a160862fbef5eba7fb6b
+
 ]
