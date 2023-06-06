@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from .models import Evaluacion, Evaluacionalumno, Docente, Trimestre
+from .models import Evaluacion, Evaluacionalumno, Docente,Alumno,Trimestre
 from django.core.exceptions import ValidationError
 
 
@@ -45,6 +45,7 @@ class DocenteForm(ModelForm):
             self.add_error('numidentificacion', 'Esa username ya existe')
         return username
 
+
 class TrimestreActualizarForm(forms.ModelForm):
     """Form definition for TrimestreActualizar."""
 
@@ -68,6 +69,16 @@ class TrimestreActualizarForm(forms.ModelForm):
                 }
             )
         }
-
+    
+#HU-21
+class AlumnoForm(ModelForm):
+    class Meta:
+        model = Alumno
+        fields = [
+            'id_gradoseccion',
+            'nie',
+            'apellidos_alumno',
+            'nombres_alumno'
+        ]
 
 

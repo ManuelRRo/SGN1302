@@ -14,19 +14,20 @@ urlpatterns = [
         name="listar_evas_grado"
     ),
     path(
-        'estudiante/list-evas-not/',
+        'estudiante/list-evas-not/<idEvaluacion>/',
         views.ListarEvaluacionesAlumnos.as_view(),
         name="list_evas_not"
-    ),
-    path(
-        'estudiante/edit-evas-not/<int:pk>/',
-        views.ActualizarEvaluacionesAlumno.as_view(),
-        name="edit_evas_not"
     ),
     path(
         'estudiante/crear-eva-est',
         views.CrearEvaluacionAlumno,
         name="crear_eva_est"
+    ),
+    #HU-21
+    path(
+        'estudiante/crear-estudiante',
+        views.CrearAlumno.as_view(),
+        name="crear_alumno"
     ),
     
     # Gestión de Docentes
@@ -39,6 +40,7 @@ urlpatterns = [
         login_required(views.CrearDocentes.as_view()),
         name='crear_docente'
     ),
+<<<<<<< HEAD
     path(
         'actualizarTrimestre/<pk>/',
         views.ActualizarTrimestre.as_view(),
@@ -57,4 +59,7 @@ urlpatterns = [
     ),
     # Vista de habilitar o deshabilitar alumnos
     
+=======
+
+>>>>>>> 5649f4090e0ee97ab4a8a160862fbef5eba7fb6b
 ]

@@ -8,62 +8,104 @@
 
 {% block content %}
 {% load static %}
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<div class="container-xl px-4 mt-n10">
-    <div class="card mb-4">
-        <div class="card-header">Listado de alumnos</div>
-        <div class="card-body">
-            
-            <table id="datatablesSimple" class = "table table-bordered" >
-                <thead>
-                    <tr>
-                        <th>Evaluacion</th>
-                        <th>Estudiante</th>
-                        <th>Nota</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for estudiante in estudiantes %}
-                    <tr>
-                        <td>{{estudiante.id_evaluacion}}</td>
-                        <td>{{estudiante.id_alumno}}</td>
-                        <td>{{estudiante.nota}}</td>
-                        <!-- modificar el estado dependiendo si est an e 0 o no -->
-                        <td><div class="badge bg-warning rounded-pill">Pending</div></td>
-                        <td>
-                            <a href="{% url 'sgn_app:edit_evas_not' estudiante.id_evaluacionalumno %}">Actualizar</a>
-                        </td>                
-                    </tr>
-                    {% endfor%}
-                </tbody>
-            </table>
-        </div>
-    </div>
-<br/>
-<br/>
-<br/>
-<br/>
 
-<div class="container-xl px-4 mt-n10">
-    <div class="card mb-4">
-        <div class="card-header">Calificar alumno</div>
-        <div class="card-body">
-            <form action="" method="post"> {% csrf_token %}
-                <table>
-                    {{ form.as_table }}
-                </table>
-                <input type="submit" value="Guardar">
-            </form>
+
+<div class="container-xl px-2 mt-4">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="card">
+                <div class="card-header">Listado de alumnos</div>
+                <div class="card-body"> 
+                    <table id="datatablesSimple" class = "table table-bordered" >
+                        <thead>
+                            <tr>
+                                <th>Evaluacion</th>
+                                <th>Estudiante</th>
+                                <th>Nota</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                                <th class="d-none">Salary</th>
+                                <th class="d-none">Status</th>
+                                <th class="d-none">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for estudiante in estudiantes %}
+                            <tr>
+                                <td>{{estudiante.id_evaluacion}}</td>
+                                <td>{{estudiante.id_alumno}}</td>
+                                <td>{{estudiante.nota}}</td>
+                                <!-- modificar el estado dependiendo si est an e 0 o no -->
+                                <td><div class="badge bg-warning rounded-pill">Pending</div></td>
+                                <td>
+                                    <a href="#"onclick="actualizarRegistro('{{estudiante.id_evaluacion.id_evaluacion}}', '{{estudiante.id_alumno.id_alumno}}','{{estudiante.id_alumno.nombres_alumno}}','{{estudiante.id_alumno.apellidos_alumno}}', '{{estudiante.nota}}')">Actualizar</a>
+                                </td> 
+                                <td class="d-none">No utilizado</td>
+                                <td class="d-none" >No utilizado</td>
+                                <td class="d-none">No utilizado</td>               
+                            </tr>
+                            {% endfor%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Sticky Navigation-->
+        <div class="col-lg-3">
+            <div class="nav-sticky">
+                <div class="card">
+                    <div class="card-header">Calificar alumno</div>
+                    <div class="card-body">
+                        <form action="" method="post"> {% csrf_token %}
+                            <div class="mb-3">
+                                <input class="form-control d-none" type="text" id="idEvaluacion" name="idEvaluacion" value="{{estudiantes.first.id_evaluacion.id_evaluacion}}">
+                                <label for="estudiante">Estudiante</label>
+                                <select class="form-control mb-3" id="idAlumno" name="idAlumno">
+                                    <option value="" disabled selected>Seleccione un estudiante</option>
+                                    {% for estudiante in estudiantes %}
+                                    <option value="{{estudiante.id_alumno.id_alumno}}">{{estudiante.id_alumno}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="nota">Nota</label>
+                                <input class="form-control" type="number" id="nota" name="nota" min="0" max="10" step="0.1">
+                            </div>
+                            <button type="submit" class="btn btn-primary" onclick="activarSelect()">Guardar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
+<script>
+    function actualizarRegistro(idEvaluacion, idAlumno,nombresAlumno,apellidosAlumno, nota) {
+
+    var selectAlumno = document.getElementById('idAlumno');
+    document.getElementById('idEvaluacion').value = idEvaluacion;
+    document.getElementById('nota').value = nota;
+
+    // Crear el elemento option
+    var option = document.createElement('option');
+    
+    // Establecer el valor y la visualización de la opción
+    option.value = idAlumno;
+    option.textContent = nombresAlumno + ' ' + apellidosAlumno;
+
+    // Agregar la opción al select
+    selectAlumno.appendChild(option);
+    
+    // Establecer el valor seleccionado en el select
+    selectAlumno.value = idAlumno;
+    selectAlumno.disabled = true;
+    }
+
+    function activarSelect() {
+        var selectAlumno = document.getElementById('idAlumno');
+        selectAlumno.disabled = false;
+    }
+
+</script>
 
 
 {% endblock %}

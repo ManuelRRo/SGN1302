@@ -133,7 +133,7 @@ class Materia(models.Model):
         managed = False
         db_table = 'materia'
     def __str__(self):
-        return self.nombre_materia
+        return self.nombre_materia + '|' + self.id_docente.nombre_docente + ' ' + self.id_docente.apellido_docente
 
 
 class Seccion(models.Model):
