@@ -5,7 +5,7 @@
             <div class="nav accordion" id="accordionSidenav">
                 <!-- Sidenav Menu Heading (Account)-->
                 <!-- * * Note: * * Visible only on and above the sm breakpoint-->
-                <div class="sidenav-menu-heading d-sm-none">Account</div>
+                <div class="sidenav-menu-heading d-sm-none">Evaluaciones</div>
                 <!-- Sidenav Link (Alerts)-->
                 <!-- * * Note: * * Visible only on and above the sm breakpoint-->
                 <a class="nav-link d-sm-none" href="#!">
@@ -25,19 +25,49 @@
                 <!-- Sidenav Accordion (Dashboard)-->
                 <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseDashboards" aria-expanded="false" aria-controls="collapseDashboards">
                     <div class="nav-link-icon"><i data-feather="activity"></i></div>
-                    Dashboards
+                    Grados
                     <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
                 <div class="collapse" id="collapseDashboards" data-bs-parent="#accordionSidenav">
+                    <!-- dashboard lateral -->
                     <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
-                        <a class="nav-link" href="dashboard-1.html">
-                            Default
-                            <span class="badge bg-primary-soft text-primary ms-auto">Updated</span>
+                        <a class="nav-link" href="{% url 'sgn_app:crear_eva_est'%}">
+                            Gestión evaluación
+                            <!-- <span class="badge bg-primary-soft text-primary ms-auto">Updated</span> -->
                         </a>
-                        <a class="nav-link" href="dashboard-2.html">Multipurpose</a>
+                        {% comment %} <a class="nav-link" href="{% url 'sgn_app:list_evas_not'%}">Listar Evaluaciones alumnos</a> {% endcomment %}
                         <a class="nav-link" href="dashboard-3.html">Affiliate</a>
                     </nav>
                 </div>
+
+                <!-- GESTOR DEL ADMINISTRADOR-->
+                {% if user.is_superuser %}
+                <div class="sidenav-menu-heading">GESTOR</div>
+                <!-- Sidenav Accordion (Dashboard)-->
+                <a id="navGestor" class="nav-link" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseGestor" aria-expanded="false" aria-controls="collapseGestor">
+                    <div class="nav-link-icon"><i class="fa fa-users" aria-hidden="true"></i></div>
+                    Docentes
+                    <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseGestor" data-bs-parent="#accordionGestor">
+                    <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
+                        <a id="aGestor" class="nav-link" href="{% url 'sgn_app:crear_docente' %}">
+                            Agregar docente
+                            <span class="badge bg-primary-soft text-primary ms-auto">
+                                <i class="fa fa-user-plus" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                        <a id="lGestor" class="nav-link" href="{% url 'sgn_app:listado_docentes'%}">
+                            Listado de docentes
+                            <span class="badge bg-primary-soft text-primary ms-auto">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </nav>
+                </div>
+                {% endif %}
+                <!-- FIN GESTOR DEL ADMINISTRADOR-->
+
                 <!-- Sidenav Heading (Custom)-->
                 <div class="sidenav-menu-heading">Custom</div>
                 <!-- Sidenav Accordion (Pages)-->

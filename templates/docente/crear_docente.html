@@ -1,0 +1,188 @@
+{% extends 'layouts/dashboard.html' %}
+
+{% block metadata %}
+<title>Crear usuario - SGN1302</title>
+{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+    <div class="container-xl px-4">
+        <div class="page-header-content">
+            <div class="row align-items-center justify-content-between pt-3">
+                <div class="col-auto mb-3">
+                    <h1 class="page-header-title">
+                        <div class="page-header-icon"><i data-feather="user-plus"></i></div>
+                        Agregar Profesor
+                    </h1>
+                </div>
+                <div class="col-12 col-xl-auto mb-3">
+                    <a class="btn btn-sm btn-light text-primary" href="{% url 'sgn_app:listado_docentes'%}">
+                        <i class="me-1" data-feather="arrow-left"></i>
+                        Regresar al listado
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+{% if messages %}
+{% for message in messages %}
+
+<div class="container-xl px-4 mt-4">
+    <div class="alert alert-primary alert-icon" role="alert">
+        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alert-icon-aside">
+            <i class="far fa-flag"></i>
+        </div>
+        <div class="alert-icon-content">
+            <h6 class="alert-heading">{{message}}</h6>
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+{% endif %}
+
+
+
+<!-- Main page content-->
+<div class="container-xl px-4 mt-4">
+    <div class="row">
+        <div class="col-xl-12">
+            <!-- Account details card-->
+            <div class="card mb-4">
+                <div class="card-header">Datos de usuario</div>
+                <div class="card-body">
+                    <form method = "POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="mb-0"><label>Usuario</label></div>
+                                <div class="mb-3">
+                                    <div class="input-group input-group-joined">
+                                        <span class="input-group-text">
+                                            <i data-feather="user"></i>
+                                        </span>
+                                        {{docente_form.numidentificacion}}
+                                    </div>
+                                </div>
+                                <div class="d-none">
+                                    {{user_form.username}}
+                                </div>
+                                <div class="mb-0"><label>Nombres</label></div>
+                                <div class="d-none">
+                                    {{user_form.first_name}}
+                                </div>
+                                <div class="mb-3">
+                                    {{docente_form.nombre_docente}}
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+
+                                <div class="mb-0"><label>DUI</label></div>
+                                <div class="mb-3">
+                                    {{docente_form.dui}}
+                                </div>
+
+                                <div class="mb-0"><label>Apellidos</label></div>
+                                <div class="d-none">
+                                    {{user_form.last_name}}
+                                </div>
+                                <div class="mb-3">
+                                    {{docente_form.apellido_docente}}
+                                </div>                            
+                            </div>
+                        </div>
+
+                        <div class="mb-0"><label>Correo electrónico</label></div>
+                        <div class="mb-3">
+                            {{user_form.email}}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="mb-0"><label>Contraseña</label></div>
+                                <div class="mb-3">
+                                    <div class="input-group input-group-joined">
+                                        <span class="input-group-text">
+                                            <i data-feather="key"></i>
+                                        </span>
+                                        {{user_form.password1}}
+                                    </div>
+                                    <ul>
+                                        <li>Su contraseña no puede ser muy similar a su otra información personal.</li>
+                                        <li>Su contraseña debe contener al menos 8 caracteres.</li>
+                                        <li>Su contraseña no puede ser una contraseña de uso común.</li>
+                                        <li>Tu contraseña no puede ser completamente numérica.</li>
+                                    </ul>
+
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="mb-0"><label>Confirme contraseña</label></div>
+                                <div class="mb-3">
+                                    <div class="input-group input-group-joined">
+                                        <span class="input-group-text">
+                                            <i data-feather="key"></i>
+                                        </span>
+                                        {{user_form.password2}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="save">Registrar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = function () {
+        const navGestor = document.getElementById('navGestor');
+        const collapseGestor = document.getElementById('collapseGestor');
+        const aGestor = document.getElementById('aGestor');
+        navGestor.classList.add('active');
+        aGestor.classList.add('active');
+        collapseGestor.classList.add('show');
+    }
+
+    let form_fields = document.getElementsByTagName('input');
+    let savebtn = document.getElementById('save');
+    form_fields[3].placeholder = 'Username';
+    form_fields[3].required=true;
+    form_fields[3].className += 'form-control ps-0';
+    form_fields[6].placeholder = 'Nombres';
+    form_fields[6].required=true;
+    form_fields[6].className += 'form-control';
+    form_fields[7].placeholder = '#######-#';
+    form_fields[7].required=true;
+    form_fields[7].className += 'form-control';
+    form_fields[9].placeholder = 'Apellidos';
+    form_fields[9].required=true;
+    form_fields[9].className += 'form-control';
+    form_fields[10].placeholder = 'Correo electrónico';
+    form_fields[10].className += 'form-control';
+    form_fields[11].placeholder = 'Contraseña';
+    form_fields[11].className += 'form-control ps-0';
+    form_fields[12].placeholder = 'Confirme contraseña';
+    form_fields[12].className += 'form-control ps-0';
+
+    savebtn.addEventListener('click', function () {
+            form_fields[4].value = form_fields[3].value;
+            form_fields[5].value = form_fields[6].value;
+            form_fields[8].value = form_fields[9].value;
+        });
+
+    // for (var field in form_fields){
+    //     form_fields[field].className += 'form-control';
+    // }
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+.entradaTxt{
+   margin-top: 20px;
+   margin-bottom: 40px;
+   text-align: center;
+  
+
+
+}
+
+.formulario{
+    box-shadow: 0px 0px 30px grey;
+    margin: 50px;
+    border-radius: 2%;
+    width: 50%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ }
+
+ .actualizar{
+    display: block;
+  
+ }
+ h3{
+    text-align: center;
+    margin-top: 10px;
+ }
+ h1{
+    text-align: center;
+ }

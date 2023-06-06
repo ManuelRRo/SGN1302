@@ -3,6 +3,7 @@ from django import forms
 from .models import Evaluacion, Evaluacionalumno, Docente,Alumno,Trimestre
 from django.core.exceptions import ValidationError
 
+
 class EvaluacionForm(ModelForm):
     class Meta:
         model = Evaluacion

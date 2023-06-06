@@ -1,0 +1,17 @@
+{% extends 'layouts/dashboard.html' %}
+
+{% comment %} {% include 'registration/login.html' %} {% endcomment %}
+
+{% block metadata %}
+<title>Editar Evaluacion</title>
+{% endblock %}
+
+{% block content %}
+{% load static %}
+<h1>Editar Evaluacion</h1>
+<form method="post">
+    {{form.as_p	}}
+    <button type="submit">Guardar</button>
+</form>
+
+{% endblock %}

@@ -3,10 +3,31 @@
 {% comment %} {% include 'registration/login.html' %} {% endcomment %}
 
 {% block metadata %}
-    <title>Inicio - SGN1302</title>
+<title>Inicio - SGN1302</title>
 {% endblock %}
 
 {% block content %}
-    {% load static %}
-    {% include 'layouts/table.html'%}
+{% load static %}
+
+<br />
+<!-- validar que cuando aun no tenga materias asignadas no de error -->
+<div class="container-xl px-4">
+    <div class="row">
+        {% for g in gradsec%}
+
+        <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
+            <div class="card card-waves d-block lift rounded overflow-hidden mb-2 text-center">
+                <div class="card-header">{{g.id_gradoseccion}}</div>
+                <div class="card-body">
+                    <a class="btn btn-primary" href="{% url 'sgn_app:listar_evas_grado' g.id_gradoseccionmateria%}">
+                        {{g.id_materia.nombre_materia}}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+    </div>
+</div>
+
 {% endblock %}

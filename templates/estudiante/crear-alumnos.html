@@ -1,0 +1,25 @@
+{% extends 'layouts/dashboard.html' %}
+
+{% comment %} {% include 'registration/login.html' %} {% endcomment %}
+
+{% block metadata %}
+<title>Estudiante</title>
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+{% if submitted %}
+Tu actividad ha sido creada exitosamente
+{%else%}
+<h1>Crear evaluacion</h1>
+
+<form action="" method="post"> {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+    <input type="submit" value="Guardar">
+</form>
+{% endif%}
+
+{% endblock %}
