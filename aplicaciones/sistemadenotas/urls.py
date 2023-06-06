@@ -14,14 +14,9 @@ urlpatterns = [
         name="listar_evas_grado"
     ),
     path(
-        'estudiante/list-evas-not/',
+        'estudiante/list-evas-not/<idEvaluacion>/',
         views.ListarEvaluacionesAlumnos.as_view(),
         name="list_evas_not"
-    ),
-    path(
-        'estudiante/edit-evas-not/<int:pk>/',
-        views.ActualizarEvaluacionesAlumno.as_view(),
-        name="edit_evas_not"
     ),
     path(
         'estudiante/crear-eva-est',
