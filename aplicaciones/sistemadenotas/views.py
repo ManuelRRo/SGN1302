@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from .models import Evaluacion,Evaluacionalumno,Alumno,Gradoseccion,Docente,Materia,Gradoseccionmateria
-from .forms import EvaluacionForm,EvaluacionAlumnoForm,DocenteForm
+from .forms import EvaluacionForm,EvaluacionAlumnoForm,DocenteForm,AlumnoForm
 from aplicaciones.usuarios.forms import RegisterUserForm
 from django.views.generic import ListView,CreateView,UpdateView,DeleteView,View
 from django.urls import reverse_lazy
@@ -141,7 +141,11 @@ class CrearDocentes(View):
             messages.error(request, 'Ocurrio un error')
             return render(request,self.template_name,self.get_context_data())
 
-
+#HU-21
+class CrearAlumno(CreateView):
+    form_class = AlumnoForm
+    template_name = 'estudiante/crear-alumnos.html'
+    success_url = reverse_lazy('sgn_app:home')
 
 
 

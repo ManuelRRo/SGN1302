@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from .models import Evaluacion, Evaluacionalumno, Docente
+from .models import Evaluacion, Evaluacionalumno, Docente,Alumno
 from django.core.exceptions import ValidationError
 
 
@@ -43,3 +43,15 @@ class DocenteForm(ModelForm):
         if lista:
             self.add_error('numidentificacion', 'Esa username ya existe')
         return username
+    
+#HU-21
+class AlumnoForm(ModelForm):
+    class Meta:
+        model = Alumno
+        fields = [
+            'id_gradoseccion',
+            'nie',
+            'apellidos_alumno',
+            'nombres_alumno'
+        ]
+

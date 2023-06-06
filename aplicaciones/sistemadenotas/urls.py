@@ -28,6 +28,12 @@ urlpatterns = [
         views.CrearEvaluacionAlumno,
         name="crear_eva_est"
     ),
+    #HU-21
+    path(
+        'estudiante/crear-estudiante',
+        views.CrearAlumno.as_view(),
+        name="crear_alumno"
+    ),
     
     # Gestión de Docentes
     path(
@@ -39,4 +45,5 @@ urlpatterns = [
         login_required(views.CrearDocentes.as_view()),
         name='crear_docente'
     ),
+
 ]
