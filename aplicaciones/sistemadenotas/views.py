@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 # HU_01 Listar Grados asignados | Materias impartidas
 # Posee dos comportamientos:
@@ -23,6 +24,7 @@ def home(request):
         context["gradsec"] = Gradoseccionmateria.objects.filter(id_materia__in=materia)
     
     return render (request,'home/inicio.html',context)
+
 
 # HU-02 Listar Evaluaciones de Grado
 # De acuerdo a la materia seleccionada de ese grado
