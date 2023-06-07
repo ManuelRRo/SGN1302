@@ -16,7 +16,7 @@
         <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
             <div class="card d-block lift rounded overflow-hidden mb-2">
                 <div class="card-header">
-                    <a href="{% url 'sgn_app:list_evas_not'%}">{{eva.nombre_evaluacion}}</a>
+                    <a href="{% url 'sgn_app:list_evas_not' idEvaluacion=eva.id_evaluacion %}">{{eva.nombre_evaluacion}}</a>
                 </div>
             </div>
         </div>

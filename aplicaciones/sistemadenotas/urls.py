@@ -17,19 +17,20 @@ urlpatterns = [
         name="listar_evas_grado"
     ),
     path(
-        'estudiante/list-evas-not/',
+        'estudiante/list-evas-not/<idEvaluacion>/',
         views.ListarEvaluacionesAlumnos.as_view(),
         name="list_evas_not"
-    ),
-    path(
-        'estudiante/edit-evas-not/<int:pk>/',
-        views.ActualizarEvaluacionesAlumno.as_view(),
-        name="edit_evas_not"
     ),
     path(
         'estudiante/crear-eva-est',
         views.CrearEvaluacionAlumno,
         name="crear_eva_est"
+    ),
+    #HU-21
+    path(
+        'estudiante/crear-estudiante',
+        views.CrearAlumno.as_view(),
+        name="crear_alumno"
     ),
     
     # Gestión de Docentes
@@ -43,9 +44,11 @@ urlpatterns = [
         name='crear_docente'
     ),
 
+
     path('editar/<str:id>', views.EditarDocente, name='editar_docente'),
 
     path('deshabilitar-usuario/<str:id>/', deshabilitar_usuario, name='deshabilitar_usuario'),
 
     path('habilitar-usuario/<str:id>/', habilitar_usuario, name='habilitar_usuario'),
+
 ]
