@@ -21,4 +21,5 @@ urlpatterns = [
     path('', include('aplicaciones.sistemadenotas.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('usuario/',include('aplicaciones.usuarios.urls')),
+    
 ]

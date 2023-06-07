@@ -1,6 +1,9 @@
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 from . import  views
+from .views import deshabilitar_usuario
+from .views import habilitar_usuario
+
 app_name = "sgn_app"
 urlpatterns = [
     path(
@@ -39,4 +42,10 @@ urlpatterns = [
         login_required(views.CrearDocentes.as_view()),
         name='crear_docente'
     ),
+
+    path('editar/<str:id>', views.EditarDocente, name='editar_docente'),
+
+    path('deshabilitar-usuario/<str:id>/', deshabilitar_usuario, name='deshabilitar_usuario'),
+
+    path('habilitar-usuario/<str:id>/', habilitar_usuario, name='habilitar_usuario'),
 ]

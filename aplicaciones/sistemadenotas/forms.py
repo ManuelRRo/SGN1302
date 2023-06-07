@@ -27,7 +27,7 @@ class EvaluacionAlumnoForm(ModelForm):
 # Formulario DOCENTE
 
 
-class DocenteForm(ModelForm):
+class DocenteForm(forms.ModelForm):
     class Meta:
         model = Docente
         fields = [
