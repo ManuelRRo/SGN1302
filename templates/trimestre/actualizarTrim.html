@@ -13,14 +13,13 @@
 <div class="container">
     <div class="row">
      <div class="col-lg-3 mx-auto"></div>
-    
       <div class="col-lg-4 mx-auto formulario">
-        <form method="post"  >{% csrf_token %}
+        <form method="post" class="" >{% csrf_token %}
             <h3>Nombre</h3>
             {{form.trimestre}}
             <h3>Año</h3>
             {{form.anio}}
-            <button type="submit" id="actualizar">Actualizar</button>
+            <button type="submit" class="actualizar">Actualizar</button>
         </form>
       </div>
       <div class="col-lg-3 mx-auto"></div>

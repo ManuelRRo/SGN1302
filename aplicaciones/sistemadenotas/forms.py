@@ -46,7 +46,7 @@ class DocenteForm(ModelForm):
 
 
 class TrimestreActualizarForm(forms.ModelForm):
-    """Form definition for TrimestreActualizar."""
+    """Form definido para actualizar Trimestre."""
 
     class Meta:
         model = Trimestre
@@ -68,7 +68,47 @@ class TrimestreActualizarForm(forms.ModelForm):
                 }
             )
         }
-    
+
+class EvaluacionEditarForm(forms.ModelForm):
+    """Form definido para actualizar Evaluacion."""
+    class Meta:
+        model = Evaluacion
+        fields = ('id_categoria',
+                  'id_gradoseccionmateria',
+                  'id_trimestre',
+                  'nombre_evaluacion',
+                  'porcentaje')
+        widgets={
+            'id_categoria': forms.Select(
+               attrs= {
+                'placeholder': 'Nombre Categoria',
+                'class':'entradaTxt'
+                }
+            ),
+            'id_gradoseccionmateria': forms.Select(
+               attrs= {
+                'placeholder': 'año Trimestre',
+                'class':'entradaTxt',
+                'id':'actualizar'
+                }
+            ),
+            'nombre_evaluacion': forms.TextInput(
+               attrs= {
+                'placeholder': 'año Trimestre',
+                'class':'entradaTxt',
+                'id':'actualizar'
+                }
+            ),
+            'porcentaje': forms.NumberInput(
+               attrs= {
+                'placeholder': 'año Trimestre',
+                'class':'entradaTxt',
+                'id':'actualizar'
+                }
+            )
+
+        }
+
 #HU-21
 class AlumnoForm(ModelForm):
     class Meta:

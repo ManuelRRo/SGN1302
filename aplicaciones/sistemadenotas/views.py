@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from .models import Evaluacion,Evaluacionalumno,Alumno,Gradoseccion,Docente,Materia,Gradoseccionmateria,Trimestre
-from .forms import EvaluacionForm,EvaluacionAlumnoForm,DocenteForm,AlumnoForm,TrimestreActualizarForm
+from .forms import EvaluacionForm,EvaluacionAlumnoForm,DocenteForm,AlumnoForm,TrimestreActualizarForm,EvaluacionEditarForm
 from aplicaciones.usuarios.forms import RegisterUserForm
 from django.views.generic import ListView,CreateView,UpdateView,DeleteView,View,TemplateView
 from django.urls import reverse_lazy
@@ -168,12 +168,7 @@ class ActualizarTrimestre(UpdateView):
 class EvaluacionEditar(UpdateView):
     model = Evaluacion
     template_name = "evaluacion/editarEvaluacion.html"
-    fields=[
-        'nombre_evaluacion',
-        'porcentaje',
-        'id_categoria',
-        'id_gradoseccionmateria'
-    ]
+    form_class = EvaluacionEditarForm
     success_url = reverse_lazy('sgn_app:correcto')
 
 #HU-21

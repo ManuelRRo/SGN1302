@@ -8,10 +8,39 @@
 
 {% block content %}
 {% load static %}
+
 <h1>Editar Evaluacion</h1>
+<div class="container">
+    <div class="row">
+      <div class="col-lg-1 mx-auto"></div>  
+      <div class="col-lg-10 mx-auto formulario2">
+        <form method="post"  >{% csrf_token %}
+            <div class="row">
+                <div class="col-lg-5 mx-auto">
+                    <h3>Nombre</h3>
+                    {{form.nombre_evaluacion}}
+                    <h3>Grado y Materia</h3>
+                    {{form.id_gradoseccionmateria}}
+                </div>
+                <div class="col-lg-2 mx-auto"></div>
+                <div class="col-lg-5 mx-auto">
+                    <h3>Porcentaje</h3>
+                    {{form.porcentaje}}
+                    <h3>Categoria</h3>
+                    {{form.id_categoria}}
+                </div>
+            </div>
+            <button type="submit">Guardar</button>
+        </form>
+      </div>
+      <div class="col-lg-1 mx-auto"></div>  
+    </div>
+  </div>
+
+
+
 <form method="post">
-    {{form.as_p	}}
-    <button type="submit">Guardar</button>
+    
 </form>
 
 {% endblock %}
