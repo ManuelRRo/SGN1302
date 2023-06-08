@@ -15,11 +15,25 @@
      <div class="col-lg-3 mx-auto"></div>
       <div class="col-lg-4 mx-auto formulario">
         <form method="post" class="" >{% csrf_token %}
-            <h3>Nombre</h3>
+          <div class="row">
+            <div class="col-lg-1 mx-auto">
+            </div>
+            <div class="col-lg-10 mx-auto">
+              <h3>Nombre</h3>
             {{form.trimestre}}
             <h3>Año</h3>
             {{form.anio}}
-            <button type="submit" class="actualizar">Actualizar</button>
+            </div>
+            <div class="col-lg-1 mx-auto"></div>
+          </div>
+          <div class="row">
+            <div class="col-lg-3 mx-auto">
+            </div>
+            <div class="col-lg-5 mx-auto">
+              <button type="submit" class="btn btn-success" id="trimUpdateButton">Actualizar</button>
+            </div>
+            <div class="col-lg-3 mx-auto"></div>
+          </div>
         </form>
       </div>
       <div class="col-lg-3 mx-auto"></div>

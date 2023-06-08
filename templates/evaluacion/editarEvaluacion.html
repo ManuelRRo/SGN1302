@@ -17,28 +17,37 @@
         <form method="post"  >{% csrf_token %}
             <div class="row">
                 <div class="col-lg-5 mx-auto">
+                  <div class="row columna">
                     <h3>Nombre</h3>
                     {{form.nombre_evaluacion}}
                     <h3>Grado y Materia</h3>
                     {{form.id_gradoseccionmateria}}
+                  </div>
                 </div>
                 <div class="col-lg-2 mx-auto"></div>
-                <div class="col-lg-5 mx-auto">
+                <div class="col-lg-5 mx-auto columna">
+                  <div class="columna row ">
                     <h3>Porcentaje</h3>
                     {{form.porcentaje}}
                     <h3>Categoria</h3>
                     {{form.id_categoria}}
+                  </div>
                 </div>
             </div>
-            <button type="submit">Guardar</button>
+            <div class="row"> 
+              <div class="col-lg-5 mx-auto">
+              </div>
+              <div class="col-lg-2 mx-auto margin">
+                <button type="submit" class="btn btn-success" id="updateEva">Guardar</button>
+              </div>
+              <div class="col-lg-5 mx-auto">
+              </div>
+            </div>
         </form>
       </div>
       <div class="col-lg-1 mx-auto"></div>  
     </div>
   </div>
-
-
-
 <form method="post">
     
 </form>

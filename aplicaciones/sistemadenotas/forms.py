@@ -56,15 +56,16 @@ class TrimestreActualizarForm(forms.ModelForm):
             'trimestre': forms.TextInput(
                attrs= {
                 'placeholder': 'Nombre Trimestre',
-                'class':'entradaTxt'
+                'class':'form-control form-control-lg',
+                'id':'updateNombreTrim'
 
                 }
             ),
             'anio': forms.NumberInput(
                attrs= {
                 'placeholder': 'año Trimestre',
-                'class':'entradaTxt',
-                'id':'actualizar'
+                'class':'form-control form-control-lg',
+                'id':'updaterYearTrim'
                 }
             )
         }
@@ -81,29 +82,28 @@ class EvaluacionEditarForm(forms.ModelForm):
         widgets={
             'id_categoria': forms.Select(
                attrs= {
-                'placeholder': 'Nombre Categoria',
-                'class':'entradaTxt'
+                'class':'form-control form-control-lg',
+                
                 }
-            ),
+            ), 
             'id_gradoseccionmateria': forms.Select(
                attrs= {
-                'placeholder': 'año Trimestre',
-                'class':'entradaTxt',
-                'id':'actualizar'
+                'class':'form-control form-control-lg',
+                
                 }
             ),
             'nombre_evaluacion': forms.TextInput(
                attrs= {
-                'placeholder': 'año Trimestre',
-                'class':'entradaTxt',
-                'id':'actualizar'
+                'placeholder': 'nombre de Evaluación',
+                'class':'form-control form-control-lg',
+                'id':'nameUpdateEva' 
                 }
             ),
             'porcentaje': forms.NumberInput(
                attrs= {
-                'placeholder': 'año Trimestre',
-                'class':'entradaTxt',
-                'id':'actualizar'
+                'placeholder': 'porcentaje de Evaluación',
+                'class':'form-control form-control-lg',
+                'id':'percentageUpdateEva'
                 }
             )
 
