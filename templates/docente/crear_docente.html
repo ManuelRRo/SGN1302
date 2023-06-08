@@ -144,12 +144,12 @@
 
 <script>
     window.onload = function () {
-        const navGestor = document.getElementById('navGestor');
-        const collapseGestor = document.getElementById('collapseGestor');
-        const aGestor = document.getElementById('aGestor');
-        navGestor.classList.add('active');
-        aGestor.classList.add('active');
-        collapseGestor.classList.add('show');
+        const navDocentes = document.getElementById('navDocentes');
+        const collapseDocentes = document.getElementById('collapseDocentes');
+        const agregarDocentes = document.getElementById('agregarDocente');
+        navDocentes.classList.add('active');
+        agregarDocentes.classList.add('active');
+        collapseDocentes.classList.add('show');
     }
 
     let form_fields = document.getElementsByTagName('input');
@@ -160,7 +160,7 @@
     form_fields[6].placeholder = 'Nombres';
     form_fields[6].required=true;
     form_fields[6].className += 'form-control';
-    form_fields[7].placeholder = '#######-#';
+    form_fields[7].placeholder = '########';
     form_fields[7].required=true;
     form_fields[7].className += 'form-control';
     form_fields[9].placeholder = 'Apellidos';
@@ -179,9 +179,6 @@
             form_fields[8].value = form_fields[9].value;
         });
 
-    // for (var field in form_fields){
-    //     form_fields[field].className += 'form-control';
-    // }
 
 </script>
 

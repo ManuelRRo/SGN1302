@@ -2,9 +2,7 @@
 <title>Listado - SGN1302</title>
 {% endblock %} {% block content %} {% load static %}
 
-<header
-  class="page-header page-header-compact page-header-light border-bottom bg-white mb-4"
->
+<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
   <div class="container-fluid px-4">
     <div class="page-header-content">
       <div class="row align-items-center justify-content-between pt-3">
@@ -15,10 +13,7 @@
           </h1>
         </div>
         <div class="col-12 col-xl-auto mb-3">
-          <a
-            class="btn btn-sm btn-light text-primary"
-            href="{% url 'sgn_app:crear_docente' %}"
-          >
+          <a class="btn btn-sm btn-light text-primary" href="{% url 'sgn_app:crear_docente' %}">
             <i class="me-1" data-feather="user-plus"></i>
             Agregar nuevo docente
           </a>
@@ -77,7 +72,7 @@
 <div class="container-xl px-4">
   <div class="card mb-4">
     <div class="card-body">
-      
+
       <table id="datatablesSimple" class="table table-bordered">
         <thead>
           <tr>
@@ -110,55 +105,32 @@
             <td>{{docente.dui}}</td>
             <td>{{docente.nombre_docente}}</td>
             <td>{{docente.apellido_docente}}</td>
-            
             <td>
               {% for usuario in users %}
-                {% if usuario.username == docente.numidentificacion %}
-                {% if usuario.is_active %}
+              {% if usuario.username == docente.numidentificacion %}
+              {% if usuario.is_active %}
               <span>Activo</span>
               {% else %}
               <span>Inactivo</span>
-              {% endif %}  
-              {% endif %}  
+              {% endif %}
+              {% endif %}
               {% endfor %}
             </td>
-
-          </td>
-
-            <td>
-              <a
-                name=""
-                id=""
-                class=""
-                href="{% url 'sgn_app:editar_docente' docente.numidentificacion %}"
-                role="button"
-                ><i data-feather="edit"></i>
+            <td class="text-center">
+              <a href="{% url 'sgn_app:editar_docente' docente.numidentificacion %}" role="button">
+                <i data-feather="edit"></i>
               </a>
-
-              <a
-                name=""
-                id=""
-                class=""
-                href="{% url 'sgn_app:habilitar_usuario' docente.numidentificacion %}"
-                role="button"
-                ><i data-feather="user-check"></i
-              ></a>
-
-              <a
-                name=""
-                id=""
-                class=""
-                href="{% url 'sgn_app:deshabilitar_usuario' docente.numidentificacion %}"
-                role="button"
-                ><i data-feather="user-x"></i
-              ></a>
+              <a href="{% url 'sgn_app:habilitar_usuario' docente.numidentificacion %}" role="button">
+                <i data-feather="user-check"></i>
+              </a>
+              <a href="{% url 'sgn_app:deshabilitar_usuario' docente.numidentificacion %}" role="button">
+                <i data-feather="user-x"></i></a>
             </td>
-
             <td class="d-none">No utilizado</td>
             <td class="d-none">No utilizado</td>
           </tr>
           {% endfor %}
-          
+
         </tbody>
       </table>
     </div>
@@ -167,12 +139,12 @@
 
 <script>
   window.onload = function () {
-    const navGestor = document.getElementById("navGestor");
-    const collapseGestor = document.getElementById("collapseGestor");
-    const lGestor = document.getElementById("lGestor");
-    navGestor.classList.add("active");
-    lGestor.classList.add("active");
-    collapseGestor.classList.add("show");
+    const navDocentes = document.getElementById('navDocentes');
+    const collapseDocentes = document.getElementById('collapseDocentes');
+    const listarDocentes = document.getElementById('listarDocentes');
+    navDocentes.classList.add('active');
+    listarDocentes.classList.add('active');
+    collapseDocentes.classList.add('show');
   };
 </script>
 

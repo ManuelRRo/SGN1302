@@ -3,7 +3,7 @@
     <nav class="sidenav shadow-right sidenav-light">
         <div class="sidenav-menu">
             <div class="nav accordion" id="accordionSidenav">
-                
+
                 <!-- Sidenav Menu Heading (Core)-->
                 <div class="sidenav-menu-heading">Core</div>
                 <!-- Sidenav Accordion (Dashboard)-->
@@ -26,22 +26,22 @@
 
                 <!-- GESTOR DEL ADMINISTRADOR-->
                 {% if user.is_superuser %}
-                <div class="sidenav-menu-heading">GESTOR</div>
-                <!-- Sidenav Accordion (Dashboard)-->
-                <a id="navGestor" class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseGestor" aria-expanded="false" aria-controls="collapseGestor">
+                <div class="sidenav-menu-heading">ADMINISTRACIÓN DEL SISTEMA</div>
+                <!-- Sidenav Accordion (Docente)-->
+                <a id="navDocentes" class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseDocentes" aria-expanded="false" aria-controls="collapseDocentes">
                     <div class="nav-link-icon"><i class="fa fa-users"></i></div>
                     Docentes
                     <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
-                <div id="collapseGestor" class="collapse" data-bs-parent="#accordionGestor">
-                    <nav class="sidenav-menu-nested nav accordion" id="accordiongGestorDocente">
-                        <a id="aGestor" class="nav-link" href="{% url 'sgn_app:crear_docente' %}">
+                <div class="collapse" id="collapseDocentes" data-bs-parent="#accordionSidenav">
+                    <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
+                        <a id="agregarDocente" class="nav-link" href="{% url 'sgn_app:crear_docente' %}">
                             Agregar docente
                             <span class="badge bg-primary-soft text-primary ms-auto">
                                 <i class="fa fa-user-plus" aria-hidden="true"></i>
                             </span>
                         </a>
-                        <a id="lGestor" class="nav-link" href="{% url 'sgn_app:listado_docentes'%}">
+                        <a id="listarDocentes" class="nav-link" href="{% url 'sgn_app:listado_docentes'%}">
                             Listado de docentes
                             <span class="badge bg-primary-soft text-primary ms-auto">
                                 <i class="fa fa-users" aria-hidden="true"></i>
@@ -49,6 +49,7 @@
                         </a>
                     </nav>
                 </div>
+
                 {% endif %}
                 <!-- FIN GESTOR DEL ADMINISTRADOR-->
 
