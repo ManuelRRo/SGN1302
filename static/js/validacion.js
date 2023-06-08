@@ -6,29 +6,9 @@ btnsActualizar.forEach(btn=>{
       //const valido =verificarContenido(textbox);
       const valido = verificarContenido(textbox);
       if(valido){
-        Swal.fire({
-          title: 'Desea eliminar este registro?',
-          text: "No podra revertir esta accion!",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Si, Eliminar!'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Swal.fire(
-              'Deleted!',
-              'Your file has been deleted.',
-              'success'
-            )
-          }
-        })
+        textbox.setCustomValidity("mensaje de prueba");
         e.preventDefault();
       }else{
-        Swal.fire({
-          icon: 'success',
-          title: 'Trimestre Actualizado Correctamente',
-        })
       }
         
         })
