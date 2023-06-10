@@ -54,7 +54,7 @@ class TrimestreActualizarForm(forms.ModelForm):
                   'anio')
         widgets={
             'trimestre': forms.TextInput(
-               attrs= {
+               attrs= { 
                 'placeholder': 'Nombre Trimestre',
                 'class':'form-control form-control-lg',
                 'id':'updateNombreTrim'

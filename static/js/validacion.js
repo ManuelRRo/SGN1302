@@ -9,7 +9,7 @@ function validarCamposUpdateTrim() {
   const nombre = document.getElementById('updateNombreTrim');
   const aniovalido = validarAnio(anio);
   if(nombre.value.trim().length === 0){
-    nombre.setCustomValidity("Ingrese nombre");
+    nombre.setCustomValidity("Ingrese nombre"); 
   }else{
     nombre.setCustomValidity("");
   }
