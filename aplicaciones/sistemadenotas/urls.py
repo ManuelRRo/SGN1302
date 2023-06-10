@@ -56,6 +56,19 @@ urlpatterns = [
         name='actualizar_evaluacion'
 
     ),
+    path(
+        'habilitarDeshabilitarAlumno/<id>/',
+        login_required(views.HabDeshabiAlumno.as_view()),
+        name='Habilitar-DeshabilitarAlumno'
+    ),
+    path(
+        'habilitarDeshabilitarAlumno/<id>/deshabilitarAlumno/<idAlumno>/',
+        views.deshabilitar
+    ),
+     path(
+        'habilitarDeshabilitarAlumno/<id>/habilitarAlumno/<idAlumno>/',
+        views.habilitar
+    )
     # Vista de habilitar o deshabilitar alumnos
     
 

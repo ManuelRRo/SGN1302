@@ -82,27 +82,27 @@ class EvaluacionEditarForm(forms.ModelForm):
         widgets={
             'id_categoria': forms.Select(
                attrs= {
-                'class':'form-control form-control-lg',
+                'class':'form-select form-select-lg mb-3 mt-4',
                 
                 }
             ), 
             'id_gradoseccionmateria': forms.Select(
                attrs= {
-                'class':'form-control form-control-lg',
+                'class':'form-select form-select-lg mb-3 mt-4',
                 
                 }
             ),
             'nombre_evaluacion': forms.TextInput(
                attrs= {
                 'placeholder': 'nombre de Evaluación',
-                'class':'form-control form-control-lg',
+                'class':'form-control form-control-lg mt-4',
                 'id':'nameUpdateEva' 
                 }
             ),
             'porcentaje': forms.NumberInput(
                attrs= {
                 'placeholder': 'porcentaje de Evaluación',
-                'class':'form-control form-control-lg',
+                'class':'form-control form-control-lg mt-4',
                 'id':'percentageUpdateEva'
                 }
             )
@@ -119,5 +119,6 @@ class AlumnoForm(ModelForm):
             'apellidos_alumno',
             'nombres_alumno'
         ]
+
 
 

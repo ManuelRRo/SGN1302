@@ -177,10 +177,36 @@ class CrearAlumno(CreateView):
     template_name = 'estudiante/crear-alumnos.html'
     success_url = reverse_lazy('sgn_app:home')
 
+class HabDeshabiAlumno(ListView):
+    model = Alumno
+    template_name = 'estudiante/hab-desh.html'
+    def get_queryset(self):
+        id = self.kwargs['id']
+        alumnos = Alumno.objects.filter(
+            id_gradoseccion = id
+         )
+        print(alumnos)
+        return alumnos
+    
+
+
+class ListarDocentes(ListView):
+    model = Docente
+    template_name = 'docente/listar_docentes.html'
+    context_object_name = 'docentes'
+    queryset = model.objects.all()
 
 
 
+def habilitar(request,id,idAlumno):
+    alumno = Alumno.objects.get(id_alumno = idAlumno)
+    alumno.estado = "1"
+    alumno.save()
+    return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
 
-
-
+def deshabilitar(request,id,idAlumno):
+    alumno = Alumno.objects.get(id_alumno = idAlumno)
+    alumno.estado = "0"
+    alumno.save()
+    return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
 
