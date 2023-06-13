@@ -16,7 +16,7 @@ class Alumno(models.Model):
     nie = models.CharField(db_column='NIE', max_length=7, blank=True, null=True)  # Field name made lowercase.
     apellidos_alumno = models.CharField(db_column='APELLIDOS_ALUMNO', max_length=50, blank=True, null=True)  # Field name made lowercase.
     nombres_alumno = models.CharField(db_column='NOMBRES_ALUMNO', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    estado = models.CharField(db_column='habilitado',max_length=1,null=True)
+    estado = models.CharField(db_column='HABILITADO',max_length=1,null=True)
     class Meta:
         managed = False
         db_table = 'alumno'
@@ -38,7 +38,7 @@ class Categoria(models.Model):
 class Docente(models.Model):
     id_docente = models.AutoField(db_column='ID_DOCENTE', primary_key=True)  # Field name made lowercase.
     numidentificacion = models.CharField(db_column='NUMIDENTIFICACION', max_length=8, blank=True, null=True)  # Field name made lowercase.
-    dui = models.CharField(db_column='DUI', max_length=8, blank=True, null=True)  # Field name made lowercase.
+    dui = models.CharField(db_column='DUI', max_length=8, blank=True, null=True, unique=True)  # Field name made lowercase.
     nombre_docente = models.CharField(db_column='NOMBRE_DOCENTE', max_length=50, blank=True, null=True)  # Field name made lowercase.
     apellido_docente = models.CharField(db_column='APELLIDO_DOCENTE', max_length=50, blank=True, null=True)  # Field name made lowercase.
     idgradoseccion = models.ForeignKey('Gradoseccion', models.DO_NOTHING, db_column='ID_GRADOSECCION', blank=True, null=True)
@@ -48,7 +48,7 @@ class Docente(models.Model):
         managed = False
         db_table = 'docente'
     def __str__(self):
-        return self.nombre_docente + '|' + self.apellido_docente
+        return self.nombre_docente + ' ' + self.apellido_docente
 
 
 class Evaluacion(models.Model):
@@ -57,7 +57,7 @@ class Evaluacion(models.Model):
     id_gradoseccionmateria = models.ForeignKey('Gradoseccionmateria', models.DO_NOTHING, db_column='ID_GRADOSECCIONMATERIA', blank=True, null=True)  # Field name made lowercase.
     id_trimestre = models.ForeignKey('Trimestre', models.DO_NOTHING, db_column='ID_TRIMESTRE', blank=True, null=True)  # Field name made lowercase.
     nombre_evaluacion = models.CharField(db_column='NOMBRE_EVALUACION', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    porcentaje = models.CharField(db_column='PORCENTAJE', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    porcentaje = models.IntegerField(db_column='PORCENTAJE', blank=True, null=False)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -75,22 +75,6 @@ class Evaluacionalumno(models.Model):
     class Meta:
         managed = False
         db_table = 'evaluacionalumno'
-
-
-class Fichaalumno(models.Model):
-    id_fichaalumno = models.AutoField(db_column='ID_FICHAALUMNO', primary_key=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'fichaalumno'
-
-
-class Fichadocente(models.Model):
-    id_fichadocente = models.AutoField(db_column='ID_FICHADOCENTE', primary_key=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'fichadocente'
 
 
 class Grado(models.Model):

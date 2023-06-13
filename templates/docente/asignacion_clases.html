@@ -1,0 +1,166 @@
+{% extends 'layouts/dashboard.html' %} {% block metadata %}
+<title>Asignación de Trabajo - SGN1302</title>
+{% endblock %} {% block content %} {% load static %}
+
+<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+  <div class="container-fluid px-4">
+    <div class="page-header-content">
+      <div class="row align-items-center justify-content-between pt-3">
+        <div class="col-auto mb-3">
+          <h1 class="page-header-title">
+            <div class="page-header-icon"><i data-feather="user"></i></div>
+            Asignación de Carga Laboral
+          </h1>
+        </div>
+        <div class="col-12 col-xl-auto mb-3">
+          <a class="btn btn-sm btn-light text-primary" href="{% url 'sgn_app:listado_docentes' %}">
+            <i class="me-1" data-feather="arrow-left"></i>
+            Regresar al Listado de Docentes
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container-xl px-4">
+
+  <div class="mb-3">
+    <!-- Botón insertar carga laboral trigger -->
+    <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#insertarCargaLaboral">
+      Nueva Carga Laboral
+    </button>
+
+    {% if messages %}
+    {% for message in messages %}
+    
+    <div class="container-xl px-4 mt-4">
+      <div class="alert alert-primary alert-icon" role="alert">
+        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alert-icon-aside">
+          <i class="far fa-flag"></i>
+        </div>
+        <div class="alert-icon-content">
+          <h6 class="alert-heading">{{message}}</h6>
+        </div>
+      </div>
+    </div>
+    
+    {% endfor %}
+    {% endif %}
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="insertarCargaLaboral" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Asignación de Materia a Impartir</h5>
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="post"> {% csrf_token %}
+          <div class="modal-body">
+            <input class="form-control d-none" type="number" id="operacion" name="operacion" value = 1>
+            <label for="estudiante">Grado</label>
+            <select class="form-select mb-3" name="idGradoSeccion" id="">
+              <option value="" disabled selected>Seleccione un Grado</option>
+              {% for grado_seccion in grado_seccion %}
+              <option value="{{grado_seccion.id_gradoseccion}}">{{grado_seccion}}</option>
+              {% endfor %}
+            </select>
+
+            <label for="estudiante">Docente</label>
+            <select class="form-select mb-3" name="idDocente" id="">
+              <option value="" disabled selected>Seleccione un Docente</option>
+              {% for docente in docentes %}
+              <option value="{{docente.id_docente}}">{{docente}}</option>
+              {% endfor %}
+            </select>
+
+            <label for="estudiante">Materia</label>
+            <select class="form-select mb-3" name="nombreMateria" id="">
+              <option value="" disabled selected>Seleccione una Materia</option>
+              <option value="Lenguaje y Literatura">Lenguaje y Literatura</option>
+              <option value="Ciencia Salud">Ciencia Salud</option>
+              <option value="Matemática">Matemática</option>
+              <option value="Estudios Sociales">Estudios Sociales</option>
+            </select>
+
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" type="submit">Guardar registro</button>
+            <button class="btn btn-danger" type="button" data-bs-dismiss="modal">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <table id="datatablesSimple" class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Usuario - Docente</th>
+            <th>Grado</th>
+            <th class="text-center">Turno</th>
+            <th class="text-center">Materia</th>
+            <th class="d-none">Estado</th>
+            <th class="text-center">Acciones</th>
+            <th class="d-none">Status</th>
+            <th class="d-none">Actions</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>Usuario - Docente</th>
+            <th>Grado</th>
+            <th class="text-center">Turno</th>
+            <th class="text-center">Materia</th>
+            <th class="d-none">Estado</th>
+            <th class="text-center">Acciones</th>
+            <th class="d-none">Status</th>
+            <th class="d-none">Actions</th>
+          </tr>
+        </tfoot>
+        <tbody>
+          {% for grado in grado_seccion_materia %}
+          <tr>
+            <td>{{grado.id_materia.id_docente.numidentificacion}}</td>
+            <td>{{grado.id_gradoseccion}}</td>
+            <td class="text-center">{{grado.id_gradoseccion.turno_gradoseccion}}</td>
+            <td class="text-center">{{grado.id_materia.nombre_materia}}</td>
+            <td class="d-none">No utilizado</td>
+            <td class="text-center">
+              <a href="{% url 'sgn_app:eliminar_asignar_clases' grado.id_gradoseccionmateria %}" role="button">
+                <i data-feather="trash-2"></i>
+              </a>
+            </td>
+            <td class="d-none">No utilizado</td>
+            <td class="d-none">No utilizado</td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+</div>
+
+<script>
+  window.onload = function () {
+    const navDocentes = document.getElementById('navDocentes');
+    const collapseDocentes = document.getElementById('collapseDocentes');
+    const gestionCargaLaboral = document.getElementById('gestionCargaLaboral');
+    navDocentes.classList.add('active');
+    gestionCargaLaboral.classList.add('active');
+    collapseDocentes.classList.add('show');
+  };
+
+  
+
+</script>
+
+{% endblock %}

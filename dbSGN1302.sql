@@ -8,10 +8,6 @@ drop table if exists EVALUACION;
 
 drop table if exists EVALUACIONALUMNO;
 
-drop table if exists FICHAALUMNO;
-
-drop table if exists FICHADOCENTE;
-
 drop table if exists GRADO;
 
 drop table if exists GRADOSECCION;
@@ -31,6 +27,7 @@ create table ALUMNO
    NIE                  char(7),
    APELLIDOS_ALUMNO     char(50),
    NOMBRES_ALUMNO       char(50),
+   HABILITADO 			   char(1) DEFAULT NULL,
    primary key (ID_ALUMNO)
 );
 
@@ -48,6 +45,8 @@ create table DOCENTE
    DUI                  char(8),
    NOMBRE_DOCENTE       char(50),
    APELLIDO_DOCENTE     char(50),
+   ID_GRADOSECCION 		int DEFAULT NULL,
+   ORIENTADOR 			   char(1) DEFAULT NULL,
    primary key (ID_DOCENTE)
 );
 
@@ -58,7 +57,7 @@ create table EVALUACION
    ID_GRADOSECCIONMATERIA int,
    ID_TRIMESTRE         int,
    NOMBRE_EVALUACION    char(50),
-   PORCENTAJE           char(50),
+   PORCENTAJE           float not null,
    primary key (ID_EVALUACION)
 );
 
@@ -69,18 +68,6 @@ create table EVALUACIONALUMNO
    ID_ALUMNO            int,
    NOTA                 float not null,
    primary key (ID_EVALUACIONALUMNO)
-);
-
-create table FICHAALUMNO
-(
-   ID_FICHAALUMNO       int not null AUTO_INCREMENT,
-   primary key (ID_FICHAALUMNO)
-);
-
-create table FICHADOCENTE
-(
-   ID_FICHADOCENTE      int not null AUTO_INCREMENT,
-   primary key (ID_FICHADOCENTE)
 );
 
 create table GRADO
@@ -163,3 +150,5 @@ alter table GRADOSECCIONMATERIA add constraint FK_RELATIONSHIP_8 foreign key (ID
 alter table MATERIA add constraint FK_RELATIONSHIP_4 foreign key (ID_DOCENTE)
       references DOCENTE (ID_DOCENTE) on delete restrict on update restrict;
 
+alter table DOCENTE add constraint FK_RELATIONSHIP_20 foreign key (ID_GRADOSECCION)
+	  references GRADOSECCION (ID_GRADOSECCION) on delete restrict on update restrict;

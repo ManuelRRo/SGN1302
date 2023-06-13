@@ -19,7 +19,7 @@ from django.contrib.auth.forms import UserCreationForm
 # Posee dos comportamientos:
 #   - Rol profesor -> cumple HU-01
 #   - Rol Administrador -> no se ejecuta HU-01
-@login_required
+@login_required()
 def home(request):
     context = {}
     # Al no ser admin se cumple la HU-01
@@ -44,7 +44,7 @@ class ListarEvaluacionesGrados(ListView):
             return self.model.objects.filter(id_gradoseccionmateria=self.idgrado)
         return self.model.objects.all()
 
-#VISTAS HU-03 o HU-09
+#VISTAS HU-03 y HU-09
 def CrearEvaluacionAlumno(request):
     submitted = False
     if request.method == "POST":
@@ -107,10 +107,7 @@ class ListarEvaluacionesAlumnos(View):
                     self.EvaluacionAlumno = Evaluacionalumno.objects.get(id_evaluacion=self.Evaluacion, id_alumno=self.Alumno)
                     self.EvaluacionAlumno.nota = nota
                     self.EvaluacionAlumno.save()
-                else:
-                    # Mostrar mensaje de error o realizar alguna otra acción
-                    # ...
-                    m = 0
+                
             except Exception:
                 messages.error(request, 'Ocurrio un error')
                 
@@ -146,20 +143,93 @@ class ListarEvaluacionesGrados(ListView):
             return self.model.objects.filter(id_gradoseccionmateria=self.idgrado)
         return self.model.objects.all()
 
+# ----------------------------------------------
+# Gestión de Docentes:
+# ----------------------------------------------
 
-# Gestión de Docentes: 
-# HU-32 Listar Docentes
-class ListarDocentes(ListView):
-    model = Docente
-    template_name = 'docente/listar_docentes.html'
-    context_object_name = 'docentes'
-    queryset = model.objects.all()
+# HU-28: Asignación de Grado/Sección con Materia 
+# Asignación de la materia que impartira el docente en un 
+# determinado grado y sección
+class AsignacionClases(View):
+    model = Gradoseccionmateria
+    template_name = 'docente/asignacion_clases.html'
 
+    def get_queryset(self):
+        consultas = {}
+        consultas['grado_seccion_materia'] = self.model.objects.all()
+        consultas['grado_seccion'] = Gradoseccion.objects.all()
+        consultas['docentes'] = Docente.objects.all() 
+        return consultas
+    
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['users'] = User.objects.all()  # Agregar el usuario autenticado al contexto
+        context = {}
+        context = self.get_queryset() 
         return context
-   
+    
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, self.get_context_data())
+    
+    def post(self,request,*args,**kwargs):
+        if request.method == 'POST':
+            opcion = request.POST['operacion']
+            # Al ser la operacion un 1
+            # Se crea un registro
+            if opcion == '1':
+                try:
+                    id_grado_seccion = request.POST.get('idGradoSeccion', None)
+                    id_docente = request.POST.get('idDocente', None)
+                    nombre_materia = request.POST.get('nombreMateria', None)
+                    existe_materia = Materia.objects.filter(nombre_materia = nombre_materia, id_docente_id = id_docente).exists()
+                    if existe_materia:
+                        materias = Materia.objects.filter(nombre_materia = nombre_materia, id_docente_id = id_docente)
+                        existencia_grado_seccion_materia = Gradoseccionmateria.objects.filter(id_materia__in = materias, id_gradoseccion_id = id_grado_seccion).exists()
+                        if existencia_grado_seccion_materia:
+                            messages.error(request,'No fue posible registrarlo porque se encontró un coincidencia en la base de datos')
+                        else:
+                            materia = Materia.objects.create(
+                                id_docente_id = id_docente,
+                                nombre_materia = nombre_materia
+                            )
+                            
+                            Gradoseccionmateria.objects.create(
+                                id_gradoseccion_id=id_grado_seccion,
+                                id_materia = materia
+                            )
+                    else:
+                        materia = Materia.objects.create(
+                                id_docente_id = id_docente,
+                                nombre_materia = nombre_materia
+                            )
+                            
+                        Gradoseccionmateria.objects.create(
+                            id_gradoseccion_id=id_grado_seccion,
+                            id_materia = materia
+                        )   
+                except Exception:
+                    messages.error(request, 'Ocurrio un error, introduzca datos válidos')
+            else:
+                # Al no ser lo anterior
+                # Se edita un registro
+                m=0
+
+        # ID de evaluación que deseas pasar a la URL
+        return redirect('sgn_app:asignar_clases')
+
+
+# Elimina la asignación seleccionada, que anteriormente
+# se puedo crear en la clase AsignacionClases 
+def EliminarAsigacionClases(request, id):
+    try:
+        grado_seccion_materia = Gradoseccionmateria.objects.get(id_gradoseccionmateria = id)
+        grado_seccion_materia.delete()
+        materia = Materia.objects.get(id_materia = grado_seccion_materia.id_materia)
+        materia.delete()
+        
+    except Exception:
+        messages.error(request,'No es posible eliminar este registro')
+    
+    return redirect('sgn_app:asignar_clases')
+
 
 # HU-29 Agrega Docentes
 class CrearDocentes(View):
@@ -193,6 +263,18 @@ class CrearDocentes(View):
             return render(request,self.template_name,self.get_context_data())
 
 
+# HU-32 Listar Docentes
+class ListarDocentes(ListView):
+    model = Docente
+    template_name = 'docente/listar_docentes.html'
+    context_object_name = 'docentes'
+    queryset = model.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['users'] = User.objects.all()
+        return context
+
 
 @login_required()
 def EditarDocente(request, id):
@@ -210,6 +292,7 @@ def EditarDocente(request, id):
         form_user = RegisterUserForm(instance=user) 
     return render(request, 'docente/editar_docente.html', {'docente_form':form_teacher,'user_form':form_user})
 
+
 @login_required()
 def deshabilitar_usuario(request, id):
     user = get_object_or_404(User, username=id)
@@ -217,11 +300,20 @@ def deshabilitar_usuario(request, id):
     user.is_active = False
     user.save()
     return redirect('sgn_app:listado_docentes')
-  
+
+
+@login_required()
+def habilitar_usuario(request, id):
+    user = get_object_or_404(User, username=id)
+    # Deshabilitar el usuario
+    user.is_active = True
+    user.save()
+    return redirect('sgn_app:listado_docentes')  
 
 
 class Correcto(TemplateView):
     template_name = "trimestre/correcto.html"
+
 
 class ActualizarTrimestre(UpdateView):
     model = Trimestre
@@ -229,7 +321,6 @@ class ActualizarTrimestre(UpdateView):
     form_class = TrimestreActualizarForm
     success_url = reverse_lazy('sgn_app:correcto')
     
-
 
 class EvaluacionEditar(UpdateView):
     model = Evaluacion
@@ -245,15 +336,6 @@ class CrearAlumno(CreateView):
     success_url = reverse_lazy('sgn_app:home')
 
 
-@login_required()
-def habilitar_usuario(request, id):
-    user = get_object_or_404(User, username=id)
-    # Deshabilitar el usuario
-    user.is_active = True
-    user.save()
-    return redirect('sgn_app:listado_docentes')  
-
-
 class HabDeshabiAlumno(ListView):
     model = Alumno
     template_name = 'estudiante/hab-desh.html'
@@ -264,15 +346,6 @@ class HabDeshabiAlumno(ListView):
          )
         print(alumnos)
         return alumnos
-    
-
-
-class ListarDocentes(ListView):
-    model = Docente
-    template_name = 'docente/listar_docentes.html'
-    context_object_name = 'docentes'
-    queryset = model.objects.all()
-
 
 
 def habilitar(request,id,idAlumno):
@@ -280,6 +353,7 @@ def habilitar(request,id,idAlumno):
     alumno.estado = "1"
     alumno.save()
     return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
+
 
 def deshabilitar(request,id,idAlumno):
     alumno = Alumno.objects.get(id_alumno = idAlumno)
