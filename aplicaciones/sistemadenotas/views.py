@@ -2,10 +2,10 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import Evaluacion, Evaluacionalumno, Alumno, Gradoseccion, Docente, Materia, Gradoseccionmateria
 from django.shortcuts import render,redirect
-from .models import Evaluacion,Evaluacionalumno,Alumno,Gradoseccion,Docente,Materia,Gradoseccionmateria
-from .forms import EvaluacionForm,EvaluacionAlumnoForm,DocenteForm,AlumnoForm
+from .models import Evaluacion,Evaluacionalumno,Alumno,Gradoseccion,Docente,Materia,Gradoseccionmateria,Trimestre
+from .forms import EvaluacionForm,EvaluacionAlumnoForm,DocenteForm,AlumnoForm,TrimestreActualizarForm,EvaluacionEditarForm
 from aplicaciones.usuarios.forms import RegisterUserForm
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View
+from django.views.generic import ListView,CreateView,UpdateView,DeleteView,View,TemplateView
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
@@ -193,6 +193,7 @@ class CrearDocentes(View):
             return render(request,self.template_name,self.get_context_data())
 
 
+
 @login_required()
 def EditarDocente(request, id):
     docente = get_object_or_404(Docente, numidentificacion=id)
@@ -217,11 +218,32 @@ def deshabilitar_usuario(request, id):
     user.save()
     return redirect('sgn_app:listado_docentes')
   
+
+
+class Correcto(TemplateView):
+    template_name = "trimestre/correcto.html"
+
+class ActualizarTrimestre(UpdateView):
+    model = Trimestre
+    template_name = "trimestre/actualizarTrim.html"
+    form_class = TrimestreActualizarForm
+    success_url = reverse_lazy('sgn_app:correcto')
+    
+
+
+class EvaluacionEditar(UpdateView):
+    model = Evaluacion
+    template_name = "evaluacion/editarEvaluacion.html"
+    form_class = EvaluacionEditarForm
+    success_url = reverse_lazy('sgn_app:correcto')
+
+
 #HU-21
 class CrearAlumno(CreateView):
     form_class = AlumnoForm
     template_name = 'estudiante/crear-alumnos.html'
     success_url = reverse_lazy('sgn_app:home')
+
 
 @login_required()
 def habilitar_usuario(request, id):
@@ -230,5 +252,39 @@ def habilitar_usuario(request, id):
     user.is_active = True
     user.save()
     return redirect('sgn_app:listado_docentes')  
+
+
+class HabDeshabiAlumno(ListView):
+    model = Alumno
+    template_name = 'estudiante/hab-desh.html'
+    def get_queryset(self):
+        id = self.kwargs['id']
+        alumnos = Alumno.objects.filter(
+            id_gradoseccion = id
+         )
+        print(alumnos)
+        return alumnos
+    
+
+
+class ListarDocentes(ListView):
+    model = Docente
+    template_name = 'docente/listar_docentes.html'
+    context_object_name = 'docentes'
+    queryset = model.objects.all()
+
+
+
+def habilitar(request,id,idAlumno):
+    alumno = Alumno.objects.get(id_alumno = idAlumno)
+    alumno.estado = "1"
+    alumno.save()
+    return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
+
+def deshabilitar(request,id,idAlumno):
+    alumno = Alumno.objects.get(id_alumno = idAlumno)
+    alumno.estado = "0"
+    alumno.save()
+    return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
 
 

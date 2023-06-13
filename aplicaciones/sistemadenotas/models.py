@@ -16,6 +16,7 @@ class Alumno(models.Model):
     nie = models.CharField(db_column='NIE', max_length=7, blank=True, null=True)  # Field name made lowercase.
     apellidos_alumno = models.CharField(db_column='APELLIDOS_ALUMNO', max_length=50, blank=True, null=True)  # Field name made lowercase.
     nombres_alumno = models.CharField(db_column='NOMBRES_ALUMNO', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    estado = models.CharField(db_column='habilitado',max_length=1,null=True)
     class Meta:
         managed = False
         db_table = 'alumno'
@@ -30,6 +31,8 @@ class Categoria(models.Model):
     class Meta:
         managed = False
         db_table = 'categoria'
+    def __str__(self) -> str:
+        return self.nombre_categoria
 
 
 class Docente(models.Model):
@@ -38,6 +41,8 @@ class Docente(models.Model):
     dui = models.CharField(db_column='DUI', max_length=8, blank=True, null=True)  # Field name made lowercase.
     nombre_docente = models.CharField(db_column='NOMBRE_DOCENTE', max_length=50, blank=True, null=True)  # Field name made lowercase.
     apellido_docente = models.CharField(db_column='APELLIDO_DOCENTE', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    idgradoseccion = models.ForeignKey('Gradoseccion', models.DO_NOTHING, db_column='ID_GRADOSECCION', blank=True, null=True)
+    docente = models.CharField(db_column='ORIENTADOR',max_length=1,null=True)
 
     class Meta:
         managed = False

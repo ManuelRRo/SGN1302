@@ -1,0 +1,63 @@
+{% extends 'layouts/dashboard.html' %}
+
+{% comment %} {% include 'registration/login.html' %} {% endcomment %}
+
+{% block metadata %}
+<title>Editar Evaluacion</title>
+{% endblock %}
+
+{% block content %}
+{% load static %}
+<div class="text-center">
+  <h1 class="d-flex justify-content-center mt-5">Editar Evaluacion</h1>
+</div>
+<div class="container-xl px-4">
+  <div class="card mb-4">
+    <div class="row">
+      <div class="col-lg-1 mx-auto"></div>  
+      <div class="col-lg-10 mx-auto formulario2">
+        <form method="post"  >{% csrf_token %}
+            <div class="row">
+                <div class="col-lg-5 mx-auto">
+                  <div class="row mt-5">
+                    <div class="text-center"><h3 class="d-flex justify-content-center mt-lg-5">Nombre</h3>
+                    </div>
+                    {{form.nombre_evaluacion}}
+                    <div class="text-center"><h3 class="d-flex justify-content-center mt-5">Grado y Seccion</h3>
+                    </div>
+                    {{form.id_gradoseccionmateria}}
+                  </div>
+                </div>
+                <div class="col-lg-2 mx-auto"></div>
+                <div class="col-lg-5 mx-auto ">
+                  <div class="row mt-5">
+                    <div class="text-center"><h3 class="d-flex justify-content-center mt-5">Porcentaje</h3>
+                    </div>
+                    {{form.porcentaje}}
+                    <div class="text-center"><h3 class="d-flex justify-content-center mt-5">Categoria</h3>
+                    </div>
+                    {{form.id_categoria}}
+                  </div>
+                </div>
+            </div>
+            <div class="row"> 
+              <div class="col-lg-5 mx-auto">
+              </div>
+              <div class="col-lg-2 mx-auto mt-5 mb-5">
+                <button type="submit" class="btn btn-success" id="updateEva">Guardar</button>
+              </div>
+              <div class="col-lg-5 mx-auto">
+              </div>
+            </div>
+        </form>
+      </div>
+      <div class="col-lg-1 mx-auto"></div>  
+    </div>
+  </div>
+    
+  </div>
+<form method="post">
+    
+</form>
+
+{% endblock %}

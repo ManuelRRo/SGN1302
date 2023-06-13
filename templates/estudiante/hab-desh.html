@@ -1,0 +1,64 @@
+{% extends 'layouts/dashboard.html' %}
+
+{% comment %} {% include 'registration/login.html' %} {% endcomment %}
+
+{% block metadata %}
+<title>Habilitar Deshabilitar Alumnos</title>
+{% endblock %}
+{% block content %}
+{% load static %}
+
+<div class="text-center">
+  <h1 class="d-flex justify-content-center mt-5">Alumnos de su grado y seccion</h1>
+</div>
+<div class="container-xl px-4 mt-5">
+    <div class="card mb-4">
+      <div class="card-body">
+        <table id="datatablesSimple" class="table table-bordered">
+          <thead>
+            <tr>
+              <th>NIE</th>
+              <th>Nombres</th>
+              <th>Apellidos</th>
+              <th>Grado y Seccion</th>
+              <th>Estado</th>
+              <th>Accion</th>
+              <th class="d-none">Salary</th>
+              <th class="d-none">Status</th>
+              <th class="d-none">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for alumno in object_list  %}
+            <tr>
+              <td>{{alumno.nie}} </td>
+              <td>{{alumno.nombres_alumno}} </td>
+              <td>{{alumno.apellidos_alumno}}</td>
+              <td>{{alumno.id_gradoseccion}}</td>
+              {% if alumno.estado == "1" %}
+              <td>
+                Habilitado
+              </td>
+              <td>
+                <a  class="btn btn-danger" href="deshabilitarAlumno/{{alumno.id_alumno}}">Deshabilitar</a>
+              </td>  
+                  {% else %}
+                  <td>
+                    Deshabilitado
+                  </td>
+                  <td>
+                    <a class=" btn btn-info" href=" habilitarAlumno/{{alumno.id_alumno}}">Habilitar</a>
+                  </td>
+              {% endif %}     
+              <td class="d-none">No utilizado</td>
+              <td class="d-none" >No utilizado</td>
+              <td class="d-none">No utilizado</td>     
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  
+  </div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'layouts/dashboard.html' %}
+
+{% comment %} {% include 'registration/login.html' %} {% endcomment %}
+
+{% block metadata %}
+<title>Actualización Trimestre</title>
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<div class="text-center">
+  <h1 class="d-flex justify-content-center mt-5">Actualizar Trimestre</h1>
+</div>
+<div class="container container-xl px-4">
+  
+
+    <div class="row">
+     <div class="col-lg-2 mx-auto"></div>
+      <div class="col-lg-8 mx-auto ">
+        <div class="card mb-4 mt-5">
+          <form method="post" class="" >{% csrf_token %}
+            <div class="row">
+              <div class="col-lg-3 mx-auto">
+              </div>
+              <div class="col-lg-5 mx-auto">
+                <div class="text-center"><h3 class="d-flex justify-content-center mt-lg-5">Nombre</h3>
+                </div>
+              {{form.trimestre}}
+              <div class="text-center"><h3 class="d-flex justify-content-center mt-lg-5">Año</h3>
+              </div>
+              {{form.anio}}
+              </div>
+              <div class="col-lg-3 mx-auto"></div>
+            </div>
+            <div class="row  mt-5 mb-5">
+              <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-success" id="trimUpdate">Actualizar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="col-lg-2 mx-auto"></div>
+    </div>
+  </div>
+{% endblock %}

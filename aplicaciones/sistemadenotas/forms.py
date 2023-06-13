@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from .models import Evaluacion, Evaluacionalumno, Docente,Alumno
+from .models import Evaluacion, Evaluacionalumno, Docente,Alumno,Trimestre
 from django.core.exceptions import ValidationError
 
 
@@ -43,7 +43,72 @@ class DocenteForm(forms.ModelForm):
         if lista:
             self.add_error('numidentificacion', 'Esa username ya existe')
         return username
-    
+
+
+class TrimestreActualizarForm(forms.ModelForm):
+    """Form definido para actualizar Trimestre."""
+
+    class Meta:
+        model = Trimestre
+        fields = ('trimestre',
+                  'anio')
+        widgets={
+            'trimestre': forms.TextInput(
+               attrs= { 
+                'placeholder': 'Nombre Trimestre',
+                'class':'form-control form-control-lg',
+                'id':'updateNombreTrim'
+
+                }
+            ),
+            'anio': forms.NumberInput(
+               attrs= {
+                'placeholder': 'año Trimestre',
+                'class':'form-control form-control-lg',
+                'id':'updaterYearTrim'
+                }
+            )
+        }
+
+class EvaluacionEditarForm(forms.ModelForm):
+    """Form definido para actualizar Evaluacion."""
+    class Meta:
+        model = Evaluacion
+        fields = ('id_categoria',
+                  'id_gradoseccionmateria',
+                  'id_trimestre',
+                  'nombre_evaluacion',
+                  'porcentaje')
+        widgets={
+            'id_categoria': forms.Select(
+               attrs= {
+                'class':'form-select form-select-lg mb-3 mt-4',
+                
+                }
+            ), 
+            'id_gradoseccionmateria': forms.Select(
+               attrs= {
+                'class':'form-select form-select-lg mb-3 mt-4',
+                
+                }
+            ),
+            'nombre_evaluacion': forms.TextInput(
+               attrs= {
+                'placeholder': 'nombre de Evaluación',
+                'class':'form-control form-control-lg mt-4',
+                'id':'nameUpdateEva' 
+                }
+            ),
+            'porcentaje': forms.NumberInput(
+               attrs= {
+                'placeholder': 'porcentaje de Evaluación',
+                'class':'form-control form-control-lg mt-4',
+                'id':'percentageUpdateEva'
+                }
+            )
+
+        }
+
 #HU-21
 class AlumnoForm(ModelForm):
     class Meta:
@@ -54,4 +119,6 @@ class AlumnoForm(ModelForm):
             'apellidos_alumno',
             'nombres_alumno'
         ]
+
+
 
