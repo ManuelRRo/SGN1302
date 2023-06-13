@@ -68,7 +68,8 @@ urlpatterns = [
      path(
         'habilitarDeshabilitarAlumno/<id>/habilitarAlumno/<idAlumno>/',
         views.habilitar
-    )
+    ),
+    
     # Vista de habilitar o deshabilitar alumnos
     
 

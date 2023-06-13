@@ -9,6 +9,9 @@ from django.db import models
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
+#agregado
+from django.contrib.auth.models import Permission
+
 
 class Alumno(models.Model):
     id_alumno = models.AutoField(db_column='ID_ALUMNO', primary_key=True)  # Field name made lowercase.
@@ -43,6 +46,9 @@ class Docente(models.Model):
     apellido_docente = models.CharField(db_column='APELLIDO_DOCENTE', max_length=50, blank=True, null=True)  # Field name made lowercase.
     idgradoseccion = models.ForeignKey('Gradoseccion', models.DO_NOTHING, db_column='ID_GRADOSECCION', blank=True, null=True)
     docente = models.CharField(db_column='ORIENTADOR',max_length=1,null=True)
+    #agregado
+    es_administrador = models.CharField(db_column='administrador',max_length=1,null=True, default=0)
+    permisos = models.ManyToManyField(Permission)
 
     class Meta:
         managed = False

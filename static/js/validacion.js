@@ -1,6 +1,6 @@
 const botonUpdateTrim = document.getElementById('trimUpdate');
 const botonUpdateEva = document.getElementById('updateEva');
-botonUpdateEva.addEventListener('click', validarUpdateEva)
+botonUpdateEva.addEventListener('click', validarUpdateEva);
 botonUpdateTrim.addEventListener('click', validarCamposUpdateTrim);
 
 

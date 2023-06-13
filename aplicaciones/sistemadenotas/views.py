@@ -9,6 +9,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import Group, Permission
+
 
 # HU_01 Listar Grados asignados | Materias impartidas
 # Posee dos comportamientos:
@@ -209,4 +212,26 @@ def deshabilitar(request,id,idAlumno):
     alumno.estado = "0"
     alumno.save()
     return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
+
+class IngresarRoles(ListView):
+    model = Docente
+    template_name = 'administracion/ingresarRoles.html'
+    def get_queryset(self):
+        id = self.kwargs['id']
+        alumnos = Alumno.objects.filter(
+            id_gradoseccion = id
+         )
+        print(alumnos)
+        return alumnos
+
+#class Docente(AbstractUser):
+    #group, created = Group.objects.get_or_create(name='Docentes Administradores')
+    #permissions = Permission.objects.filter(content_type__app_label='aplicaciones.sistemadenotas', codename__startswith='change_')
+    #group.permissions.set(permissions)
+    #docente = Docente.objects.get(username='nombre_de_usuario')
+    #docente.groups.add(group)
+    #group.save()
+    #docente.save()
+
+
 
