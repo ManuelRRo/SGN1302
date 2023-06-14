@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .models import Evaluacion, Evaluacionalumno, Alumno, Gradoseccion, Docente, Materia, Gradoseccionmateria
 from django.shortcuts import render,redirect
 from .models import Evaluacion,Evaluacionalumno,Alumno,Gradoseccion,Docente,Materia,Gradoseccionmateria,Trimestre
-from .forms import EvaluacionForm,EvaluacionAlumnoForm,DocenteForm,AlumnoForm,TrimestreActualizarForm,EvaluacionEditarForm
+from .forms import EvaluacionForm,EvaluacionAlumnoForm,DocenteForm,AlumnoForm,TrimestreActualizarForm,EvaluacionEditarForm, TrimestreForm
 from aplicaciones.usuarios.forms import RegisterUserForm
 from django.views.generic import ListView,CreateView,UpdateView,DeleteView,View,TemplateView
 from django.urls import reverse_lazy
@@ -275,7 +275,7 @@ class ListarDocentes(ListView):
         context['users'] = User.objects.all()
         return context
 
-
+# HU-30: Editar Docentes
 @login_required()
 def EditarDocente(request, id):
     docente = get_object_or_404(Docente, numidentificacion=id)
@@ -292,7 +292,8 @@ def EditarDocente(request, id):
         form_user = RegisterUserForm(instance=user) 
     return render(request, 'docente/editar_docente.html', {'docente_form':form_teacher,'user_form':form_user})
 
-
+#HU-31: Habilitar/Deshabilitar Docentes
+#Vista para deshabilitar usuario
 @login_required()
 def deshabilitar_usuario(request, id):
     user = get_object_or_404(User, username=id)
@@ -301,7 +302,8 @@ def deshabilitar_usuario(request, id):
     user.save()
     return redirect('sgn_app:listado_docentes')
 
-
+#HU-31: Habilitar/Deshabilitar Docentes
+#Vista para habilitar usuario
 @login_required()
 def habilitar_usuario(request, id):
     user = get_object_or_404(User, username=id)
@@ -320,6 +322,24 @@ class ActualizarTrimestre(UpdateView):
     template_name = "trimestre/actualizarTrim.html"
     form_class = TrimestreActualizarForm
     success_url = reverse_lazy('sgn_app:correcto')
+
+
+#HU-33: Crear Trimestre
+# def Trimestre(request):
+#     trimestres=Trimestre.objects.all()
+#     return render(request, 'trimestre/crear_trimestre.html', {'trimestres':trimestres})
+
+def CrearTrimestre(request): 
+    form_trimestre = TrimestreForm(request.POST or None)
+    if form_trimestre.is_valid():
+        form_trimestre.save()
+    return render(request, 'trimestre/crear_trimestre.html', {'form_trimestre':form_trimestre})
+    # model = Trimestre
+    # form_trimestre = TrimestreForm
+    # template_name = 'trimestre/crear_trimestre.html'
+
+    # def get_queryset(self):
+    #     return self.model.objects.all()
     
 
 class EvaluacionEditar(UpdateView):

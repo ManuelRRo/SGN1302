@@ -56,6 +56,37 @@
                     </nav>
                 </div>
 
+                <!-- Sidenav Accordion (Trimestre)-->
+                <a id="navTrimestre" class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseTrimestre" aria-expanded="false" aria-controls="collapseTrimestre">
+                    <div class="nav-link-icon"><i class="fa fa-users"></i></div>
+                    Trimestre
+                    <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseTrimestre" data-bs-parent="#accordionSidenav">
+                    <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
+                        <a id="agregarTrimestre" class="nav-link" href="{% url 'sgn_app:crear_trimestre' %}">
+                            Crear Trimestre
+                            <span class="badge bg-primary-soft text-primary ms-auto">
+                                <i class="fa fa-user-plus" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                        <a id="listarTrimestre" class="nav-link" href="" >
+                            Consultar Trimestre
+                            <span class="badge bg-primary-soft text-primary ms-auto">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                        <a id="gestionTrimestre" class="nav-link" href="{% url 'sgn_app:crear_trimestre' %}">
+                            Actualizar Trimestre
+                            <span class="badge bg-primary-soft text-primary ms-auto">
+                                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </nav>
+                </div>
+
+
+
                 {% endif %}
                 <!-- FIN GESTOR DEL ADMINISTRADOR-->
 

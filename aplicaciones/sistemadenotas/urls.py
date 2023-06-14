@@ -101,6 +101,14 @@ urlpatterns = [
         views.Correcto.as_view(),
         name='correcto'
     ),
+
+    #HU-33: Crear Trimestre
+    path(
+        'crear_trimestre',
+        views.CrearTrimestre, 
+        name='crear_trimestre'
+    ),
+
     #----------------------------------------------
 
     # ---------------------------------------------

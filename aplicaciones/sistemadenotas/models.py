@@ -146,3 +146,16 @@ class Trimestre(models.Model):
         db_table = 'trimestre'
     def __str__(self):
         return self.trimestre + '|' + self.anio
+    
+class Promediomateria(models.Model):
+    id_alumno = models.OneToOneField(Alumno, models.DO_NOTHING, db_column='ID_ALUMNO', primary_key=True)  # Field name made lowercase.
+    id_materia = models.ForeignKey(Materia, models.DO_NOTHING, db_column='ID_MATERIA')  # Field name made lowercase.
+    id_trimestre = models.ForeignKey('Trimestre', models.DO_NOTHING, db_column='ID_TRIMESTRE')  # Field name made lowercase.
+    promedio = models.FloatField(db_column='PROMEDIO', blank=True, null=True)  # Field name made lowercase.
+    observacion = models.CharField(db_column='OBSERVACION', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    fecha_edicion = models.DateField(db_column='FECHA_EDICION', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'promediomateria'
+        unique_together = (('id_alumno', 'id_materia', 'id_trimestre'),)    

@@ -44,6 +44,30 @@ class DocenteForm(forms.ModelForm):
             self.add_error('numidentificacion', 'Esa username ya existe')
         return username
 
+#HU-33 Crear Trimestre
+class TrimestreForm(forms.ModelForm):
+    class Meta:
+        model = Trimestre
+        fields = [
+            'trimestre',
+            'anio',]
+        widgets={
+            'trimestre': forms.TextInput(
+               attrs= { 
+                'placeholder': 'Nombre Trimestre',
+                'class':'form-control form-control-lg',
+                'id':'updateNombreTrim'
+                }
+            ),
+            'anio': forms.NumberInput(
+               attrs= {
+                'placeholder': 'Año Trimestre',
+                'class':'form-control form-control-lg',
+                'id':'updaterYearTrim'
+                }
+            )
+        }
+
 
 class TrimestreActualizarForm(forms.ModelForm):
     """Form definido para actualizar Trimestre."""
