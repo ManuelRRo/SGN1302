@@ -90,6 +90,12 @@ urlpatterns = [
     # -------------------------------------------
 
     # Gestión Trimestres -------------------------
+    #HU-33: Crear Trimestre
+    path(
+        'crear_trimestre',
+        views.CrearTrimestre, 
+        name='crear_trimestre'
+    ),
     # HU-35: Actualizar Trimestre
     path(
         'actualizarTrimestre/<pk>/',
@@ -101,14 +107,6 @@ urlpatterns = [
         views.Correcto.as_view(),
         name='correcto'
     ),
-
-    #HU-33: Crear Trimestre
-    path(
-        'crear_trimestre',
-        views.CrearTrimestre, 
-        name='crear_trimestre'
-    ),
-
     #----------------------------------------------
 
     # ---------------------------------------------

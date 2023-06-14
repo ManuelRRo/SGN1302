@@ -15,7 +15,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.forms import UserCreationForm
 
 
-# HU_01 Listar Grados asignados | Materias impartidas
+# HU-01 Listar Grados asignados | Materias impartidas
 # Posee dos comportamientos:
 #   - Rol profesor -> cumple HU-01
 #   - Rol Administrador -> no se ejecuta HU-01
@@ -29,6 +29,8 @@ def home(request):
         context["gradsec"] = Gradoseccionmateria.objects.filter(id_materia__in=materia)
     
     return render (request,'home/inicio.html',context)
+
+
 # HU-02 Listar Evaluaciones de Grado
 # De acuerdo a la materia seleccionada de ese grado
 class ListarEvaluacionesGrados(ListView):
@@ -42,37 +44,10 @@ class ListarEvaluacionesGrados(ListView):
             return self.model.objects.filter(id_gradoseccionmateria=self.idgrado)
         return self.model.objects.all()
 
-#VISTAS HU-38
-def CrearEvaluacionAlumno(request):
-    submitted = False
-    if request.method == "POST":
-        # form = EvaluacionForm(request.POST)
-        form = EvaluacionForm(request.POST)
-        if form.is_valid():
-            evaluacion = form.save()  # contiene los datos de la evaluacion que se acaba de crear
-            # grado = form.cleaned_data['id_gradoseccionmateria'].id_gradoseccion.id_gradoseccion
-            if evaluacion is not None:
-                grado = evaluacion.id_gradoseccionmateria.id_gradoseccion.id_gradoseccion
-                alumno = Alumno.objects.filter(id_gradoseccion=grado)
-                for e in alumno:
-                    evaalumno = Evaluacionalumno.objects.create(
-                        id_evaluacion=evaluacion, id_alumno=e, nota=0.0)
-                return HttpResponseRedirect('/estudiante/crear-eva-est?submitted=True')
-    else:
-        form = EvaluacionForm
-        # USER SUBMITTER THE FORM
-        if 'submitted' in request.GET:
-            submitted = True
-    context = {
-        'form': form,
-        'submitted': submitted,
-    }
-    return render(request, 'estudiante/crear-evaluacion.html', context)
 
-
-#HU-04 Y HU-06
+# HU-04 - HU-05
 # Permite listar los alumnos de esta evalucion
-# a la vez actualizar
+# a la vez actualizar y registrar
 class ListarEvaluacionesAlumnos(View):
     model = Evaluacionalumno
     form_class = EvaluacionAlumnoForm
@@ -112,19 +87,40 @@ class ListarEvaluacionesAlumnos(View):
         # ID de evaluación que deseas pasar a la URL
         return redirect('sgn_app:list_evas_not', idEvaluacion=idevaluacion)
 
-#HU-05
-class ActualizarEvaluacionesAlumno(UpdateView):
-    model = Evaluacionalumno
-    form_class = EvaluacionAlumnoForm
-    # usar mismo template para que lo carge en el form
-    template_name = 'estudiante/listar-evas-alumnos.html'
-    success_url = reverse_lazy('sgn_app:list_evas_not')
-    # esto permite seguir manteniendo lista estudiantes aun cuando se actualiza
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['estudiantes'] = Evaluacionalumno.objects.all
-        return context
+# HU-21: Insertar Alumnos
+class CrearAlumno(CreateView):
+    form_class = AlumnoForm
+    template_name = 'estudiante/crear-alumnos.html'
+    success_url = reverse_lazy('sgn_app:home')
+
+
+# HU-23: Habilitar/Deshabilitar Alumnos
+class HabDeshabiAlumno(ListView):
+    model = Alumno
+    template_name = 'estudiante/hab-desh.html'
+    def get_queryset(self):
+        id = self.kwargs['id']
+        alumnos = Alumno.objects.filter(
+            id_gradoseccion = id
+        )
+        print(alumnos)
+        return alumnos
+
+
+def habilitar(request,id,idAlumno):
+    alumno = Alumno.objects.get(id_alumno = idAlumno)
+    alumno.estado = "1"
+    alumno.save()
+    return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
+
+
+def deshabilitar(request,id,idAlumno):
+    alumno = Alumno.objects.get(id_alumno = idAlumno)
+    alumno.estado = "0"
+    alumno.save()
+    return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
+
 
 # ----------------------------------------------
 # Gestión de Docentes:
@@ -246,18 +242,6 @@ class CrearDocentes(View):
             return render(request,self.template_name,self.get_context_data())
 
 
-# HU-32 Listar Docentes
-class ListarDocentes(ListView):
-    model = Docente
-    template_name = 'docente/listar_docentes.html'
-    context_object_name = 'docentes'
-    queryset = model.objects.all()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['users'] = User.objects.all()
-        return context
-
 # HU-30: Editar Docentes
 @login_required()
 def EditarDocente(request, id):
@@ -275,6 +259,7 @@ def EditarDocente(request, id):
         form_user = RegisterUserForm(instance=user) 
     return render(request, 'docente/editar_docente.html', {'docente_form':form_teacher,'user_form':form_user})
 
+
 #HU-31: Habilitar/Deshabilitar Docentes
 #Vista para deshabilitar usuario
 @login_required()
@@ -285,7 +270,7 @@ def deshabilitar_usuario(request, id):
     user.save()
     return redirect('sgn_app:listado_docentes')
 
-#HU-31: Habilitar/Deshabilitar Docentes
+
 #Vista para habilitar usuario
 @login_required()
 def habilitar_usuario(request, id):
@@ -296,18 +281,20 @@ def habilitar_usuario(request, id):
     return redirect('sgn_app:listado_docentes')  
 
 
-class Correcto(TemplateView):
-    template_name = "trimestre/correcto.html"
+# HU-32 Listar Docentes
+class ListarDocentes(ListView):
+    model = Docente
+    template_name = 'docente/listar_docentes.html'
+    context_object_name = 'docentes'
+    queryset = model.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['users'] = User.objects.all()
+        return context
 
 
-class ActualizarTrimestre(UpdateView):
-    model = Trimestre
-    template_name = "trimestre/actualizarTrim.html"
-    form_class = TrimestreActualizarForm
-    success_url = reverse_lazy('sgn_app:correcto')
-
-
-#HU-33: Crear Trimestre
+# HU-33: Crear Trimestre
 def CrearTrimestre(request): 
     form_trimestre = TrimestreForm(request.POST or None)
     if request.method == 'POST':
@@ -317,45 +304,51 @@ def CrearTrimestre(request):
         else: messages.error(request, "El nombre del trimestre ya existe en el mismo año.")
     return render(request, 'trimestre/crear_trimestre.html', {'form_trimestre':form_trimestre})
 
+
+class Correcto(TemplateView):
+    template_name = "trimestre/correcto.html"
+
+
+# HU-35: Actualizar Trimestre
+class ActualizarTrimestre(UpdateView):
+    model = Trimestre
+    template_name = "trimestre/actualizarTrim.html"
+    form_class = TrimestreActualizarForm
+    success_url = reverse_lazy('sgn_app:correcto')
     
 
+# HU-38: Agregar Evaluación
+def CrearEvaluacionAlumno(request):
+    submitted = False
+    if request.method == "POST":
+        # form = EvaluacionForm(request.POST)
+        form = EvaluacionForm(request.POST)
+        if form.is_valid():
+            evaluacion = form.save()  # contiene los datos de la evaluacion que se acaba de crear
+            # grado = form.cleaned_data['id_gradoseccionmateria'].id_gradoseccion.id_gradoseccion
+            if evaluacion is not None:
+                grado = evaluacion.id_gradoseccionmateria.id_gradoseccion.id_gradoseccion
+                alumno = Alumno.objects.filter(id_gradoseccion=grado)
+                for e in alumno:
+                    evaalumno = Evaluacionalumno.objects.create(
+                        id_evaluacion=evaluacion, id_alumno=e, nota=0.0)
+                return HttpResponseRedirect('/estudiante/crear-eva-est?submitted=True')
+    else:
+        form = EvaluacionForm
+        # USER SUBMITTER THE FORM
+        if 'submitted' in request.GET:
+            submitted = True
+    context = {
+        'form': form,
+        'submitted': submitted,
+    }
+    return render(request, 'estudiante/crear-evaluacion.html', context)
+
+
+# HU-40: Editar Evaluación
 class EvaluacionEditar(UpdateView):
     model = Evaluacion
     template_name = "evaluacion/editarEvaluacion.html"
     form_class = EvaluacionEditarForm
     success_url = reverse_lazy('sgn_app:correcto')
-
-
-#HU-21
-class CrearAlumno(CreateView):
-    form_class = AlumnoForm
-    template_name = 'estudiante/crear-alumnos.html'
-    success_url = reverse_lazy('sgn_app:home')
-
-
-class HabDeshabiAlumno(ListView):
-    model = Alumno
-    template_name = 'estudiante/hab-desh.html'
-    def get_queryset(self):
-        id = self.kwargs['id']
-        alumnos = Alumno.objects.filter(
-            id_gradoseccion = id
-         )
-        print(alumnos)
-        return alumnos
-
-
-def habilitar(request,id,idAlumno):
-    alumno = Alumno.objects.get(id_alumno = idAlumno)
-    alumno.estado = "1"
-    alumno.save()
-    return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
-
-
-def deshabilitar(request,id,idAlumno):
-    alumno = Alumno.objects.get(id_alumno = idAlumno)
-    alumno.estado = "0"
-    alumno.save()
-    return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
-
 
