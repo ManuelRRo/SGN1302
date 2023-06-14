@@ -69,8 +69,11 @@ urlpatterns = [
         'habilitarDeshabilitarAlumno/<id>/habilitarAlumno/<idAlumno>/',
         views.habilitar
     ),
-    
-    # Vista de habilitar o deshabilitar alumnos
+     path(
+        'generarNotaExcel/',
+        views.ReporteDeNotasExcel.as_view(),
+        name="reporteExcel"
+    ),
     
 
 

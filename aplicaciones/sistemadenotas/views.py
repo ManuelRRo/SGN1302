@@ -9,8 +9,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.models import Group, Permission
+#from django.contrib.auth.models import AbstractUser
+#from django.contrib.auth.models import Group, Permission
+from openpyxl import Workbook # permite crear el archivo de excell
+from django.http.response import HttpResponse #nos permitira realizar una respuesta en la vista cuando se llame
 
 
 # HU_01 Listar Grados asignados | Materias impartidas
@@ -232,6 +234,38 @@ class IngresarRoles(ListView):
     #docente.groups.add(group)
     #group.save()
     #docente.save()
+
+# Codigo HU_10 Generar archivo de excel de notas trimestrales 
+class ReporteDeNotasExcel(TemplateView):
+    def get(self,request,*args,**kwargs):
+        alumnos = Alumno.objects.all()
+        wb = Workbook()
+        ws = wb.active
+        ws['A1'] = 'nie'
+        ws['B1'] = 'calificacion'
+        ws['C1'] = 'fecha'
+        ws['D1'] = 'observacion'
+        ws['E1'] = 'asignatura'
+
+        cont = 2
+        numero = 1
+
+        for alumno in alumnos:
+            ws.cell(row = cont, column = 1).value = alumno.nie
+            ws.cell(row = cont , column = 2).value = 10
+            ws.cell(row = cont , column = 3).value = "13/06/2023"
+            ws.cell(row = cont , column = 4).value = "Excelente"
+            ws.cell(row = cont , column = 5).value = "AS1"
+            cont+=1
+            numero+1
+        
+        nombre_archivo = "NotasExcel.xlsx"
+        response = HttpResponse(content_type = "application/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
 
 
 
