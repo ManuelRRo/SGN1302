@@ -29,8 +29,6 @@ def home(request):
         context["gradsec"] = Gradoseccionmateria.objects.filter(id_materia__in=materia)
     
     return render (request,'home/inicio.html',context)
-
-
 # HU-02 Listar Evaluaciones de Grado
 # De acuerdo a la materia seleccionada de ese grado
 class ListarEvaluacionesGrados(ListView):
@@ -44,7 +42,7 @@ class ListarEvaluacionesGrados(ListView):
             return self.model.objects.filter(id_gradoseccionmateria=self.idgrado)
         return self.model.objects.all()
 
-#VISTAS HU-03 y HU-09
+#VISTAS HU-38
 def CrearEvaluacionAlumno(request):
     submitted = False
     if request.method == "POST":
@@ -72,7 +70,7 @@ def CrearEvaluacionAlumno(request):
     return render(request, 'estudiante/crear-evaluacion.html', context)
 
 
-
+#HU-04 Y HU-06
 # Permite listar los alumnos de esta evalucion
 # a la vez actualizar
 class ListarEvaluacionesAlumnos(View):
@@ -114,7 +112,7 @@ class ListarEvaluacionesAlumnos(View):
         # ID de evaluación que deseas pasar a la URL
         return redirect('sgn_app:list_evas_not', idEvaluacion=idevaluacion)
 
-
+#HU-05
 class ActualizarEvaluacionesAlumno(UpdateView):
     model = Evaluacionalumno
     form_class = EvaluacionAlumnoForm
@@ -127,21 +125,6 @@ class ActualizarEvaluacionesAlumno(UpdateView):
         context = super().get_context_data(**kwargs)
         context['estudiantes'] = Evaluacionalumno.objects.all
         return context
-
-
-# HU-01 Listar grados asignados
-class ListarEvaluacionesGrados(ListView):
-    model = Evaluacion
-    context_object_name = 'evas'
-    template_name = 'evaluacion/evaluacion.html'
-
-    def get_queryset(self):
-        # self.idgrado = get_object_or_404(Evaluacion,id_gradoseccionmateria_id=self.kwargs["idgrado"])
-        # print()
-        self.idgrado = self.kwargs["idgrado"]
-        if self.idgrado != None:
-            return self.model.objects.filter(id_gradoseccionmateria=self.idgrado)
-        return self.model.objects.all()
 
 # ----------------------------------------------
 # Gestión de Docentes:

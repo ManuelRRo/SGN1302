@@ -159,3 +159,4 @@ class Promediomateria(models.Model):
         managed = False
         db_table = 'promediomateria'
         unique_together = (('id_alumno', 'id_materia', 'id_trimestre'),)    
+
