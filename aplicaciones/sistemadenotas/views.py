@@ -13,7 +13,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.forms import UserCreationForm
-
+from aplicaciones.sistemadenotas.filters import EvaluacionFilter
 
 # HU-01 Listar Grados asignados | Materias impartidas
 # Posee dos comportamientos:
@@ -35,7 +35,7 @@ def home(request):
 # De acuerdo a la materia seleccionada de ese grado
 class ListarEvaluacionesGrados(ListView):
     model = Evaluacion
-    context_object_name = 'evas'
+    #context_object_name = 'evas'
     template_name = 'evaluacion/evaluacion.html'
     
     def get_queryset(self):
@@ -43,7 +43,14 @@ class ListarEvaluacionesGrados(ListView):
         if self.idgrado!=None:
             return self.model.objects.filter(id_gradoseccionmateria=self.idgrado)
         return self.model.objects.all()
-
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        evaluacion_filter = EvaluacionFilter(self.request.GET,queryset = self.get_queryset())
+        context["filter_form"] = evaluacion_filter.form
+        context["evas"] = evaluacion_filter.qs 
+        return context
+    
 
 # HU-04 - HU-05
 # Permite listar los alumnos de esta evalucion
