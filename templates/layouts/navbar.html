@@ -59,7 +59,7 @@
                 <!-- Sidenav Accordion (Trimestre)-->
                 <a id="navTrimestre" class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseTrimestre" aria-expanded="false" aria-controls="collapseTrimestre">
                     <div class="nav-link-icon"><i class="fa fa-calendar"></i></div>
-                    Trimestre
+                    Trimestres
                     <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
                 <div class="collapse" id="collapseTrimestre" data-bs-parent="#accordionSidenav">
@@ -70,16 +70,10 @@
                                 <i class="fa fa-plus" aria-hidden="true"></i>
                             </span>
                         </a>
-                        <a id="listarTrimestre" class="nav-link" href="">
+                        <a id="listarTrimestre" class="nav-link" href="{% url 'sgn_app:listar_trimestres' %}">
                             Consultar Trimestre
                             <span class="badge bg-primary-soft text-primary ms-auto">
                                 <i class="fa fa-book-open" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                        <a id="gestionTrimestre" class="nav-link" href="{% url 'sgn_app:crear_trimestre' %}">
-                            Actualizar Trimestre
-                            <span class="badge bg-primary-soft text-primary ms-auto">
-                                <i class="fa fa-book" aria-hidden="true"></i>
                             </span>
                         </a>
                     </nav>

@@ -96,6 +96,12 @@ urlpatterns = [
         views.CrearTrimestre, 
         name='crear_trimestre'
     ),
+    # HU-34: Listar Trimestres
+    path(
+        'listar_trimestres/',
+        login_required(views.ListarTrimestres.as_view()),
+        name='listar_trimestres'
+    ),
     # HU-35: Actualizar Trimestre
     path(
         'actualizarTrimestre/<pk>/',

@@ -293,6 +293,7 @@ class ListarDocentes(ListView):
         context['users'] = User.objects.all()
         return context
 
+# ------------------------------------------
 
 # HU-33: Crear Trimestre
 def CrearTrimestre(request): 
@@ -307,6 +308,13 @@ def CrearTrimestre(request):
 
 class Correcto(TemplateView):
     template_name = "trimestre/correcto.html"
+
+# HU-34: Consultar Trimestres
+class ListarTrimestres(ListView):
+    model = Trimestre
+    template_name = 'trimestre/listar_trimestres.html'
+    context_object_name = 'trimestres'
+    queryset = model.objects.all()
 
 
 # HU-35: Actualizar Trimestre
