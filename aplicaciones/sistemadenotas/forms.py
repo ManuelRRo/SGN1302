@@ -9,6 +9,21 @@ class EvaluacionForm(ModelForm):
         model = Evaluacion
         fields = ['id_categoria', 'id_gradoseccionmateria',
                   'nombre_evaluacion', 'porcentaje', 'id_trimestre']
+        widgets = {
+            'id_categoria': forms.Select(attrs={'class':'form-control form-control-lg'}),
+            'id_gradoseccionmateria': forms.Select(attrs={'class':'form-control form-control-lg'}),
+            'nombre_evaluacion': forms.TextInput(attrs={'class':'form-control form-control-lg','placeholder':'Nombre Evaluación'}),
+            'porcentaje': forms.NumberInput(attrs={'class':'form-control form-control-lg','placeholder':'Porcentaje'}),
+            'id_trimestre': forms.Select(attrs={'class':'form-control form-control-lg'}),
+        }
+        labels = {
+            'id_categoria': 'Categoria',
+			'nombre_evaluacion': 'Nombre Evaluacion',
+            'id_gradoseccionmateria': ' Grado y Materia',
+            'id_trimestre':'Trimestre'
+			
+        }
+    
 
     def clean_nombre_evaluacion(self):
         nom_evaluacion = self.cleaned_data['nombre_evaluacion']
