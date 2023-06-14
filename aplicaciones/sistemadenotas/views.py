@@ -13,6 +13,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.forms import UserCreationForm
+from openpyxl import Workbook
+from django.http.response import HttpResponse
 
 
 # HU_01 Listar Grados asignados | Materias impartidas
@@ -71,7 +73,36 @@ def CrearEvaluacionAlumno(request):
     }
     return render(request, 'estudiante/crear-evaluacion.html', context)
 
+# Codigo HU_10 Generar archivo de excel de notas trimestrales 
+class ReporteDeNotasExcel(TemplateView):
+    def get(self,request,*args,**kwargs):
+        alumnos = Alumno.objects.all()
+        wb = Workbook()
+        ws = wb.active
+        ws['A1'] = 'nie'
+        ws['B1'] = 'calificacion'
+        ws['C1'] = 'fecha'
+        ws['D1'] = 'observacion'
+        ws['E1'] = 'asignatura'
 
+        cont = 2
+        numero = 1
+
+        for alumno in alumnos:
+            ws.cell(row = cont, column = 1).value = alumno.nie
+            ws.cell(row = cont , column = 2).value = 10
+            ws.cell(row = cont , column = 3).value = "13/06/2023"
+            ws.cell(row = cont , column = 4).value = "Excelente"
+            ws.cell(row = cont , column = 5).value = "AS1"
+            cont+=1
+            numero+1
+        
+        nombre_archivo = "NotasExcel.xlsx"
+        response = HttpResponse(content_type = "application/ms-excel")
+        content = "attachment; filename = {0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
 
 # Permite listar los alumnos de esta evalucion
 # a la vez actualizar
@@ -362,3 +393,30 @@ def deshabilitar(request,id,idAlumno):
     return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
 
 
+def ver_Evaluaciones(request, idgrado):
+    gradoseccion = Gradoseccionmateria.objects.get(id_gradoseccionmateria =idgrado)
+    alumnos = Alumno.objects.filter(id_gradoseccion=gradoseccion.id_gradoseccion)
+    #evaluaciones = Evaluacion.objects.filter(id_gradoseccionmateria = gradoseccion.id_gradoseccionmateria)
+    
+    alumno_ids = alumnos.values_list('id_alumno', flat=True)
+    evaluacionalumno = Evaluacionalumno.objects.filter(id_alumno__in=alumno_ids).order_by('id_evaluacion')
+    evaluacion_ids = evaluacionalumno.values_list('id_evaluacion', flat=True)
+    evaluaciones = Evaluacion.objects.filter(id_evaluacion__in=evaluacion_ids)
+    materia = Materia.objects.get(id_materia= gradoseccion.id_materia.id_materia)
+    trimestre = Trimestre.objects.filter(evaluacion__id_trimestre__isnull=False).first()
+
+    #print(evaluaciones)
+
+
+    #alumnos = Alumno.objects.all()
+
+    print(evaluaciones)
+    contexto = {
+        'gradoseccion': gradoseccion,
+        'evaluaciones': evaluaciones,
+        'evaluacionesalumno': evaluacionalumno,
+        'materia':materia,
+        'trimestre': trimestre,
+        'alumnos':alumnos
+    }
+    return render(request,'calificaciones/verPromedios.html ',contexto)

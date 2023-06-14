@@ -26,6 +26,12 @@ urlpatterns = [
         views.ListarEvaluacionesAlumnos.as_view(),
         name="list_evas_not"
     ),
+    # HU-08: Generar archivo de excel de notas trimestrales 
+     path(
+        'generarNotaExcel/',
+        views.ReporteDeNotasExcel.as_view(),
+        name="reporteExcel"
+    ),
     # Gestión Alumnos -----------------------------
     # HU-21: Insertar Alumnos
     path(
@@ -115,5 +121,11 @@ urlpatterns = [
         'editarEvaluacion/<pk>/',
         views.EvaluacionEditar.as_view(),
         name='actualizar_evaluacion'
+    ),
+    path(
+        'verPromedios/<idgrado>/',
+        views.ver_Evaluaciones,
+        name="ver_Promedios"
+
     ),
 ]

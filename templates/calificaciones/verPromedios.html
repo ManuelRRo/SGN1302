@@ -1,0 +1,81 @@
+{% extends 'layouts/dashboard.html' %}
+
+{% comment %} {% include 'registration/login.html' %} {% endcomment %}
+
+{% block metadata %}
+<title>Promedios</title>
+{% endblock %}
+{% block content %}
+{% load static %}
+<div class="row">
+<div class="col-12">
+<div class="card mb-4 mt-1">
+<div class="text-center">
+  <h1 class="d-flex justify-content-center mt-5">CENTRO ESCOLAR "13 DE FEBRERO DE 2001"</h1>
+  <h2 class="d-flex justify-content-center mt-3">RENDIMIENTO ACADEMICO DE ESTUDIANTES</h2>
+</div>
+<div class="row mt-5" >
+    <div class="col-3"></div>
+    <div class="col-3">
+        <div class="row">
+            <p>Asignatura <b> {{materia.nombre_materia}} </b></p>
+        </div>
+        <div class="row">
+            <p>Docente <b>{{ gradoseccion.id_materia.id_docente }} </b> </p>
+        </div>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-4">
+        <p><b> {{trimestre}}</b></p>
+        <p><b>{{ gradoseccion.id_gradoseccion }}</b></p>
+    </div>
+    <div class="col-1"></div>
+</div>
+<div class="row mt-5" >
+  <div class="col-lg-1 mx-auto"></div>
+    <div class="col-lg-10 mx-auto">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">N° <br></br></th>
+                <th scope="col">NIE <br></br></th>
+                <th scope="col">ALUMNO/A <br></br> </th>
+                {% for evaluacion in evaluaciones %}
+                <th scope="col">
+                    {{ evaluacion.nombre_evaluacion }} 
+                    {{ evaluacion.porcentaje }}%
+                </th>
+                {% endfor %}
+                <th scope="col">NT</th>
+                <th scope="col">CATEGORIA</th>
+              </tr>
+            </thead>
+            <tbody> 
+              {% for alumno in alumnos %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ alumno.nie }}</td>
+                <td>{{ alumno }}</td>
+                {% for evasalumno in evaluacionesalumno %}
+                  {% if alumno.id_alumno == evasalumno.id_alumno.id_alumno %}
+                    <td>{{ evasalumno.nota }}</td>
+                  {% endif %}
+                {% empty %}
+                  <td>No hay nota</td>
+                {% endfor %}
+              </tr>
+            {% endfor %}            
+            </tbody>
+          </table>
+    </div>
+    <div class="col-lg-1 mx-auto"></div>
+</div>
+
+<div class="container-xl px-4 mt-5">
+  
+  </div>
+</div>
+</div>
+
+</div>
+{% endblock %}
