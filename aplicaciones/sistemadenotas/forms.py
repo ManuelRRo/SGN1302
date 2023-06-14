@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from .models import Evaluacion, Evaluacionalumno, Docente,Alumno,Trimestre
+from .models import Evaluacion, Evaluacionalumno, Docente, Alumno, Trimestre
 from django.core.exceptions import ValidationError
 
 
@@ -35,7 +35,7 @@ class DocenteForm(forms.ModelForm):
             'dui',
             'nombre_docente',
             'apellido_docente']
-    
+
     def clean_numidentificacion(self):
         username = self.cleaned_data['numidentificacion']
         lista = Docente.objects.filter(numidentificacion__icontains=username).exclude(
@@ -44,7 +44,7 @@ class DocenteForm(forms.ModelForm):
             self.add_error('numidentificacion', 'Esa username ya existe')
         return username
 
-#HU-33 Crear Trimestre
+# HU-33 Crear Trimestre
 class TrimestreForm(forms.ModelForm):
     class Meta:
         model = Trimestre
@@ -67,7 +67,7 @@ class TrimestreForm(forms.ModelForm):
                 }
             )
         }
-
+           
 
 class TrimestreActualizarForm(forms.ModelForm):
     """Form definido para actualizar Trimestre."""

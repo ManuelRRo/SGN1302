@@ -308,21 +308,15 @@ class ActualizarTrimestre(UpdateView):
 
 
 #HU-33: Crear Trimestre
-# def Trimestre(request):
-#     trimestres=Trimestre.objects.all()
-#     return render(request, 'trimestre/crear_trimestre.html', {'trimestres':trimestres})
-
 def CrearTrimestre(request): 
     form_trimestre = TrimestreForm(request.POST or None)
-    if form_trimestre.is_valid():
-        form_trimestre.save()
+    if request.method == 'POST':
+        if form_trimestre.is_valid():
+            form_trimestre.save()
+            return redirect('sgn_app:crear_trimestre')
+        else: messages.error(request, "El nombre del trimestre ya existe en el mismo año.")
     return render(request, 'trimestre/crear_trimestre.html', {'form_trimestre':form_trimestre})
-    # model = Trimestre
-    # form_trimestre = TrimestreForm
-    # template_name = 'trimestre/crear_trimestre.html'
 
-    # def get_queryset(self):
-    #     return self.model.objects.all()
     
 
 class EvaluacionEditar(UpdateView):
