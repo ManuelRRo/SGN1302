@@ -12,14 +12,81 @@
 {% if submitted %}
 Tu actividad ha sido creada exitosamente
 {%else%}
-<h1>Crear evaluacion</h1>
+<div class="container-xl px-4 mt-4">
+    <div class="row">
+        <div class="col-xl-12">
+            <!-- Account details card-->
+            <div class="card mb-4">
+                <div class="card-header">Datos Evaluación</div>
+                <div class="card-body">
+                    <form method = "POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-5 mx-auto">
 
-<form action="" method="post"> {% csrf_token %}
-    <table>
-        {{ form.as_table }}
-    </table>
-    <input type="submit" value="Guardar">
-</form>
+                                <div class="mb-3">
+                                    <div class="">
+                                        <div class="text-center"><h3 class="d-flex justify-content-center mt-lg-5">{{ form.id_categoria.label}}</h3>
+                                        </div>
+                                        
+                                        {{ form.id_categoria}}
+                                    
+                                  </div>
+
+                                  <div class="mb-3">
+                                    <div class="">
+                                        <div class="text-center"><h3 class="d-flex justify-content-center mt-lg-5">{{ form.id_gradoseccionmateria.label}}</h3>
+                                        </div>
+                                        
+                                        {{ form.id_gradoseccionmateria}}
+                                  </div>
+
+                                  <div class="mb-3">
+                                    <div class="">
+                                        <div class="text-center"><h3 class="d-flex justify-content-center mt-lg-5">{{ form.nombre_evaluacion.label}}</h3>
+                                        </div>
+                                        
+                                        {{ form.nombre_evaluacion}}
+                                  </div>
+
+                                  <div class="mb-3">
+                                    <div class="">
+                                        <div class="text-center"><h3 class="d-flex justify-content-center mt-lg-5">{{ form.porcentaje.label}}</h3>
+                                        </div>
+                                        
+                                        {{ form.porcentaje}}
+                                  </div>
+
+                                  <div class="mb-3">
+                                    <div class="">
+                                        <div class="text-center"><h3 class="d-flex justify-content-center mt-lg-5">{{ form.id_trimestre.label}}</h3>
+                                        </div>
+                                        
+                                        {{ form.id_trimestre}}
+                                  </div>
+
+                            </div>
+
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary" id="save">Registrar</button>
+                        </div> 
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    window.onload = function () {
+      const navDocentes = document.getElementById('navGrado');
+      const collapseDocentes = document.getElementById('collapseGrado');
+      const listarDocentes = document.getElementById('gestionEvaluacion');
+      navDocentes.classList.add('active');
+      listarDocentes.classList.add('active');
+      collapseDocentes.classList.add('show');
+    };
+  </script>
 {% endif%}
 
 {% endblock %}

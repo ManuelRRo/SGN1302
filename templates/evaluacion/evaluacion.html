@@ -10,6 +10,7 @@
 {% load static %}
 <br />
 <div class="container-xl px-4">
+    
     <div class="row">
         {% for eva in evas%}
 
@@ -23,8 +24,14 @@
 
         {% endfor %}
     </div>
+
     <div class="row">
-        <a href="{% url 'sgn_app:reporteExcel'%}"> Exportar Notas a Excell</a>
+    
+        <a href="{% url 'sgn_app:ver_Promedios' idgrado=evas.first.id_gradoseccionmateria.id_gradoseccionmateria idtrimestre=evas.first.id_trimestre.id_trimestre %}">Ver Promedios</a>
     </div>
+    <form method="get">
+        {{ filter_form.as_p }}
+        <input type="submit" />
+    </form>
 </div>
 {% endblock %}

@@ -8,6 +8,7 @@ from django.db import models
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.core.exceptions import ValidationError
 
 
 class Alumno(models.Model):
@@ -148,4 +149,27 @@ class Trimestre(models.Model):
         managed = False
         db_table = 'trimestre'
     def __str__(self):
+
         return self.trimestre + ' Año ' + self.anio
+
+    
+    def clean(self):
+        # Validar que no se repita el nombre del trimestre en el mismo año
+        trimestres_mismo_anio = Trimestre.objects.filter(anio=self.anio, trimestre=self.trimestre)
+        if trimestres_mismo_anio.exists():
+            raise ValidationError('El nombre del trimestre ya existe en el mismo año.')
+    
+class Promediomateria(models.Model):
+    id_alumno = models.OneToOneField(Alumno, models.DO_NOTHING, db_column='ID_ALUMNO', primary_key=True)  # Field name made lowercase.
+    id_materia = models.ForeignKey(Materia, models.DO_NOTHING, db_column='ID_MATERIA')  # Field name made lowercase.
+    id_trimestre = models.ForeignKey('Trimestre', models.DO_NOTHING, db_column='ID_TRIMESTRE')  # Field name made lowercase.
+    promedio = models.FloatField(db_column='PROMEDIO', blank=True, null=True)  # Field name made lowercase.
+    observacion = models.CharField(db_column='OBSERVACION', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    fecha_edicion = models.DateField(db_column='FECHA_EDICION', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'promediomateria'
+        unique_together = (('id_alumno', 'id_materia', 'id_trimestre'),)    
+
+

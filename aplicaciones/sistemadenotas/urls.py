@@ -96,6 +96,18 @@ urlpatterns = [
     # -------------------------------------------
 
     # Gestión Trimestres -------------------------
+    #HU-33: Crear Trimestre
+    path(
+        'crear_trimestre',
+        views.CrearTrimestre, 
+        name='crear_trimestre'
+    ),
+    # HU-34: Listar Trimestres
+    path(
+        'listar_trimestres/',
+        login_required(views.ListarTrimestres.as_view()),
+        name='listar_trimestres'
+    ),
     # HU-35: Actualizar Trimestre
     path(
         'actualizarTrimestre/<pk>/',
@@ -123,9 +135,8 @@ urlpatterns = [
         name='actualizar_evaluacion'
     ),
     path(
-        'verPromedios/<idgrado>/',
+        'verPromedios/<int:idgrado>/<int:idtrimestre>/',
         views.ver_Evaluaciones,
         name="ver_Promedios"
-
     ),
 ]

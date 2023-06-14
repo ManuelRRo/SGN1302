@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .models import Evaluacion, Evaluacionalumno, Alumno, Gradoseccion, Docente, Materia, Gradoseccionmateria
 from django.shortcuts import render,redirect
 from .models import Evaluacion,Evaluacionalumno,Alumno,Gradoseccion,Docente,Materia,Gradoseccionmateria,Trimestre
-from .forms import EvaluacionForm,EvaluacionAlumnoForm,DocenteForm,AlumnoForm,TrimestreActualizarForm,EvaluacionEditarForm
+from .forms import EvaluacionForm,EvaluacionAlumnoForm,DocenteForm,AlumnoForm,TrimestreActualizarForm,EvaluacionEditarForm, TrimestreForm
 from aplicaciones.usuarios.forms import RegisterUserForm
 from django.views.generic import ListView,CreateView,UpdateView,DeleteView,View,TemplateView
 from django.urls import reverse_lazy
@@ -15,9 +15,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.forms import UserCreationForm
 from openpyxl import Workbook
 from django.http.response import HttpResponse
+from aplicaciones.sistemadenotas.filters import EvaluacionFilter
 
 
-# HU_01 Listar Grados asignados | Materias impartidas
+# HU-01 Listar Grados asignados | Materias impartidas
 # Posee dos comportamientos:
 #   - Rol profesor -> cumple HU-01
 #   - Rol Administrador -> no se ejecuta HU-01
@@ -37,7 +38,7 @@ def home(request):
 # De acuerdo a la materia seleccionada de ese grado
 class ListarEvaluacionesGrados(ListView):
     model = Evaluacion
-    context_object_name = 'evas'
+    #context_object_name = 'evas'
     template_name = 'evaluacion/evaluacion.html'
     
     def get_queryset(self):
@@ -45,6 +46,15 @@ class ListarEvaluacionesGrados(ListView):
         if self.idgrado!=None:
             return self.model.objects.filter(id_gradoseccionmateria=self.idgrado)
         return self.model.objects.all()
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        evaluacion_filter = EvaluacionFilter(self.request.GET,queryset = self.get_queryset())
+        context["filter_form"] = evaluacion_filter.form
+        context["evas"] = evaluacion_filter.qs 
+        return context
+    
+
 
 #VISTAS HU-03 y HU-09
 def CrearEvaluacionAlumno(request):
@@ -104,8 +114,11 @@ class ReporteDeNotasExcel(TemplateView):
         wb.save(response)
         return response
 
+
+# HU-04 - HU-05
+
 # Permite listar los alumnos de esta evalucion
-# a la vez actualizar
+# a la vez actualizar y registrar
 class ListarEvaluacionesAlumnos(View):
     model = Evaluacionalumno
     form_class = EvaluacionAlumnoForm
@@ -146,33 +159,39 @@ class ListarEvaluacionesAlumnos(View):
         return redirect('sgn_app:list_evas_not', idEvaluacion=idevaluacion)
 
 
-class ActualizarEvaluacionesAlumno(UpdateView):
-    model = Evaluacionalumno
-    form_class = EvaluacionAlumnoForm
-    # usar mismo template para que lo carge en el form
-    template_name = 'estudiante/listar-evas-alumnos.html'
-    success_url = reverse_lazy('sgn_app:list_evas_not')
-    # esto permite seguir manteniendo lista estudiantes aun cuando se actualiza
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['estudiantes'] = Evaluacionalumno.objects.all
-        return context
+# HU-21: Insertar Alumnos
+class CrearAlumno(CreateView):
+    form_class = AlumnoForm
+    template_name = 'estudiante/crear-alumnos.html'
+    success_url = reverse_lazy('sgn_app:home')
 
 
-# HU-01 Listar grados asignados
-class ListarEvaluacionesGrados(ListView):
-    model = Evaluacion
-    context_object_name = 'evas'
-    template_name = 'evaluacion/evaluacion.html'
-
+# HU-23: Habilitar/Deshabilitar Alumnos
+class HabDeshabiAlumno(ListView):
+    model = Alumno
+    template_name = 'estudiante/hab-desh.html'
     def get_queryset(self):
-        # self.idgrado = get_object_or_404(Evaluacion,id_gradoseccionmateria_id=self.kwargs["idgrado"])
-        # print()
-        self.idgrado = self.kwargs["idgrado"]
-        if self.idgrado != None:
-            return self.model.objects.filter(id_gradoseccionmateria=self.idgrado)
-        return self.model.objects.all()
+        id = self.kwargs['id']
+        alumnos = Alumno.objects.filter(
+            id_gradoseccion = id
+        )
+        print(alumnos)
+        return alumnos
+
+
+def habilitar(request,id,idAlumno):
+    alumno = Alumno.objects.get(id_alumno = idAlumno)
+    alumno.estado = "1"
+    alumno.save()
+    return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
+
+
+def deshabilitar(request,id,idAlumno):
+    alumno = Alumno.objects.get(id_alumno = idAlumno)
+    alumno.estado = "0"
+    alumno.save()
+    return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
+
 
 # ----------------------------------------------
 # Gestión de Docentes:
@@ -294,19 +313,7 @@ class CrearDocentes(View):
             return render(request,self.template_name,self.get_context_data())
 
 
-# HU-32 Listar Docentes
-class ListarDocentes(ListView):
-    model = Docente
-    template_name = 'docente/listar_docentes.html'
-    context_object_name = 'docentes'
-    queryset = model.objects.all()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['users'] = User.objects.all()
-        return context
-
-
+# HU-30: Editar Docentes
 @login_required()
 def EditarDocente(request, id):
     docente = get_object_or_404(Docente, numidentificacion=id)
@@ -324,6 +331,8 @@ def EditarDocente(request, id):
     return render(request, 'docente/editar_docente.html', {'docente_form':form_teacher,'user_form':form_user})
 
 
+#HU-31: Habilitar/Deshabilitar Docentes
+#Vista para deshabilitar usuario
 @login_required()
 def deshabilitar_usuario(request, id):
     user = get_object_or_404(User, username=id)
@@ -333,6 +342,7 @@ def deshabilitar_usuario(request, id):
     return redirect('sgn_app:listado_docentes')
 
 
+#Vista para habilitar usuario
 @login_required()
 def habilitar_usuario(request, id):
     user = get_object_or_404(User, username=id)
@@ -342,10 +352,43 @@ def habilitar_usuario(request, id):
     return redirect('sgn_app:listado_docentes')  
 
 
+# HU-32 Listar Docentes
+class ListarDocentes(ListView):
+    model = Docente
+    template_name = 'docente/listar_docentes.html'
+    context_object_name = 'docentes'
+    queryset = model.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['users'] = User.objects.all()
+        return context
+
+# ------------------------------------------
+
+# HU-33: Crear Trimestre
+def CrearTrimestre(request): 
+    form_trimestre = TrimestreForm(request.POST or None)
+    if request.method == 'POST':
+        if form_trimestre.is_valid():
+            form_trimestre.save()
+            return redirect('sgn_app:crear_trimestre')
+        else: messages.error(request, "El nombre del trimestre ya existe en el mismo año.")
+    return render(request, 'trimestre/crear_trimestre.html', {'form_trimestre':form_trimestre})
+
+
 class Correcto(TemplateView):
     template_name = "trimestre/correcto.html"
 
+# HU-34: Consultar Trimestres
+class ListarTrimestres(ListView):
+    model = Trimestre
+    template_name = 'trimestre/listar_trimestres.html'
+    context_object_name = 'trimestres'
+    queryset = model.objects.all()
 
+
+# HU-35: Actualizar Trimestre
 class ActualizarTrimestre(UpdateView):
     model = Trimestre
     template_name = "trimestre/actualizarTrim.html"
@@ -353,12 +396,40 @@ class ActualizarTrimestre(UpdateView):
     success_url = reverse_lazy('sgn_app:correcto')
     
 
+# HU-38: Agregar Evaluación
+def CrearEvaluacionAlumno(request):
+    submitted = False
+    if request.method == "POST":
+        # form = EvaluacionForm(request.POST)
+        form = EvaluacionForm(request.POST)
+        if form.is_valid():
+            evaluacion = form.save()  # contiene los datos de la evaluacion que se acaba de crear
+            # grado = form.cleaned_data['id_gradoseccionmateria'].id_gradoseccion.id_gradoseccion
+            if evaluacion is not None:
+                grado = evaluacion.id_gradoseccionmateria.id_gradoseccion.id_gradoseccion
+                alumno = Alumno.objects.filter(id_gradoseccion=grado)
+                for e in alumno:
+                    evaalumno = Evaluacionalumno.objects.create(
+                        id_evaluacion=evaluacion, id_alumno=e, nota=0.0)
+                return HttpResponseRedirect('/estudiante/crear-eva-est?submitted=True')
+    else:
+        form = EvaluacionForm
+        # USER SUBMITTER THE FORM
+        if 'submitted' in request.GET:
+            submitted = True
+    context = {
+        'form': form,
+        'submitted': submitted,
+    }
+    return render(request, 'estudiante/crear-evaluacion.html', context)
+
+
+# HU-40: Editar Evaluación
 class EvaluacionEditar(UpdateView):
     model = Evaluacion
     template_name = "evaluacion/editarEvaluacion.html"
     form_class = EvaluacionEditarForm
     success_url = reverse_lazy('sgn_app:correcto')
-
 
 #HU-21
 class CrearAlumno(CreateView):
@@ -393,23 +464,15 @@ def deshabilitar(request,id,idAlumno):
     return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
 
 
-def ver_Evaluaciones(request, idgrado):
+def ver_Evaluaciones(request, idgrado, idtrimestre):
     gradoseccion = Gradoseccionmateria.objects.get(id_gradoseccionmateria =idgrado)
     alumnos = Alumno.objects.filter(id_gradoseccion=gradoseccion.id_gradoseccion)
-    #evaluaciones = Evaluacion.objects.filter(id_gradoseccionmateria = gradoseccion.id_gradoseccionmateria)
-    
     alumno_ids = alumnos.values_list('id_alumno', flat=True)
     evaluacionalumno = Evaluacionalumno.objects.filter(id_alumno__in=alumno_ids).order_by('id_evaluacion')
     evaluacion_ids = evaluacionalumno.values_list('id_evaluacion', flat=True)
-    evaluaciones = Evaluacion.objects.filter(id_evaluacion__in=evaluacion_ids)
+    evaluaciones = Evaluacion.objects.filter(id_evaluacion__in=evaluacion_ids).filter(id_trimestre = idtrimestre)
     materia = Materia.objects.get(id_materia= gradoseccion.id_materia.id_materia)
-    trimestre = Trimestre.objects.filter(evaluacion__id_trimestre__isnull=False).first()
-
-    #print(evaluaciones)
-
-
-    #alumnos = Alumno.objects.all()
-
+    trimestre = Trimestre.objects.get(id_trimestre = idtrimestre)
     print(evaluaciones)
     contexto = {
         'gradoseccion': gradoseccion,

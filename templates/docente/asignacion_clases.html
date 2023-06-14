@@ -127,7 +127,7 @@
         <tbody>
           {% for grado in grado_seccion_materia %}
           <tr>
-            <td>{{grado.id_materia.id_docente.numidentificacion}}</td>
+            <td>{{grado.id_materia.id_docente.numidentificacion}} - {{grado.id_materia.id_docente}}</td>
             <td>{{grado.id_gradoseccion}}</td>
             <td class="text-center">{{grado.id_gradoseccion.turno_gradoseccion}}</td>
             <td class="text-center">{{grado.id_materia.nombre_materia}}</td>

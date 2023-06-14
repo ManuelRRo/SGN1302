@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from .models import Evaluacion, Evaluacionalumno, Docente,Alumno,Trimestre
+from .models import Evaluacion, Evaluacionalumno, Docente, Alumno, Trimestre
 from django.core.exceptions import ValidationError
 
 
@@ -9,6 +9,20 @@ class EvaluacionForm(ModelForm):
         model = Evaluacion
         fields = ['id_categoria', 'id_gradoseccionmateria',
                   'nombre_evaluacion', 'porcentaje', 'id_trimestre']
+        widgets = {
+            'id_categoria': forms.Select(attrs={'class':'form-control form-control-lg'}),
+            'id_gradoseccionmateria': forms.Select(attrs={'class':'form-control form-control-lg'}),
+            'nombre_evaluacion': forms.TextInput(attrs={'class':'form-control form-control-lg','placeholder':'Nombre Evaluación'}),
+            'porcentaje': forms.NumberInput(attrs={'class':'form-control form-control-lg','placeholder':'Porcentaje'}),
+            'id_trimestre': forms.Select(attrs={'class':'form-control form-control-lg'}),
+        }
+        labels = {
+            'id_categoria': 'Categoria',
+			'nombre_evaluacion': 'Nombre Evaluacion',
+            'id_gradoseccionmateria': ' Grado y Materia',
+            'id_trimestre':'Trimestre'
+        }
+    
 
     def clean_nombre_evaluacion(self):
         nom_evaluacion = self.cleaned_data['nombre_evaluacion']
@@ -35,7 +49,7 @@ class DocenteForm(forms.ModelForm):
             'dui',
             'nombre_docente',
             'apellido_docente']
-    
+
     def clean_numidentificacion(self):
         username = self.cleaned_data['numidentificacion']
         lista = Docente.objects.filter(numidentificacion__icontains=username).exclude(
@@ -44,6 +58,30 @@ class DocenteForm(forms.ModelForm):
             self.add_error('numidentificacion', 'Esa username ya existe')
         return username
 
+# HU-33 Crear Trimestre
+class TrimestreForm(forms.ModelForm):
+    class Meta:
+        model = Trimestre
+        fields = [
+            'trimestre',
+            'anio',]
+        widgets={
+            'trimestre': forms.TextInput(
+               attrs= { 
+                'placeholder': 'Nombre Trimestre',
+                'class':'form-control form-control-lg',
+                'id':'updateNombreTrim'
+                }
+            ),
+            'anio': forms.NumberInput(
+               attrs= {
+                'placeholder': 'Año Trimestre',
+                'class':'form-control form-control-lg',
+                'id':'updaterYearTrim'
+                }
+            )
+        }
+           
 
 class TrimestreActualizarForm(forms.ModelForm):
     """Form definido para actualizar Trimestre."""
@@ -117,8 +155,29 @@ class AlumnoForm(ModelForm):
             'id_gradoseccion',
             'nie',
             'apellidos_alumno',
-            'nombres_alumno'
+            'nombres_alumno',
+            'estado'
         ]
+        ACTIVO = "1"
+        INACTIVO = "2"
+        ESTADO_CHOICES = [
+        (ACTIVO, "ACTIVO"),
+        (INACTIVO, "INACTIVO"),
+    ]
+        widgets = {
+            'id_gradoseccion': forms.Select(attrs={'class':'form-control form-control-lg'}),
+            'nie': forms.TextInput(attrs={'class':'form-control form-control-lg','placeholder':'NIE'}),
+            'apellidos_alumno': forms.TextInput(attrs={'class':'form-control form-control-lg','placeholder':'Apellidos'}),
+            'nombres_alumno': forms.TextInput(attrs={'class':'form-control form-control-lg','placeholder':'Nombres'}),
+            'estado': forms.Select(attrs={'class':'form-control form-control-lg','placeholder':'Estado'},choices=ESTADO_CHOICES),
+        }
+        labels = {
+            'id_gradoseccion': 'Grado y seccion',
+			'nie': 'NIE',
+            'apellidos_alumno': 'Apellidos Alumno',
+            'nombres_alumno':'Nombre Alumno',
+            'estado':'Estado del alumno'
+        }
 
 
 
