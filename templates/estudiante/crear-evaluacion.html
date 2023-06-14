@@ -77,7 +77,16 @@ Tu actividad ha sido creada exitosamente
         </div>
     </div>
 </div>
-    
+<script>
+    window.onload = function () {
+      const navDocentes = document.getElementById('navGrado');
+      const collapseDocentes = document.getElementById('collapseGrado');
+      const listarDocentes = document.getElementById('gestionEvaluacion');
+      navDocentes.classList.add('active');
+      listarDocentes.classList.add('active');
+      collapseDocentes.classList.add('show');
+    };
+  </script>
 {% endif%}
 
 {% endblock %}
