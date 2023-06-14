@@ -21,7 +21,6 @@ class EvaluacionForm(ModelForm):
 			'nombre_evaluacion': 'Nombre Evaluacion',
             'id_gradoseccionmateria': ' Grado y Materia',
             'id_trimestre':'Trimestre'
-			
         }
     
 
@@ -156,8 +155,29 @@ class AlumnoForm(ModelForm):
             'id_gradoseccion',
             'nie',
             'apellidos_alumno',
-            'nombres_alumno'
+            'nombres_alumno',
+            'estado'
         ]
+        ACTIVO = "1"
+        INACTIVO = "2"
+        ESTADO_CHOICES = [
+        (ACTIVO, "ACTIVO"),
+        (INACTIVO, "INACTIVO"),
+    ]
+        widgets = {
+            'id_gradoseccion': forms.Select(attrs={'class':'form-control form-control-lg'}),
+            'nie': forms.TextInput(attrs={'class':'form-control form-control-lg','placeholder':'NIE'}),
+            'apellidos_alumno': forms.TextInput(attrs={'class':'form-control form-control-lg','placeholder':'Apellidos'}),
+            'nombres_alumno': forms.TextInput(attrs={'class':'form-control form-control-lg','placeholder':'Nombres'}),
+            'estado': forms.Select(attrs={'class':'form-control form-control-lg','placeholder':'Estado'},choices=ESTADO_CHOICES),
+        }
+        labels = {
+            'id_gradoseccion': 'Grado y seccion',
+			'nie': 'NIE',
+            'apellidos_alumno': 'Apellidos Alumno',
+            'nombres_alumno':'Nombre Alumno',
+            'estado':'Estado del alumno'
+        }
 
 
 
