@@ -136,7 +136,14 @@ urlpatterns = [
     ),
     path(
         'verPromedios/<int:idgrado>/<int:idtrimestre>/',
-        views.ver_Evaluaciones,
+        views.ver_Promedios,
         name="ver_Promedios"
     ),
+    path(
+        'cambiar_Rol/',
+        views.cambiarRolListView.as_view(),
+        name = 'Cambio de rol'
+    ),
+   path('cambiar_Rol/<str:nombreUsuario>/', views.Cambiar_Rol, name='cambio_rol'),
+
 ]
