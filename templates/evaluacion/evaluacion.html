@@ -11,6 +11,7 @@
 <br />
 <div class="container-xl px-4">
 
+    {% if evas.first %}
     <div id="cargaPromedio" class="row justify-content-end mb-1 d-none">
         <div class="col-auto">
             <a class="btn btn-outline-primary" href="{% url 'sgn_app:ver_Promedios' idgrado=evas.first.id_gradoseccionmateria.id_gradoseccionmateria idtrimestre=evas.first.id_trimestre.id_trimestre %}">
@@ -19,6 +20,7 @@
             </a>
         </div>
     </div>
+    {% endif %}
     
     <form method="get">
        <div class="row mb-3">
