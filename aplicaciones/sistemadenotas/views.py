@@ -385,6 +385,15 @@ class ActualizarTrimestre(UpdateView):
     template_name = "trimestre/actualizarTrim.html"
     form_class = TrimestreActualizarForm
     success_url = reverse_lazy('sgn_app:correcto')
+
+# HU-36: Eliminar Trimestre
+def EliminarTrimestre(request, id):
+    try:
+        trimestre = Trimestre.objects.get(id_trimestre=id)
+        trimestre.delete()
+    except Exception: 
+        messages.error(request, "No se puede eliminar el trimestre porque existen registros dependientes.")
+    return redirect ('sgn_app:listar_trimestres')
     
 
 # HU-38: Agregar Evaluación
