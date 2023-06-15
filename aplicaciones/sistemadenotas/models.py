@@ -76,8 +76,6 @@ class Evaluacionalumno(models.Model):
     class Meta:
         managed = False
         db_table = 'evaluacionalumno'
-    #def __str__(self):
-     #   return self.id_alumno.nombres_alumno 
 
 
 

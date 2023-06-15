@@ -10,28 +10,68 @@
 {% load static %}
 <br />
 <div class="container-xl px-4">
+
+    {% if evas.first %}
+    <div id="cargaPromedio" class="row justify-content-end mb-1 d-none">
+        <div class="col-auto">
+            <a class="btn btn-outline-primary" href="{% url 'sgn_app:ver_Promedios' idgrado=evas.first.id_gradoseccionmateria.id_gradoseccionmateria idtrimestre=evas.first.id_trimestre.id_trimestre %}">
+                <i class="me-1" data-feather="download"></i>
+                Cargar Promedio
+            </a>
+        </div>
+    </div>
+    {% endif %}
     
-    <div class="row">
+    <form method="get">
+       <div class="row mb-3">
+        <div class="col-xl-6 col-sm-10">
+            {{filter_form.id_trimestre}}
+        </div>
+        <div class="col-xl-6 col-sm-2">
+            <input id="filtro_boton" onclick="activarlista()" class="btn btn-primary" type="submit"/>
+        </div>
+       </div>
+    </form>
+
+    <div id="lista_evaluaciones" class="row d-none">
         {% for eva in evas%}
 
         <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
             <div class="card d-block lift rounded overflow-hidden mb-2">
-                <div class="card-header">
-                    <a href="{% url 'sgn_app:list_evas_not' idEvaluacion=eva.id_evaluacion %}">{{eva.nombre_evaluacion}}</a>
+                <div class="card-body text-center">
+                    <div class="text-uppercase-expanded text-center ">
+                        {{eva.id_categoria}}
+                    </div>
+                    <a href="{% url 'sgn_app:list_evas_not' idEvaluacion=eva.id_evaluacion %}">
+                        {{eva.nombre_evaluacion}}
+                    </a>
                 </div>
             </div>
         </div>
 
         {% endfor %}
     </div>
-
-    <div class="row">
     
-        <a href="{% url 'sgn_app:ver_Promedios' idgrado=evas.first.id_gradoseccionmateria.id_gradoseccionmateria idtrimestre=evas.first.id_trimestre.id_trimestre %}">Ver Promedios</a>
-    </div>
-    <form method="get">
-        {{ filter_form.as_p }}
-        <input type="submit" />
-    </form>
 </div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        // Extracción de componente select para el filtro
+        var idTrimestreField = document.getElementById("id_id_trimestre");
+        // Se le agrega un estilo
+        idTrimestreField.classList.add("form-select");
+        // Extracción de componente div para la lista de evaluaciones
+        var myDiv = document.getElementById("lista_evaluaciones");
+        var cargaPromedio = document.getElementById("cargaPromedio");
+
+        // Si contiene un valor seleccionado en el componente, se muestra la
+        // lista de evaluaciones
+        if (idTrimestreField.value !== "") {
+            myDiv.classList.remove("d-none");
+            cargaPromedio.classList.remove("d-none");
+        }
+
+    });
+</script>
+
 {% endblock %}
