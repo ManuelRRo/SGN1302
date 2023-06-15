@@ -119,6 +119,12 @@ urlpatterns = [
         views.Correcto.as_view(),
         name='correcto'
     ),
+
+    path(
+        'eliminar_trimestre/<int:id>', 
+        views.EliminarTrimestre,
+        name = 'eliminar_trimestre'
+    ),
     #----------------------------------------------
 
     # ---------------------------------------------
