@@ -54,8 +54,16 @@ class ListarEvaluacionesGrados(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         evaluacion_filter = EvaluacionFilter(self.request.GET,queryset = self.get_queryset())
+        # Semejante al home: para el navbar
+        docente = Docente.objects.get(numidentificacion=self.request.user.username)
+        materia = Materia.objects.filter(id_docente=docente)
+        grado_seccion_materia = Gradoseccionmateria.objects.filter(id_materia__in=materia)
+        gradoseccion = Gradoseccion.objects.filter(gradoseccionmateria__id_materia__id_docente=docente).distinct()
+        # ------------------------------------
         context["filter_form"] = evaluacion_filter.form
-        context["evas"] = evaluacion_filter.qs 
+        context["evas"] = evaluacion_filter.qs
+        context['grado_seccion'] = gradoseccion
+        context["grado_seccion_materia"] = grado_seccion_materia 
         return context
     
 
