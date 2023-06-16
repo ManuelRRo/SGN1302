@@ -39,7 +39,12 @@
         <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
             <div class="card d-block lift rounded overflow-hidden mb-2">
                 <div class="card-body text-center">
-                    <div class="text-uppercase-expanded text-center ">
+                    <div class="row text-start">
+                        <a href="" role="button">
+                            <i data-feather="edit"></i>
+                        </a>
+                    </div>
+                    <div class="text-uppercase-expanded">
                         {{eva.id_categoria}}
                     </div>
                     <a href="{% url 'sgn_app:list_evas_not' idEvaluacion=eva.id_evaluacion %}">

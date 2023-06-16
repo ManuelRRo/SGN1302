@@ -131,11 +131,170 @@ class ListarEvaluacionesAlumnos(View):
         return redirect('sgn_app:list_evas_not', idEvaluacion=idevaluacion)
 
 
+# HU-07: Mostrar Notas de Alumnos de todas las evaluaciones 
+# Mostrarse baso en el archivo de excel que proporcionaron en el centro escolar.
+def ver_Promedios(request, idgrado, idtrimestre):
+    gradoseccion = Gradoseccionmateria.objects.get(id_gradoseccionmateria =idgrado)
+    alumnos = Alumno.objects.filter(id_gradoseccion=gradoseccion.id_gradoseccion)
+    evaluacionalumno = Evaluacionalumno.objects.filter(id_alumno__id_gradoseccion=gradoseccion.id_gradoseccion, id_evaluacion__id_trimestre=idtrimestre).order_by('id_evaluacion')
+    evaluacion_ids = evaluacionalumno.values_list('id_evaluacion', flat=True)
+    evaluaciones = Evaluacion.objects.filter(id_evaluacion__in=evaluacion_ids).filter(id_trimestre = idtrimestre)
+    materia = Materia.objects.get(id_materia= gradoseccion.id_materia.id_materia)
+    trimestre = Trimestre.objects.get(id_trimestre = idtrimestre)
+
+    promedios = []
+    for alumno in alumnos:
+        notas = []
+        for evaluacion in evaluaciones:
+            evaluacion_alumno = evaluacionalumno.filter(id_alumno=alumno, id_evaluacion=evaluacion).first()
+            if evaluacion_alumno:
+                nota_ponderada = evaluacion_alumno.nota * (evaluacion.porcentaje / 100)
+                notas.append(nota_ponderada)
+        promedio = round(sum(notas), 2)
+        promedios.append({'alumno': alumno, 'promedio': promedio})
+   
+    contexto = {
+        'gradoseccion': gradoseccion,
+        'evaluaciones': evaluaciones,
+        'evaluacionesalumno': evaluacionalumno,
+        'materia':materia,
+        'trimestre': trimestre,
+        'alumnos':alumnos,
+        'promedios': promedios,
+    }
+    return render(request,'calificaciones/verPromedios.html ',contexto)
+
+   
+# Codigo HU-08 Generar archivo de excel de notas trimestrales 
+class ReporteDeNotasExcel(TemplateView):
+    def post(self, request, *args, **kwargs):
+        # Obtiene los valores enviados desde el formulario
+        comentarios = {}
+        valores_promedio = {}
+        grado = request.POST.get('grado','')
+        trimestre = request.POST.get('trimestre','')
+
+        for key, value in request.POST.items():
+            if key.startswith('opcional_'):
+                alumno_id = key.replace('opcional_', '')
+                comentarios[alumno_id] = value
+            elif key.startswith('promedio_'):
+                alumno_id = key.replace('promedio_', '')
+                valores_promedio[alumno_id] = value
+                
+        
+        for alumno_id, valor in comentarios.items():
+            # Accede a los valores por el ID del alumno
+            alumno = Alumno.objects.get(id_alumno=alumno_id)
+
+        for alumno_id, valor in valores_promedio.items():
+            # Accede a los valores por el ID del alumno
+            alumno = Alumno.objects.get(id_alumno=alumno_id)
+
+        # Código para generar y devolver el archivo Excel
+        return self.get(request, comentarios=comentarios, trimestre=trimestre, grado = grado ,valores_promedio=valores_promedio, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        comentarios = kwargs.get('comentarios')  # Obtén los valores opcionales de los argumentos de la vista
+        notas_finales = kwargs.get('valores_promedio')
+        trimestre = kwargs.get('trimestre')
+        grado = kwargs.get('grado')
+
+        alumnos = Alumno.objects.none()  # Inicializa una consulta vacía de Alumno
+    
+        for alumno_id, valor in comentarios.items():
+        # Filtra los alumnos según los valores opcionales
+            alumnos |= Alumno.objects.filter(id_alumno=alumno_id)
+        wb = Workbook()
+        ws = wb.active
+        ws['A1'] = 'nie'
+        ws['B1'] = 'calificacion'
+        ws['C1'] = 'fecha'
+        ws['D1'] = 'observacion'
+
+        cont = 2
+        numero = 1
+
+        for alumno in alumnos:
+            ws.cell(row=cont, column=1).value = int(alumno.nie) 
+            alumno_id = str(alumno.id_alumno)
+            if alumno_id in notas_finales:
+                nota_final = notas_finales[alumno_id]
+                ws.cell(row=cont, column=2).value = float(nota_final) 
+            ws.cell(row=cont, column=3).value = datetime.now().strftime('%d/%m/%Y')
+            alumno_id = str(alumno.id_alumno)
+            if alumno_id in comentarios:
+                comentario = comentarios[alumno_id]
+                ws.cell(row=cont, column=4).value = comentario
+            else:
+                ws.cell(row=cont, column=4).value = ""
+            cont += 1
+            numero += 1
+
+        nombre_archivo = "Notas " + grado +" "+ trimestre+".xlsx" 
+        response = HttpResponse(content_type="application/ms-excel")
+        content = "attachment; filename={0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
+
+#HU10 Cambiar Rol de Usuario
+class cambiarRolListView(ListView):
+    model = Docente
+    template_name = 'docente/cambiar_Rol.html'
+    context_object_name = 'docentes'
+    queryset = model.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['users'] = User.objects.all()
+        return context
+
+
+def Cambiar_Rol(request,nombreUsuario):
+    try:
+        # Recupera el registro por el nombre de usuario
+        registro = User.objects.get(username=nombreUsuario)
+        
+        # Cambia el estado is_superuser 
+        registro.is_superuser = not registro.is_superuser
+        registro.save()
+    except User.DoesNotExist:
+        pass
+    return redirect('/cambiar_Rol/')
+
+
 # HU-21: Insertar Alumnos
 class CrearAlumno(CreateView):
     form_class = AlumnoForm
     template_name = 'estudiante/crear-alumnos.html'
     success_url = reverse_lazy('sgn_app:home')
+
+
+class HabDeshabiAlumno(ListView):
+    model = Alumno
+    template_name = 'estudiante/hab-desh.html'
+    def get_queryset(self):
+        id = self.kwargs['id']
+        alumnos = Alumno.objects.filter(
+            id_gradoseccion = id
+         )
+        print(alumnos)
+        return alumnos
+
+
+def habilitar(request,id,idAlumno):
+    alumno = Alumno.objects.get(id_alumno = idAlumno)
+    alumno.estado = "1"
+    alumno.save()
+    return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
+
+
+def deshabilitar(request,id,idAlumno):
+    alumno = Alumno.objects.get(id_alumno = idAlumno)
+    alumno.estado = "0"
+    alumno.save()
+    return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
 
 
 # HU-23: Habilitar/Deshabilitar Alumnos
@@ -339,24 +498,6 @@ class ListarDocentes(ListView):
 # ------------------------------------------
 
 
-
-
-#HU10 Cambiar Rol de Usuario
-class cambiarRolListView(ListView):
-    model = Docente
-    template_name = 'docente/cambiar_Rol.html'
-    context_object_name = 'docentes'
-    queryset = model.objects.all()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['users'] = User.objects.all()
-        return context
-
-
-
-
-
 # HU-33: Crear Trimestre
 def CrearTrimestre(request): 
     form_trimestre = TrimestreForm(request.POST or None)
@@ -370,6 +511,7 @@ def CrearTrimestre(request):
 
 class Correcto(TemplateView):
     template_name = "trimestre/correcto.html"
+
 
 # HU-34: Consultar Trimestres
 class ListarTrimestres(ListView):
@@ -431,156 +573,6 @@ class EvaluacionEditar(UpdateView):
     form_class = EvaluacionEditarForm
     success_url = reverse_lazy('sgn_app:correcto')
 
-#HU-21
-class CrearAlumno(CreateView):
-    form_class = AlumnoForm
-    template_name = 'estudiante/crear-alumnos.html'
-    success_url = reverse_lazy('sgn_app:home')
-
-
-class HabDeshabiAlumno(ListView):
-    model = Alumno
-    template_name = 'estudiante/hab-desh.html'
-    def get_queryset(self):
-        id = self.kwargs['id']
-        alumnos = Alumno.objects.filter(
-            id_gradoseccion = id
-         )
-        print(alumnos)
-        return alumnos
-
-
-def habilitar(request,id,idAlumno):
-    alumno = Alumno.objects.get(id_alumno = idAlumno)
-    alumno.estado = "1"
-    alumno.save()
-    return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
-
-
-def deshabilitar(request,id,idAlumno):
-    alumno = Alumno.objects.get(id_alumno = idAlumno)
-    alumno.estado = "0"
-    alumno.save()
-    return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
-
-def Cambiar_Rol(request,nombreUsuario):
-    try:
-        # Recupera el registro por el nombre de usuario
-        registro = User.objects.get(username=nombreUsuario)
-        
-        # Cambia el estado is_superuser 
-        registro.is_superuser = not registro.is_superuser
-        registro.save()
-    except User.DoesNotExist:
-        pass
-    return redirect('/cambiar_Rol/')
-
-# se baso en el archivo de excel que proporcionaron en el centro escolar.
-def ver_Promedios(request, idgrado, idtrimestre):
-    gradoseccion = Gradoseccionmateria.objects.get(id_gradoseccionmateria =idgrado)
-    alumnos = Alumno.objects.filter(id_gradoseccion=gradoseccion.id_gradoseccion)
-    evaluacionalumno = Evaluacionalumno.objects.filter(id_alumno__id_gradoseccion=gradoseccion.id_gradoseccion, id_evaluacion__id_trimestre=idtrimestre).order_by('id_evaluacion')
-    evaluacion_ids = evaluacionalumno.values_list('id_evaluacion', flat=True)
-    evaluaciones = Evaluacion.objects.filter(id_evaluacion__in=evaluacion_ids).filter(id_trimestre = idtrimestre)
-    materia = Materia.objects.get(id_materia= gradoseccion.id_materia.id_materia)
-    trimestre = Trimestre.objects.get(id_trimestre = idtrimestre)
-
-    promedios = []
-    for alumno in alumnos:
-        notas = []
-        for evaluacion in evaluaciones:
-            evaluacion_alumno = evaluacionalumno.filter(id_alumno=alumno, id_evaluacion=evaluacion).first()
-            if evaluacion_alumno:
-                nota_ponderada = evaluacion_alumno.nota * (evaluacion.porcentaje / 100)
-                notas.append(nota_ponderada)
-        promedio = round(sum(notas), 2)
-        promedios.append({'alumno': alumno, 'promedio': promedio})
-   
-    contexto = {
-        'gradoseccion': gradoseccion,
-        'evaluaciones': evaluaciones,
-        'evaluacionesalumno': evaluacionalumno,
-        'materia':materia,
-        'trimestre': trimestre,
-        'alumnos':alumnos,
-        'promedios': promedios,
-    }
-    return render(request,'calificaciones/verPromedios.html ',contexto)
-
-
-    
-# Codigo HU_10 Generar archivo de excel de notas trimestrales 
-class ReporteDeNotasExcel(TemplateView):
-    def post(self, request, *args, **kwargs):
-        # Obtiene los valores enviados desde el formulario
-        comentarios = {}
-        valores_promedio = {}
-        grado = request.POST.get('grado','')
-        trimestre = request.POST.get('trimestre','')
-
-        for key, value in request.POST.items():
-            if key.startswith('opcional_'):
-                alumno_id = key.replace('opcional_', '')
-                comentarios[alumno_id] = value
-            elif key.startswith('promedio_'):
-                alumno_id = key.replace('promedio_', '')
-                valores_promedio[alumno_id] = value
-                
-        
-        for alumno_id, valor in comentarios.items():
-            # Accede a los valores por el ID del alumno
-            alumno = Alumno.objects.get(id_alumno=alumno_id)
-
-        for alumno_id, valor in valores_promedio.items():
-            # Accede a los valores por el ID del alumno
-            alumno = Alumno.objects.get(id_alumno=alumno_id)
-
-        # Código para generar y devolver el archivo Excel
-        return self.get(request, comentarios=comentarios, trimestre=trimestre, grado = grado ,valores_promedio=valores_promedio, *args, **kwargs)
-
-    def get(self, request, *args, **kwargs):
-        comentarios = kwargs.get('comentarios')  # Obtén los valores opcionales de los argumentos de la vista
-        notas_finales = kwargs.get('valores_promedio')
-        trimestre = kwargs.get('trimestre')
-        grado = kwargs.get('grado')
-
-        alumnos = Alumno.objects.none()  # Inicializa una consulta vacía de Alumno
-    
-        for alumno_id, valor in comentarios.items():
-        # Filtra los alumnos según los valores opcionales
-            alumnos |= Alumno.objects.filter(id_alumno=alumno_id)
-        wb = Workbook()
-        ws = wb.active
-        ws['A1'] = 'nie'
-        ws['B1'] = 'calificacion'
-        ws['C1'] = 'fecha'
-        ws['D1'] = 'observacion'
-
-        cont = 2
-        numero = 1
-
-        for alumno in alumnos:
-            ws.cell(row=cont, column=1).value = int(alumno.nie) 
-            alumno_id = str(alumno.id_alumno)
-            if alumno_id in notas_finales:
-                nota_final = notas_finales[alumno_id]
-                ws.cell(row=cont, column=2).value = float(nota_final) 
-            ws.cell(row=cont, column=3).value = datetime.now().strftime('%d/%m/%Y')
-            alumno_id = str(alumno.id_alumno)
-            if alumno_id in comentarios:
-                comentario = comentarios[alumno_id]
-                ws.cell(row=cont, column=4).value = comentario
-            else:
-                ws.cell(row=cont, column=4).value = ""
-            cont += 1
-            numero += 1
-
-        nombre_archivo = "Notas " + grado +" "+ trimestre+".xlsx" 
-        response = HttpResponse(content_type="application/ms-excel")
-        content = "attachment; filename={0}".format(nombre_archivo)
-        response['Content-Disposition'] = content
-        wb.save(response)
-        return response
 
     
 
