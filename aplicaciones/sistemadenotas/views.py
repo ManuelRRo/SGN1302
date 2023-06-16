@@ -30,8 +30,10 @@ def home(request):
     if not request.user.is_superuser:
         docente = Docente.objects.get(numidentificacion=request.user.username)
         materia = Materia.objects.filter(id_docente=docente)
-        context['grado_seccion'] = Gradoseccion.objects.all()
-        context["grado_seccion_materia"] = Gradoseccionmateria.objects.filter(id_materia__in=materia)
+        grado_seccion_materia = Gradoseccionmateria.objects.filter(id_materia__in=materia)
+        gradoseccion = Gradoseccion.objects.filter(gradoseccionmateria__id_materia__id_docente=docente).distinct()
+        context['grado_seccion'] = gradoseccion
+        context["grado_seccion_materia"] = grado_seccion_materia
     
     return render (request,'home/inicio.html',context)
 

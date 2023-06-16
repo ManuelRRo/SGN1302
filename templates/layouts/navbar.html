@@ -81,32 +81,32 @@
                 {% else %}
                 <!-- Sidenav Accordion (INICIO)-->
                 <div class="sidenav-menu-heading">INICIO</div>
-                <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
+                <a class="nav-link collapsed active" href="javascript:void(0);" data-bs-toggle="collapse"
                     data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                     <div class="nav-link-icon"><i data-feather="grid"></i></div>
                     Materias Impartidas
                     <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
-                <div class="collapse" id="collapsePages" data-bs-parent="#accordionSidenav">
-                    {% for g in grado_seccion_materia %}
-                    {% for gradoseccion in grado_seccion %}
-                    {% if gradoseccion == g.id_gradoseccion and forloop.counter == 1 %}
+                <div class="show" id="collapsePages" data-bs-parent="#accordionSidenav">
+                    {% for gradoseccion in grado_seccion %}    
                     <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPagesMenu">
                         <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
                             data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                            {{g.id_gradoseccion}}
+                            {{gradoseccion}}
                             <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="pagesCollapseAuth" data-bs-parent="#accordionSidenavPagesMenu">
+                            {% for g in grado_seccion_materia %}
+                            {% if gradoseccion == g.id_gradoseccion%}
                              <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPagesAuth">
-                                <a class="nav-link collapsed" href="javascript:void(0);">
+                                <a class="nav-link collapsed" href="{% url 'sgn_app:listar_evas_grado' g.id_gradoseccionmateria%}">
                                     {{g.id_materia.nombre_materia}}                               
                                 </a>
                             </nav>
+                            {% endif %}
+                            {% endfor %}
                         </div>
                     </nav>
-                    {% endif %}
-                    {% endfor %}
                     {% endfor %}
                     
                 </div>
