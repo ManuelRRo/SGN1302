@@ -7,95 +7,107 @@
 {% endblock %}
 {% block content %}
 {% load static %}
-<div class="row ms-1 me-1">
-    <div class="col-12">
-        <div class="card mb-4 mt-1">
-            <div class="text-center">
-                <h1 class="d-flex justify-content-center mt-5">CENTRO ESCOLAR "13 DE FEBRERO DE 2001"</h1>
-                <h2 class="d-flex justify-content-center mt-3">RENDIMIENTO ACADEMICO DE ESTUDIANTES</h2>
-            </div>
-            <div class="row mt-5">
-                <div class="col-3"></div>
-                <div class="col-3">
-                    <div class="row">
-                        <p>Asignatura <b> {{materia.nombre_materia}} </b></p>
+<div class="container-xl mb-3">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <div class="text-center text-uppercase-expanded fw-900 fs-4">
+                        CENTRO ESCOLAR "13 DE FEBRERO DE 2001"
                     </div>
-                    <div class="row">
-                        <p>Docente <b>{{ gradoseccion.id_materia.id_docente }} </b> </p>
+                    <div class="text-center text-uppercase-expanded fw-100">
+                        RENDIMIENTO ACADEMICO DE ESTUDIANTES
+                    </div>
+                    <dl class="row mt-2">
+                        <dd class="col-xl-6 col-sm-6">
+                            <dl class="row">
+                                <dt class="col-xl-3 col-sm-5">Asignatura</dt>
+                                <dd class="col-xl-7 col-sm-7">{{materia.nombre_materia}}</dd>
+                            
+                                <dt class="col-xl-3 col-sm-5">Docente</dt>
+                                <dd class="col-xl-7 col-sm-7">{{ gradoseccion.id_materia.id_docente }}</dd>  
+                            </dl>
+                        </dd>
+                        <dd class="col-xl-6 col-sm-6">
+                            <dl class="row justify-content-end text-end">
+                                <dt class="col-xl-6 col-sm-10">{{trimestre}}</dt>
+                                <dd></dd>
+                                <dt class="col-xl-6 col-sm-10">{{ gradoseccion.id_gradoseccion }}</dt>
+                                <dd></dd>                            
+                            </dl>
+                        </dd> 
+                    </dl> 
+                    <div class="row mt-4">
+                        <div class="col-xl-12">
+                            <form method="post" action="{% url 'sgn_app:reporteExcel'%}"> {% csrf_token %}
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class="text-center text-sm text-uppercase">
+                                            <tr>
+                                                <th>N°</th>
+                                                <th>NIE</th>
+                                                <th>ALUMNO/A</th>
+                                                {% for evaluacion in evaluaciones %}
+                                                <th>
+                                                    {{ evaluacion.nombre_evaluacion }}
+                                                    {{ evaluacion.porcentaje }}%
+                                                </th>
+                                                {% endfor %}
+                                                <th>NT</th>
+                                                <th>CATEGORIA</th>
+                                                <th>OBSERVACIÓN</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-center text-sm">
+                                            {% for alumno in alumnos %}
+                                            <tr>
+                                                <th>{{ forloop.counter }}</th>
+                                                <td>{{ alumno.nie }}</td>
+                                                <td  class="text-start">{{ alumno }}</td>
+                                                {% for evasalumno in evaluacionesalumno %}
+                                                {% if alumno.id_alumno == evasalumno.id_alumno.id_alumno %}
+                                                <td>{{ evasalumno.nota }}</td>
+                                                {% endif %}
+                                                {% empty %}
+                                                <td>No hay nota</td>
+                                                {% endfor %}
+                                                {% for promedio in promedios %}
+                                                {% if promedio.alumno.id_alumno == alumno.id_alumno %}
+                                                <td>{{ promedio.promedio }}</td>
+                                                <input type="hidden" name="promedio_{{ alumno.id_alumno }}"
+                                                    value="{{ promedio.promedio }}">
+                                                <td>{% if promedio.promedio > 5 %}A{% else %}R{% endif %}</td>
+                                                {% endif %}
+                                                {% empty %}
+                                                <td>-</td>
+                                                <td>-</td>
+                                                {% endfor %}
+                                                <td>
+                                                    <div class="form-floating mb-3">
+                                                        <input type="input" class="form-control"
+                                                            name="opcional_{{alumno.id_alumno }}" id="floatingInput">
+                                                        <label for="floatingInput">Opcional</label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="me-1" data-feather="download"></i>
+                                    Generar Reporte Excel
+                                </button>
+                                <input type="hidden" name="trimestre" value="{{trimestre}}">
+                                <input type="hidden" name="grado" value="{{gradoseccion.id_gradoseccion}}">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="container-xl px-4 mt-5">
                     </div>
                 </div>
-                <div class="col-1"></div>
-                <div class="col-4">
-                    <p><b> {{trimestre}}</b></p>
-                    <p><b>{{ gradoseccion.id_gradoseccion }}</b></p>
-                </div>
-                <div class="col-1"></div>
-            </div>
-            <div class="row mt-5 justify-content-center">
-                <div class="col-lg-12">
-                    <form method="post" action="{% url 'sgn_app:reporteExcel'%}"> {% csrf_token %}
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">N° <br></br></th>
-                                    <th scope="col">NIE <br></br></th>
-                                    <th scope="col">ALUMNO/A <br></br> </th>
-                                    {% for evaluacion in evaluaciones %}
-                                    <th scope="col">
-                                        {{ evaluacion.nombre_evaluacion }}
-                                        {{ evaluacion.porcentaje }}%
-                                    </th>
-                                    {% endfor %}
-                                    <th scope="col">NT <br></br></th>
-                                    <th scope="col">CATEGORIA <br></br></th>
-                                    <th scope="col">OBSERVACION <br></br></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for alumno in alumnos %}
-                                <tr>
-                                    <th scope="row">{{ forloop.counter }}</th>
-                                    <td>{{ alumno.nie }}</td>
-                                    <td>{{ alumno }}</td>
-                                    {% for evasalumno in evaluacionesalumno %}
-                                    {% if alumno.id_alumno == evasalumno.id_alumno.id_alumno %}
-                                    <td>{{ evasalumno.nota }}</td>
-                                    {% endif %}
-                                    {% empty %}
-                                    <td>No hay nota</td>
-                                    {% endfor %}
-                                    {% for promedio in promedios %}
-                                    {% if promedio.alumno.id_alumno == alumno.id_alumno %}
-                                    <td>{{ promedio.promedio }}</td>
-                                    <input type="hidden" name="promedio_{{ alumno.id_alumno }}"
-                                        value="{{ promedio.promedio }}">
-                                    <td>{% if promedio.promedio > 5 %}A{% else %}R{% endif %}</td>
-                                    {% endif %}
-                                    {% empty %}
-                                    <td>-</td>
-                                    <td>-</td>
-                                    {% endfor %}
-                                    <td>
-                                        <div class="form-floating mb-3">
-                                            <input type="input" class="form-control"
-                                                name="opcional_{{alumno.id_alumno }}" id="floatingInput">
-                                            <label for="floatingInput">Opcional</label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        <a><button type="submit" class="btn btn-primary">Generar Reporte Excel</button></a>
-                        <input type="hidden" name="trimestre" value="{{trimestre}}">
-                        <input type="hidden" name="grado" value="{{gradoseccion.id_gradoseccion}}">
-                    </form>
-                </div>
-            </div>
-            <div class="container-xl px-4 mt-5">
             </div>
         </div>
     </div>
-
 </div>
 {% endblock %}

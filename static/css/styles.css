@@ -2142,7 +2142,6 @@ progress {
   width: 100%;
   margin-bottom: 1rem;
   color: #69707a;
-  vertical-align: top;
   border-color: #e0e5ec;
 }
 .table > :not(caption) > * > *, .dataTable-table > :not(caption) > * > * {
@@ -2151,12 +2150,7 @@ progress {
   border-bottom-width: 1px;
   box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
 }
-.table > tbody, .dataTable-table > tbody {
-  vertical-align: inherit;
-}
-.table > thead, .dataTable-table > thead {
-  vertical-align: bottom;
-}
+
 .table > :not(:first-child), .dataTable-table > :not(:first-child) {
   border-top: 2px solid currentColor;
 }
