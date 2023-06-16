@@ -37,10 +37,10 @@
         {% for eva in evas%}
 
         <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
-            <div class="card d-block lift rounded overflow-hidden mb-2">
+            <div class="card border-top-lg border-primary lift rounded overflow-hidden mb-2">
                 <div class="card-body text-center">
                     <div class="row text-start">
-                        <a href="" role="button">
+                        <a href="{% url 'sgn_app:actualizar_evaluacion_docente' idEvaluacion=eva.id_evaluacion %}" role="button">
                             <i data-feather="edit"></i>
                         </a>
                     </div>

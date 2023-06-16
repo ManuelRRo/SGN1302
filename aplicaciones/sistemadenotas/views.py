@@ -1,6 +1,6 @@
 
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import Evaluacion, Evaluacionalumno, Alumno, Gradoseccion, Docente, Materia, Gradoseccionmateria
+#from .models import Evaluacion, Evaluacionalumno, Alumno, Gradoseccion, Docente, Materia, Gradoseccionmateria
 from django.shortcuts import render,redirect
 from .models import Evaluacion,Evaluacionalumno,Alumno,Gradoseccion,Docente,Materia,Gradoseccionmateria,Trimestre,Promediomateria
 from .forms import EvaluacionForm,EvaluacionAlumnoForm,DocenteForm,AlumnoForm,TrimestreActualizarForm,EvaluacionEditarForm, TrimestreForm
@@ -572,6 +572,20 @@ class EvaluacionEditar(UpdateView):
     template_name = "evaluacion/editarEvaluacion.html"
     form_class = EvaluacionEditarForm
     success_url = reverse_lazy('sgn_app:correcto')
+
+def evaluacion_editar_docente(request,idEvaluacion):
+
+    evaluacion = Evaluacion.objects.get(id_evaluacion = idEvaluacion)
+    idgrado = evaluacion.id_gradoseccionmateria.id_gradoseccionmateria
+    print(idgrado)
+    if request.method == 'POST':
+        id_evaluacion = request.POST['id_evaluacion']
+        nombre_evaluacion = request.POST['nombre_evaluacion']
+        evaluacion.nombre_evaluacion = nombre_evaluacion
+        evaluacion.save()
+        return redirect('sgn_app:listar_evas_grado', idgrado=idgrado)
+    else:
+        return render(request, 'evaluacion/editar_evaluacion_docente.html',{'evaluacion':evaluacion})
 
 
     

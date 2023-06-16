@@ -141,6 +141,11 @@ urlpatterns = [
         name='actualizar_evaluacion'
     ),
     path(
+        'editarEvaluacionDocente/<idEvaluacion>/',
+        views.evaluacion_editar_docente,
+        name='actualizar_evaluacion_docente'
+    ),
+    path(
         'verPromedios/<int:idgrado>/<int:idtrimestre>/',
         views.ver_Promedios,
         name="ver_Promedios"
@@ -150,6 +155,10 @@ urlpatterns = [
         views.cambiarRolListView.as_view(),
         name = 'Cambio de rol'
     ),
-   path('cambiar_Rol/<str:nombreUsuario>/', views.Cambiar_Rol, name='cambio_rol'),
+    path('cambiar_Rol/<str:nombreUsuario>/', 
+        views.Cambiar_Rol, 
+        name='cambio_rol'
+    ),
+
 
 ]
