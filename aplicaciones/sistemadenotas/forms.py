@@ -170,7 +170,7 @@ class AlumnoForm(ModelForm):
             'estado'
         ]
         ACTIVO = "1"
-        INACTIVO = "2"
+        INACTIVO = "0"
         ESTADO_CHOICES = [
             (ACTIVO, "ACTIVO"),
             (INACTIVO, "INACTIVO"),

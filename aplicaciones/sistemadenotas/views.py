@@ -380,6 +380,14 @@ class ListarAlumno(View):
 
     def get_context_data(self, **kwargs):
         contexto = {}
+        # Semejante al home: para el navbar
+        docente = Docente.objects.get(numidentificacion=self.request.user.username)
+        materia = Materia.objects.filter(id_docente=docente)
+        grado_seccion_materia = Gradoseccionmateria.objects.filter(id_materia__in=materia)
+        gradoseccion = Gradoseccion.objects.filter(gradoseccionmateria__id_materia__id_docente=docente).distinct()
+        # ------------------------------------
+        contexto['grado_seccion'] = gradoseccion
+        contexto["grado_seccion_materia"] = grado_seccion_materia
         contexto['estudiantes'] = self.get_queryset()
         contexto['form'] = self.form_class
         return contexto

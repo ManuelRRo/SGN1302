@@ -76,29 +76,38 @@
                     <div class="card-header">Editar alumno</div>
                     <div class="card-body">
                         <form action="" method="post"> {% csrf_token %}
-                            
-                            <div class="mb-3">
-                                <div class="">
-                                    <div class="text-center"><h3 class="d-flex justify-content-center mt-lg-3">{{ form.nombres_alumno.label}}</h3>
-                                    </div>
-                                    
-                                    {{ form.nombres_alumno}}
-                              </div>
 
-                            <div class="mb-3">
-                                <div class="">
-                                    <div class="text-center"><h3 class="d-flex justify-content-center mt-lg-3">{{ form.apellidos_alumno.label}}</h3>
-                                    </div>
-                                    
+                            <div class="mb-0"><label>Nombres</label></div>
+                                <div class="mb-3">
+                                    {{ form.nombres_alumno}}
+                                </div>
+                            
+                            
+                            <div class="mb-0"><label>Apellidos</label></div>
+                                <div class="mb-3">
                                     {{ form.apellidos_alumno}}
-        
-                              </div>
-                              {{ form.estado}}
-                              {{ form.nie}}
-                              {{ form.id_gradoseccion}}
-                              
-                              <br>
-                              <div align='center'> <button type="submit" class="btn btn-primary">Guardar</button> </div>
+                                </div>
+                           
+
+                            <div class="mb-0"><label>Estado</label></div>
+                                <div class="mb-3">
+                                    {{ form.estado}}
+                                </div>
+                           
+                            
+                            <div class="mb-0"><label>NIE</label></div>
+                                <div class="mb-3">
+                                    {{ form.nie}}
+                                </div>
+                            
+
+                            <div class="mb-0"><label>Grado/Sección</label></div>
+                                <div class="mb-3">
+                                    {{ form.id_gradoseccion}}
+                                </div>
+                           
+                
+                            <div align='center'> <button type="submit" class="btn btn-primary">Guardar</button> </div>
                             
                         </form>
                     </div>
@@ -107,5 +116,6 @@
         </div>
     </div>
 </div>
+
 
 {% endblock %}
