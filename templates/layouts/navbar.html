@@ -60,7 +60,7 @@
                         </a>
                     </nav>
                 </div>
-                <!-- Sidenav Accordion (Dashboard)-->
+                <!-- Sidenav Accordion (Grados)-->
                 <a id="navGrado"class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
                     data-bs-target="#collapseGrado" aria-expanded="false" aria-controls="collapseGrado">
                     <div class="nav-link-icon"><i data-feather="activity"></i></div>
@@ -71,74 +71,46 @@
                     <!-- dashboard lateral -->
                     <nav class="sidenav-menu-nested nav accordion" id="accordionGradoPages">
                         <a id="gestionEvaluacion" class="nav-link" href="{% url 'sgn_app:crear_eva_est'%}">
-                            Gestión evaluación
-                            <!-- <span class="badge bg-primary-soft text-primary ms-auto">Updated</span> -->
+                            Agregar Evaluaciones
                         </a>
-                        {% comment %} <a class="nav-link" href="{% url 'sgn_app:list_evas_not'%}">Listar Evaluaciones
-                            alumnos</a> {% endcomment %}
-                        <a class="nav-link" href="dashboard-3.html">Affiliate</a>
                     </nav>
                 </div>
-
-
-                {% endif %}
+                
                 <!-- FIN GESTOR DEL ADMINISTRADOR-->
 
-
-                <!-- Sidenav Heading (Custom)-->
-                <div class="sidenav-menu-heading">Custom</div>
-                <!-- Sidenav Accordion (Pages)-->
+                {% else %}
+                <!-- Sidenav Accordion (INICIO)-->
+                <div class="sidenav-menu-heading">INICIO</div>
                 <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
                     data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                     <div class="nav-link-icon"><i data-feather="grid"></i></div>
-                    Pages
+                    Materias Impartidas
                     <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
                 <div class="collapse" id="collapsePages" data-bs-parent="#accordionSidenav">
+                    {% for g in grado_seccion_materia %}
+                    {% for gradoseccion in grado_seccion %}
+                    {% if gradoseccion == g.id_gradoseccion and forloop.counter == 1 %}
                     <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPagesMenu">
-
-                        <!-- Nested Sidenav Accordion (Pages -> Authentication)-->
                         <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
                             data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                            Authentication
+                            {{g.id_gradoseccion}}
                             <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="pagesCollapseAuth" data-bs-parent="#accordionSidenavPagesMenu">
-                            <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPagesAuth">
-                                <!-- Nested Sidenav Accordion (Pages -> Authentication -> Basic)-->
-                                <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseAuthBasic" aria-expanded="false"
-                                    aria-controls="pagesCollapseAuthBasic">
-                                    Basic
-                                    <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                             <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPagesAuth">
+                                <a class="nav-link collapsed" href="javascript:void(0);">
+                                    {{g.id_materia.nombre_materia}}                               
                                 </a>
-                                <div class="collapse" id="pagesCollapseAuthBasic"
-                                    data-bs-parent="#accordionSidenavPagesAuth">
-                                    <nav class="sidenav-menu-nested nav">
-                                        <a class="nav-link" href="auth-login-basic.html">Login</a>
-                                        <a class="nav-link" href="auth-register-basic.html">Register</a>
-                                        <a class="nav-link" href="auth-password-basic.html">Forgot Password</a>
-                                    </nav>
-                                </div>
-                                <!-- Nested Sidenav Accordion (Pages -> Authentication -> Social)-->
-                                <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseAuthSocial" aria-expanded="false"
-                                    aria-controls="pagesCollapseAuthSocial">
-                                    Social
-                                    <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="pagesCollapseAuthSocial"
-                                    data-bs-parent="#accordionSidenavPagesAuth">
-                                    <nav class="sidenav-menu-nested nav">
-                                        <a class="nav-link" href="auth-login-social.html">Login</a>
-                                        <a class="nav-link" href="auth-register-social.html">Register</a>
-                                        <a class="nav-link" href="auth-password-social.html">Forgot Password</a>
-                                    </nav>
-                                </div>
                             </nav>
                         </div>
                     </nav>
+                    {% endif %}
+                    {% endfor %}
+                    {% endfor %}
+                    
                 </div>
+                {% endif %}
 
             </div>
         </div>
