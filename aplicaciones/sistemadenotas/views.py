@@ -413,8 +413,8 @@ class AsignacionClases(View):
 def EliminarAsigacionClases(request, id):
     try:
         grado_seccion_materia = Gradoseccionmateria.objects.get(id_gradoseccionmateria = id)
+        materia = Materia.objects.get(id_materia = grado_seccion_materia.id_materia.id_materia)
         grado_seccion_materia.delete()
-        materia = Materia.objects.get(id_materia = grado_seccion_materia.id_materia)
         materia.delete()
         
     except Exception:
