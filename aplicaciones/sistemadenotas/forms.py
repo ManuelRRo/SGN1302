@@ -121,6 +121,7 @@ class EvaluacionEditarForm(forms.ModelForm):
     """Form definido para actualizar Evaluacion."""
     class Meta:
         model = Evaluacion
+        exclude = ('id_trimestre',)
         fields = ('id_categoria',
                   'id_gradoseccionmateria',
                   'id_trimestre',

@@ -74,6 +74,7 @@
                                                 {% for promedio in promedios %}
                                                 {% if promedio.alumno.id_alumno == alumno.id_alumno %}
                                                 <td>{{ promedio.promedio }}</td>
+                                               
                                                 <input type="hidden" name="promedio_{{ alumno.id_alumno }}"
                                                     value="{{ promedio.promedio }}">
                                                 <td>{% if promedio.promedio > 5 %}A{% else %}R{% endif %}</td>
