@@ -630,6 +630,13 @@ def EliminarTrimestre(request, id):
     return redirect('sgn_app:listar_trimestres')
 
 
+# HU-37: Listar Evaluaciones
+class ListarEvaluaciones(ListView):
+    model = Evaluacion
+    template_name = 'evaluacion/listar_evaluaciones.html'
+    context_object_name = 'evaluaciones'
+    queryset = model.objects.all()
+
 # HU-38: Agregar Evaluación
 def CrearEvaluacionAlumno(request):
     submitted = False
@@ -663,7 +670,7 @@ class EvaluacionEditar(UpdateView):
     model = Evaluacion
     template_name = "evaluacion/editarEvaluacion.html"
     form_class = EvaluacionEditarForm
-    success_url = reverse_lazy('sgn_app:correcto')
+    success_url = reverse_lazy('sgn_app:listar_evaluaciones')
 
 def evaluacion_editar_docente(request,idEvaluacion):
 

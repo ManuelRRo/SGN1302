@@ -140,6 +140,12 @@ urlpatterns = [
     #----------------------------------------------
 
     # ---------------------------------------------
+    # HU-38: Listar Evaluaciones
+    path(
+        'evaluacion/listar_evaluaciones',
+        views.ListarEvaluaciones.as_view(),
+        name="listar_evaluaciones"
+    ),
     # HU-38: Agregar Evaluación
     path(
         'estudiante/crear-eva-est',

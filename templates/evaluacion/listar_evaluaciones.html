@@ -1,0 +1,79 @@
+{% extends 'layouts/dashboard.html' %} {% block metadata %}
+<title>Listado - SGN1302</title>
+{% endblock %} {% block content %} {% load static %}
+
+<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+  <div class="container-fluid px-4">
+    <div class="page-header-content">
+      <div class="row align-items-center justify-content-between pt-3">
+        <div class="col-auto mb-3">
+          <h1 class="page-header-title">
+            <div class="page-header-icon"><i data-feather="user"></i></div>
+            Listado de Evaluaciones
+          </h1>
+        </div>
+        <div class="col-12 col-xl-auto mb-3">
+          <a class="btn btn-sm btn-light text-primary" href="{% url 'sgn_app:crear_eva_est'%}">
+            <i class="me-1" data-feather="user-plus"></i>
+            Agregar nueva evaluación
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container-xl px-4">
+  <div class="card mb-4">
+    <div class="card-body">
+      <table id="datatablesSimple" class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Grado/Sección</th>
+            <th>Nombre de Evaluación</th>
+            <th>Porcentaje</th>
+            <th>Materia</th>
+            <th class="text-center">Trimestre</th>
+            <th class="text-center">Acciones</th>
+            <th class="d-none">Status</th>
+            <th class="d-none">Actions</th>
+          </tr>
+        </thead>
+
+          {% for evaluacion in evaluaciones %}
+          <tr>
+            <td>{{evaluacion.id_gradoseccionmateria.id_gradoseccion}}</td>
+            <td>{{evaluacion.nombre_evaluacion}}</td>
+            <td>{{evaluacion.porcentaje}}%</td>
+            <td>{{evaluacion.id_gradoseccionmateria.id_materia.nombre_materia}}</td>
+            <td class="text-center">
+              {{evaluacion.id_trimestre}}
+            </td>
+            <td class="text-center">
+              <a href="{% url 'sgn_app:actualizar_evaluacion' pk=evaluacion.id_evaluacion %}" role="button">
+                <i data-feather="edit"></i>
+              </a>
+            </td>
+            <td class="d-none">No utilizado</td>
+            <td class="d-none">No utilizado</td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  window.onload = function () {
+      const navDocentes = document.getElementById('navGrado');
+      const collapseDocentes = document.getElementById('collapseGrado');
+      const listarDocentes = document.getElementById('listarEvaluacion');
+      navDocentes.classList.add('active');
+      listarDocentes.classList.add('active');
+      collapseDocentes.classList.add('show');
+  };
+</script>
+
+{% endblock %}
