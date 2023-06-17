@@ -6,132 +6,128 @@
 
                 <!-- GESTOR DEL ADMINISTRADOR-->
                 {% if user.is_superuser %}
-                <div class="sidenav-menu-heading">ADMINISTRACIÓN DEL SISTEMA</div>
-                <!-- Sidenav Accordion (Docente)-->
-                <a id="navDocentes" class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
-                    data-bs-target="#collapseDocentes" aria-expanded="false" aria-controls="collapseDocentes">
-                    <div class="nav-link-icon"><i class="fa fa-users"></i></div>
-                    Docentes
-                    <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="collapse" id="collapseDocentes" data-bs-parent="#accordionSidenav">
-                    <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
-                        <a id="agregarDocente" class="nav-link" href="{% url 'sgn_app:crear_docente' %}">
-                            Agregar docente
-                            <span class="badge bg-primary-soft text-primary ms-auto">
-                                <i class="fa fa-user-plus" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                        <a id="listarDocentes" class="nav-link" href="{% url 'sgn_app:listado_docentes'%}">
-                            Listado de docentes
-                            <span class="badge bg-primary-soft text-primary ms-auto">
-                                <i class="fa fa-users" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                        <a id="gestionCargaLaboral" class="nav-link" href="{% url 'sgn_app:asignar_clases'%}">
-                            Carga Laboral
-                            <span class="badge bg-primary-soft text-primary ms-auto">
-                                <i class="fa fa-check-circle" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                    </nav>
-                </div>
+                    <div class="sidenav-menu-heading">ADMINISTRACIÓN DEL SISTEMA</div>
+                    <!-- Sidenav Accordion (Docente)-->
+                    <a id="navDocentes" class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
+                        data-bs-target="#collapseDocentes" aria-expanded="false" aria-controls="collapseDocentes">
+                        <div class="nav-link-icon"><i class="fa fa-users"></i></div>
+                        Docentes
+                        <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseDocentes" data-bs-parent="#accordionSidenav">
+                        <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
+                            <a id="agregarDocente" class="nav-link" href="{% url 'sgn_app:crear_docente' %}">
+                                Agregar docente
+                                <span class="badge bg-primary-soft text-primary ms-auto">
+                                    <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                            <a id="listarDocentes" class="nav-link" href="{% url 'sgn_app:listado_docentes'%}">
+                                Listado de docentes
+                                <span class="badge bg-primary-soft text-primary ms-auto">
+                                    <i class="fa fa-users" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                            <a id="gestionCargaLaboral" class="nav-link" href="{% url 'sgn_app:asignar_clases'%}">
+                                Carga Laboral
+                                <span class="badge bg-primary-soft text-primary ms-auto">
+                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                        </nav>
+                    </div>
 
-                <!-- Sidenav Accordion (Trimestre)-->
-                <a id="navTrimestre" class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
-                    data-bs-target="#collapseTrimestre" aria-expanded="false" aria-controls="collapseTrimestre">
-                    <div class="nav-link-icon"><i class="fa fa-calendar"></i></div>
-                    Trimestres
-                    <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="collapse" id="collapseTrimestre" data-bs-parent="#accordionSidenav">
-                    <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
-                        <a id="agregarTrimestre" class="nav-link" href="{% url 'sgn_app:crear_trimestre' %}">
-                            Crear Trimestre
-                            <span class="badge bg-primary-soft text-primary ms-auto">
-                                <i class="fa fa-plus" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                        <a id="listarTrimestre" class="nav-link" href="{% url 'sgn_app:listar_trimestres' %}">
-                            Consultar Trimestre
-                            <span class="badge bg-primary-soft text-primary ms-auto">
-                                <i class="fa fa-book-open" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                    </nav>
-                </div>
-                <!-- Sidenav Accordion (Grados)-->
-                <a id="navGrado"class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
-                    data-bs-target="#collapseGrado" aria-expanded="false" aria-controls="collapseGrado">
-                    <div class="nav-link-icon"><i data-feather="activity"></i></div>
-                    Grados
-                    <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="collapse" id="collapseGrado" data-bs-parent="#accordionGrado">
-                    <!-- dashboard lateral -->
-                    <nav class="sidenav-menu-nested nav accordion" id="accordionGradoPages">
-                        <a id="gestionEvaluacion" class="nav-link" href="{% url 'sgn_app:crear_eva_est'%}">
-                            Agregar Evaluaciones
-                        </a>
-                    </nav>
-                </div>
+                    <!-- Sidenav Accordion (Trimestre)-->
+                    <a id="navTrimestre" class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
+                        data-bs-target="#collapseTrimestre" aria-expanded="false" aria-controls="collapseTrimestre">
+                        <div class="nav-link-icon"><i class="fa fa-calendar"></i></div>
+                        Trimestres
+                        <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseTrimestre" data-bs-parent="#accordionSidenav">
+                        <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
+                            <a id="agregarTrimestre" class="nav-link" href="{% url 'sgn_app:crear_trimestre' %}">
+                                Crear Trimestre
+                                <span class="badge bg-primary-soft text-primary ms-auto">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                            <a id="listarTrimestre" class="nav-link" href="{% url 'sgn_app:listar_trimestres' %}">
+                                Consultar Trimestre
+                                <span class="badge bg-primary-soft text-primary ms-auto">
+                                    <i class="fa fa-book-open" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                        </nav>
+                    </div>
+                    <!-- Sidenav Accordion (Grados)-->
+                    <a id="navGrado"class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
+                        data-bs-target="#collapseGrado" aria-expanded="false" aria-controls="collapseGrado">
+                        <div class="nav-link-icon"><i data-feather="activity"></i></div>
+                        Grados
+                        <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseGrado" data-bs-parent="#accordionGrado">
+                        <!-- dashboard lateral -->
+                        <nav class="sidenav-menu-nested nav accordion" id="accordionGradoPages">
+                            <a id="gestionEvaluacion" class="nav-link" href="{% url 'sgn_app:crear_eva_est'%}">
+                                Agregar Evaluaciones
+                            </a>
+                        </nav>
+                    </div>
                 
-                <!-- FIN GESTOR DEL ADMINISTRADOR-->
+                    <!-- FIN GESTOR DEL ADMINISTRADOR-->
 
                 {% else %}
-                <!-- Sidenav Accordion (INICIO)-->
-                <div class="sidenav-menu-heading">INICIO</div>
-                <a class="nav-link collapsed active" href="javascript:void(0);" data-bs-toggle="collapse"
-                    data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                    <div class="nav-link-icon"><i data-feather="grid"></i></div>
-                    Materias Impartidas
-                    <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="collapse" id="collapsePages" data-bs-parent="#accordionSidenav">
-                    {% for gradoseccion in grado_seccion %}    
-                    <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPagesMenu">
-                        <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
-                            data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                            {{gradoseccion}}
+                    <!-- Sidenav Accordion (INICIO)-->
+                    <div class="sidenav-menu-heading">INICIO</div>
+                    <a class="nav-link collapsed active" href="javascript:void(0);" data-bs-toggle="collapse"
+                        data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                        <div class="nav-link-icon"><i data-feather="grid"></i></div>
+                        Materias Impartidas
+                        <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapsePages" data-bs-parent="#accordionSidenav">
+                        {% for gradoseccion in grado_seccion %}    
+                        <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPagesMenu">
+                            <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
+                                data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                {{gradoseccion}}
+                                <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="pagesCollapseAuth" data-bs-parent="#accordionSidenavPagesMenu">
+                                {% for g in grado_seccion_materia %}
+                                {% if gradoseccion == g.id_gradoseccion%}
+                                <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPagesAuth">
+                                    <a class="nav-link collapsed" href="{% url 'sgn_app:listar_evas_grado' g.id_gradoseccionmateria%}">
+                                        {{g.id_materia.nombre_materia}}                               
+                                    </a>
+                                </nav>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </nav>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% if not user.is_superuser %}
+                        <!-- Sidenav Accordion (Gestion Alumnos) -->
+                        <a class="nav-link collapsed active" href="javascript:void(0);" data-bs-toggle="collapse"
+                            data-bs-target="#collapseAlumnos" aria-expanded="false" aria-controls="collapseAlumnos">
+                            <div class="nav-link-icon"><i data-feather="grid"></i></div>
+                            Alumnos
                             <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-                        <div class="collapse" id="pagesCollapseAuth" data-bs-parent="#accordionSidenavPagesMenu">
-                            {% for g in grado_seccion_materia %}
-                            {% if gradoseccion == g.id_gradoseccion%}
-                             <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPagesAuth">
-                                <a class="nav-link collapsed" href="{% url 'sgn_app:listar_evas_grado' g.id_gradoseccionmateria%}">
-                                    {{g.id_materia.nombre_materia}}                               
-                                </a>
+                        <div class="show" id="collapseAlumnos" data-bs-parent="#accordionAlumnos">
+                            {% for gradoseccion in grado_seccion %}    
+                            <nav class="sidenav-menu-nested nav accordion" id="accordionAlumnosPagesMenu">
+                                <a class="nav-link" href="{% url 'sgn_app:ListarAlumno' gradoseccion.id_gradoseccion%}">
+                                    {{gradoseccion}}
+                                </a>                   
                             </nav>
-                            {% endif %}
                             {% endfor %}
                         </div>
-                    </nav>
-                    {% endfor %}
-                    
-                </div>
-                {% endif %}
-
-                <!-- Sidenav Accordion (Gestion Alumnos) -->
-
-                <a class="nav-link collapsed active" href="javascript:void(0);" data-bs-toggle="collapse"
-                    data-bs-target="#collapseAlumnos" aria-expanded="false" aria-controls="collapseAlumnos">
-                    <div class="nav-link-icon"><i data-feather="grid"></i></div>
-                    Alumnos
-                    <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="show" id="collapseAlumnos" data-bs-parent="#accordionAlumnos">
-                    {% for gradoseccion in grado_seccion %}    
-                    <nav class="sidenav-menu-nested nav accordion" id="accordionAlumnosPagesMenu">
-                        <a class="nav-link" href="{% url 'sgn_app:ListarAlumno' gradoseccion.id_gradoseccion%}">
-                            {{gradoseccion}}
-                        </a>
-                                            
-                    </nav>
-                    {% endfor %}
-                    
-                </div>
-                
+                    {%endif%}
             </div>
         </div>
         <!-- Sidenav Footer-->
