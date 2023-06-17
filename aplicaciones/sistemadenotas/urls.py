@@ -53,6 +53,18 @@ urlpatterns = [
         'habilitarDeshabilitarAlumno/<id>/habilitarAlumno/<idAlumno>/',
         views.habilitar
     ),
+       #HU-22: Editar Alumnos
+    path(
+        'Actualizar_Alumnos/<int:pk>/<id_gradoseccion>/',
+        login_required(views.ActualizarAlumno.as_view()),
+        name='ActualizarAlumno'
+    ),
+    #HU-24: Listar Alumnos
+    path(
+        'Listar_Alumnos/<id_gradoseccion>/',
+        login_required(views.ListarAlumno.as_view()),
+        name='ListarAlumno'
+    ),
     # -------------------------------------------
 
     # Gestión de Docentes -----------------------
