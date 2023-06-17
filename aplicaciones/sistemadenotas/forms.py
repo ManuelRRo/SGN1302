@@ -156,7 +156,7 @@ class EvaluacionEditarForm(forms.ModelForm):
 
         }
 
-# HU-21
+# HU-21 y HU-24
 
 
 class AlumnoForm(ModelForm):
@@ -170,7 +170,7 @@ class AlumnoForm(ModelForm):
             'estado'
         ]
         ACTIVO = "1"
-        INACTIVO = "2"
+        INACTIVO = "0"
         ESTADO_CHOICES = [
             (ACTIVO, "ACTIVO"),
             (INACTIVO, "INACTIVO"),
@@ -189,3 +189,6 @@ class AlumnoForm(ModelForm):
             'nombres_alumno': 'Nombre Alumno',
             'estado': 'Estado del alumno'
         }
+
+
+
