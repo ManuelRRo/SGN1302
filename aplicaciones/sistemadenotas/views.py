@@ -643,21 +643,32 @@ def CrearEvaluacionAlumno(request):
     if request.method == "POST":
         # form = EvaluacionForm(request.POST)
         form = EvaluacionForm(request.POST)
-        if form.is_valid():
+        try:
+            form_valid = form.is_valid()
+        except ValueError:
+            form_valid = False
+        if form_valid:
             evaluacion = form.save()  # contiene los datos de la evaluacion que se acaba de crear
             # grado = form.cleaned_data['id_gradoseccionmateria'].id_gradoseccion.id_gradoseccion
-            if evaluacion is not None:
+            if evaluacion.id_trimestre is None:
+                return HttpResponseRedirect('/estudiante/crear-eva-est')
+            if evaluacion is not None :
                 grado = evaluacion.id_gradoseccionmateria.id_gradoseccion.id_gradoseccion
                 alumno = Alumno.objects.filter(id_gradoseccion=grado)
                 for e in alumno:
                     evaalumno = Evaluacionalumno.objects.create(
                         id_evaluacion=evaluacion, id_alumno=e, nota=0.0)
                 return HttpResponseRedirect('/estudiante/crear-eva-est?submitted=True')
+        else:
+            return HttpResponseRedirect('/estudiante/crear-eva-est')
+                   
     else:
         form = EvaluacionForm
         # USER SUBMITTER THE FORM
         if 'submitted' in request.GET:
             submitted = True
+        else:
+            submitted = False
     context = {
         'form': form,
         'submitted': submitted,
