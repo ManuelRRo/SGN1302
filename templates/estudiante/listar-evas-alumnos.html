@@ -22,7 +22,7 @@
                                 <th>Evaluacion</th>
                                 <th>Estudiante</th>
                                 <th>Nota</th>
-                                <th>Estado</th>
+                                <th class="d-none">Estado</th>
                                 <th>Acciones</th>
                                 <th class="d-none">Salary</th>
                                 <th class="d-none">Status</th>
@@ -34,9 +34,15 @@
                             <tr>
                                 <td>{{estudiante.id_evaluacion}}</td>
                                 <td>{{estudiante.id_alumno}}</td>
-                                <td>{{estudiante.nota}}</td>
+                                <!-- validar si tiene asignada evaluacion -->
+                                {% if estudiante.nota is None %}
+                                    <td></td>
+                                {% else %}
+                                    <td>{{estudiante.nota}}</td>
+                                {% endif %}
+                                
                                 <!-- modificar el estado dependiendo si est an e 0 o no -->
-                                <td><div class="badge bg-warning rounded-pill">Pending</div></td>
+                                <td class="d-none"></td>
                                 <td>
                                     <a href="#"onclick="actualizarRegistro('{{estudiante.id_evaluacion.id_evaluacion}}', '{{estudiante.id_alumno.id_alumno}}','{{estudiante.id_alumno.nombres_alumno}}','{{estudiante.id_alumno.apellidos_alumno}}', '{{estudiante.nota}}')">Actualizar</a>
                                 </td> 

@@ -71,7 +71,7 @@ class Evaluacionalumno(models.Model):
     id_evaluacionalumno = models.AutoField(db_column='ID_EVALUACIONALUMNO', primary_key=True)  # Field name made lowercase.
     id_evaluacion = models.ForeignKey(Evaluacion, models.DO_NOTHING, db_column='ID_EVALUACION', blank=True, null=True)  # Field name made lowercase.
     id_alumno = models.ForeignKey(Alumno, models.DO_NOTHING, db_column='ID_ALUMNO', blank=True, null=True)  # Field name made lowercase.
-    nota = models.FloatField(db_column='NOTA')  # Field name made lowercase.
+    nota = models.FloatField(db_column='NOTA',blank=True,null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False

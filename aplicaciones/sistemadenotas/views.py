@@ -70,32 +70,32 @@ class ListarEvaluacionesGrados(ListView):
         return context
 
 
-# VISTAS HU-03 y HU-09
-def CrearEvaluacionAlumno(request):
-    submitted = False
-    if request.method == "POST":
-        # form = EvaluacionForm(request.POST)
-        form = EvaluacionForm(request.POST)
-        if form.is_valid():
-            evaluacion = form.save()  # contiene los datos de la evaluacion que se acaba de crear
-            # grado = form.cleaned_data['id_gradoseccionmateria'].id_gradoseccion.id_gradoseccion
-            if evaluacion is not None:
-                grado = evaluacion.id_gradoseccionmateria.id_gradoseccion.id_gradoseccion
-                alumno = Alumno.objects.filter(id_gradoseccion=grado)
-                for e in alumno:
-                    evaalumno = Evaluacionalumno.objects.create(
-                        id_evaluacion=evaluacion, id_alumno=e, nota=0.0)
-                return HttpResponseRedirect('/estudiante/crear-eva-est?submitted=True')
-    else:
-        form = EvaluacionForm
-        # USER SUBMITTER THE FORM
-        if 'submitted' in request.GET:
-            submitted = True
-    context = {
-        'form': form,
-        'submitted': submitted,
-    }
-    return render(request, 'estudiante/crear-evaluacion.html', context)
+# # VISTAS HU-03 y HU-09
+# def CrearEvaluacionAlumno(request):
+#     submitted = False
+#     if request.method == "POST":
+#         # form = EvaluacionForm(request.POST)
+#         form = EvaluacionForm(request.POST)
+#         if form.is_valid():
+#             evaluacion = form.save()  # contiene los datos de la evaluacion que se acaba de crear
+#             # grado = form.cleaned_data['id_gradoseccionmateria'].id_gradoseccion.id_gradoseccion
+#             if evaluacion is not None:
+#                 grado = evaluacion.id_gradoseccionmateria.id_gradoseccion.id_gradoseccion
+#                 alumno = Alumno.objects.filter(id_gradoseccion=grado)
+#                 for e in alumno:
+#                     evaalumno = Evaluacionalumno.objects.create(
+#                         id_evaluacion=evaluacion, id_alumno=e, nota=0.0)
+#                 return HttpResponseRedirect('/estudiante/crear-eva-est?submitted=True')
+#     else:
+#         form = EvaluacionForm
+#         # USER SUBMITTER THE FORM
+#         if 'submitted' in request.GET:
+#             submitted = True
+#     context = {
+#         'form': form,
+#         'submitted': submitted,
+#     }
+#     return render(request, 'estudiante/crear-evaluacion.html', context)
 
 
 # HU-04 - HU-05
@@ -657,7 +657,7 @@ def CrearEvaluacionAlumno(request):
                 alumno = Alumno.objects.filter(id_gradoseccion=grado)
                 for e in alumno:
                     evaalumno = Evaluacionalumno.objects.create(
-                        id_evaluacion=evaluacion, id_alumno=e, nota=0.0)
+                        id_evaluacion=evaluacion, id_alumno=e, nota=None)
                 return HttpResponseRedirect('/estudiante/crear-eva-est?submitted=True')
         else:
             return HttpResponseRedirect('/estudiante/crear-eva-est')
