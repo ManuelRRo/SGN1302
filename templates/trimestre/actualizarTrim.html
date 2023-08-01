@@ -19,7 +19,7 @@
      <div class="col-lg-2 mx-auto"></div>
       <div class="col-lg-8 mx-auto ">
         <div class="card mb-4 mt-5">
-          <form method="post" class="" >{% csrf_token %}
+          <form method="post" >{% csrf_token %}
             <div class="row">
               <div class="col-lg-3 mx-auto">
               </div>
@@ -35,7 +35,7 @@
             </div>
             <div class="row  mt-5 mb-5">
               <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-success" id="trimUpdate">Actualizar</button>
+                <button type="submit" class="btn btn-success" onclick="validarCamposUpdateTrim()">Actualizar</button>
               </div>
             </div>
           </form>

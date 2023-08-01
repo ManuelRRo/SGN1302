@@ -23,52 +23,6 @@
   </div>
 </header>
 
-<!-- <div class="container-xl px-4">
-  <div class="card mb-4">
-    <div class="card-body">
-      <table id="datatablesSimple" class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>DUI</th>
-            <th>Nombres</th>
-            <th>Apellidos</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tfoot>
-          <tr>
-            <th>Username</th>
-            <th>DUI</th>
-            <th>Nombres</th>
-            <th>Apellidos</th>
-            <th>Acciones</th>
-          </tr>
-        </tfoot>
-        <tbody>
-          {% for docente in docentes %}
-          <tr>
-            <td>{{docente.numidentificacion}}</td>
-            <td>{{docente.dui}}</td>
-            <td>{{docente.nombre_docente}}</td>
-            <td>{{docente.apellido_docente}}</td>
-            <td>
-              <button
-                class="btn btn-datatable btn-icon btn-transparent-dark me-2">
-                <i data-feather="more-vertical"></i>
-              </button>
-              <button class="btn btn-datatable btn-icon btn-transparent-dark">
-                <i data-feather="trash-2"></i>
-              </button>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div> -->
-
 <div class="container-xl px-4">
   <div class="card mb-4">
     <div class="card-body">
@@ -79,8 +33,8 @@
             <th>DUI</th>
             <th>Nombres</th>
             <th>Apellidos</th>
-            <th>Acciones</th>
-            <th class="d-none">Salary</th>
+            <th class="text-center">Estado</th>
+            <th class="text-center">Acciones</th>
             <th class="d-none">Status</th>
             <th class="d-none">Actions</th>
           </tr>
@@ -91,8 +45,8 @@
             <th>DUI</th>
             <th>Nombres</th>
             <th>Apellidos</th>
-            <th>Acciones</th>
-            <th class="d-none">Salary</th>
+            <th class="text-center">Estado</th>
+            <th class="text-center">Acciones</th>
             <th class="d-none">Status</th>
             <th class="d-none">Actions</th>
           </tr>
@@ -104,35 +58,47 @@
             <td>{{docente.dui}}</td>
             <td>{{docente.nombre_docente}}</td>
             <td>{{docente.apellido_docente}}</td>
-            <td>
-              <button class="btn btn-datatable btn-icon btn-transparent-dark me-2"><i
-                  data-feather="more-vertical"></i></button>
-              <button class="btn btn-datatable btn-icon btn-transparent-dark"><i data-feather="trash-2"></i></button>
+            <td class="text-center">
+              {% for usuario in users %}
+              {% if usuario.username == docente.numidentificacion %}
+              {% if usuario.is_active %}
+              <span>Activo</span>
+              {% else %}
+              <span>Inactivo</span>
+              {% endif %}
+              {% endif %}
+              {% endfor %}
             </td>
-
+            <td class="text-center">
+              <a href="{% url 'sgn_app:editar_docente' docente.numidentificacion %}" role="button">
+                <i data-feather="edit"></i>
+              </a>
+              <a href="{% url 'sgn_app:habilitar_usuario' docente.numidentificacion %}" role="button">
+                <i data-feather="user-check"></i>
+              </a>
+              <a href="{% url 'sgn_app:deshabilitar_usuario' docente.numidentificacion %}" role="button">
+                <i data-feather="user-x"></i></a>
+            </td>
             <td class="d-none">No utilizado</td>
-            <td class="d-none" >No utilizado</td>
             <td class="d-none">No utilizado</td>
-            
           </tr>
           {% endfor %}
+
         </tbody>
       </table>
     </div>
   </div>
-
 </div>
 
 <script>
   window.onload = function () {
-    const navGestor = document.getElementById("navGestor");
-    const collapseGestor = document.getElementById("collapseGestor");
-    const lGestor = document.getElementById("lGestor");
-    navGestor.classList.add("active");
-    lGestor.classList.add("active");
-    collapseGestor.classList.add("show");
+    const navDocentes = document.getElementById('navDocentes');
+    const collapseDocentes = document.getElementById('collapseDocentes');
+    const listarDocentes = document.getElementById('listarDocentes');
+    navDocentes.classList.add('active');
+    listarDocentes.classList.add('active');
+    collapseDocentes.classList.add('show');
   };
-
 </script>
 
 {% endblock %}

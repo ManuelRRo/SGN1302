@@ -8,6 +8,7 @@ from django.db import models
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.core.exceptions import ValidationError
 
 #agregado
 from django.contrib.auth.models import Permission
@@ -19,7 +20,7 @@ class Alumno(models.Model):
     nie = models.CharField(db_column='NIE', max_length=7, blank=True, null=True)  # Field name made lowercase.
     apellidos_alumno = models.CharField(db_column='APELLIDOS_ALUMNO', max_length=50, blank=True, null=True)  # Field name made lowercase.
     nombres_alumno = models.CharField(db_column='NOMBRES_ALUMNO', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    estado = models.CharField(db_column='habilitado',max_length=1,null=True)
+    estado = models.CharField(db_column='HABILITADO',max_length=1,null=True)
     class Meta:
         managed = False
         db_table = 'alumno'
@@ -41,8 +42,8 @@ class Categoria(models.Model):
 class Docente(models.Model):
     id_docente = models.AutoField(db_column='ID_DOCENTE', primary_key=True)  # Field name made lowercase.
     numidentificacion = models.CharField(db_column='NUMIDENTIFICACION', max_length=8, blank=True, null=True)  # Field name made lowercase.
-    dui = models.CharField(db_column='DUI', max_length=9, blank=True, null=True)  # Field name made lowercase.
-    nombre_docente = models.CharField(db_column='NOMBRE_DOCENTE', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    dui = models.CharField(db_column='DUI', max_length=8, blank=True, null=True, unique=True)  # Field name made lowercase.
+    nombre_docente = models.CharField(db_column='NOMBRE_DOCENTE', max_length=10, blank=True, null=True)  # Field name made lowercase.
     apellido_docente = models.CharField(db_column='APELLIDO_DOCENTE', max_length=50, blank=True, null=True)  # Field name made lowercase.
     idgradoseccion = models.ForeignKey('Gradoseccion', models.DO_NOTHING, db_column='ID_GRADOSECCION', blank=True, null=True)
     docente = models.CharField(db_column='ORIENTADOR',max_length=1,null=True)
@@ -54,7 +55,7 @@ class Docente(models.Model):
         managed = False
         db_table = 'docente'
     def __str__(self):
-        return self.nombre_docente + '|' + self.apellido_docente
+        return self.nombre_docente + ' ' + self.apellido_docente
 
 
 class Evaluacion(models.Model):
@@ -63,7 +64,7 @@ class Evaluacion(models.Model):
     id_gradoseccionmateria = models.ForeignKey('Gradoseccionmateria', models.DO_NOTHING, db_column='ID_GRADOSECCIONMATERIA', blank=True, null=True)  # Field name made lowercase.
     id_trimestre = models.ForeignKey('Trimestre', models.DO_NOTHING, db_column='ID_TRIMESTRE', blank=True, null=True)  # Field name made lowercase.
     nombre_evaluacion = models.CharField(db_column='NOMBRE_EVALUACION', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    porcentaje = models.CharField(db_column='PORCENTAJE', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    porcentaje = models.IntegerField(db_column='PORCENTAJE', blank=True, null=False)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -82,21 +83,6 @@ class Evaluacionalumno(models.Model):
         managed = False
         db_table = 'evaluacionalumno'
 
-
-class Fichaalumno(models.Model):
-    id_fichaalumno = models.AutoField(db_column='ID_FICHAALUMNO', primary_key=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'fichaalumno'
-
-
-class Fichadocente(models.Model):
-    id_fichadocente = models.AutoField(db_column='ID_FICHADOCENTE', primary_key=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'fichadocente'
 
 
 class Grado(models.Model):
@@ -167,4 +153,27 @@ class Trimestre(models.Model):
         managed = False
         db_table = 'trimestre'
     def __str__(self):
-        return self.trimestre + '|' + self.anio
+
+        return self.trimestre + ' Año ' + self.anio
+
+    
+    def clean(self):
+        # Validar que no se repita el nombre del trimestre en el mismo año
+        trimestres_mismo_anio = Trimestre.objects.filter(anio=self.anio, trimestre=self.trimestre)
+        if trimestres_mismo_anio.exists():
+            raise ValidationError('El nombre del trimestre ya existe en el mismo año.')
+    
+class Promediomateria(models.Model):
+    id_alumno = models.OneToOneField(Alumno, models.DO_NOTHING, db_column='ID_ALUMNO', primary_key=True)  # Field name made lowercase.
+    id_materia = models.ForeignKey(Materia, models.DO_NOTHING, db_column='ID_MATERIA')  # Field name made lowercase.
+    id_trimestre = models.ForeignKey('Trimestre', models.DO_NOTHING, db_column='ID_TRIMESTRE')  # Field name made lowercase.
+    promedio = models.FloatField(db_column='PROMEDIO', blank=True, null=True)  # Field name made lowercase.
+    observacion = models.CharField(db_column='OBSERVACION', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    fecha_edicion = models.DateField(db_column='FECHA_EDICION', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'promediomateria'
+        unique_together = (('id_alumno', 'id_materia', 'id_trimestre'),)    
+
+

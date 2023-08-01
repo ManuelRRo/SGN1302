@@ -1,0 +1,121 @@
+{% extends 'layouts/dashboard.html' %}
+
+{% comment %} {% include 'registration/login.html' %} {% endcomment %}
+
+{% block metadata %}
+<title>HU-24</title>
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+        
+{% if messages %}
+{% for message in messages %}
+
+<div class="container-xl px-4 mt-4">
+    <div class="alert alert-primary alert-icon" role="alert">
+        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alert-icon-aside">
+            <i class="far fa-flag"></i>
+        </div>
+        <div class="alert-icon-content">
+            <h6 class="alert-heading">{{message}}</h6>
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+{% endif %}        
+
+
+<div class="container-xl px-2 mt-4">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="card">
+                <div class="card-header">Listado de alumnos</div>
+                <div class="card-body"> 
+                    <table id="datatablesSimple" class = "table table-bordered" >
+                        <thead>
+                            <tr>
+                                <th>NIE</th>
+                                <th>Apellido Alumno</th>
+                                <th>Nombres Alumno</th>
+                                <th class="d-none" >Estado</th>
+                                <th>Acciones</th>
+                                <th class="d-none">Salary</th>
+                                <th class="d-none">Status</th>
+                                <th class="d-none">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for estudiante in estudiantes %}
+                            <tr>
+                                <td>{{estudiante.nie}}</td>
+                                <td>{{estudiante.apellidos_alumno}}</td>
+                                <td>{{estudiante.nombres_alumno}}</td>
+                                <!-- modificar el estado dependiendo si est an e 0 o no -->
+                                <td class="d-none"><div class="badge bg-warning rounded-pill">Pending</div></td>
+                                <td>
+                                        <a href="{% url 'sgn_app:ActualizarAlumno' pk=estudiante.id_alumno id_gradoseccion=estudiante.id_gradoseccion.id_gradoseccion %}">Actualizar</a>
+                                </td> 
+                                <td class="d-none">No utilizado</td>
+                                <td class="d-none" >No utilizado</td>
+                                <td class="d-none">No utilizado</td>               
+                            </tr>
+                            {% endfor%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Sticky Navigation-->
+        <div class="col-lg-3">
+            <div class="nav-sticky">
+                <div class="card">
+                    <div class="card-header">Editar alumno</div>
+                    <div class="card-body">
+                        <form action="" method="post"> {% csrf_token %}
+
+                            <div class="mb-0"><label>Nombres</label></div>
+                                <div class="mb-3">
+                                    {{ form.nombres_alumno}}
+                                </div>
+                            
+                            
+                            <div class="mb-0"><label>Apellidos</label></div>
+                                <div class="mb-3">
+                                    {{ form.apellidos_alumno}}
+                                </div>
+                           
+
+                            <div class="mb-0"><label>Estado</label></div>
+                                <div class="mb-3">
+                                    {{ form.estado}}
+                                </div>
+                           
+                            
+                            <div class="mb-0"><label>NIE</label></div>
+                                <div class="mb-3">
+                                    {{ form.nie}}
+                                </div>
+                            
+
+                            <div class="mb-0"><label>Grado/Sección</label></div>
+                                <div class="mb-3">
+                                    {{ form.id_gradoseccion}}
+                                </div>
+                           
+                
+                            <div align='center'> <button type="submit" class="btn btn-primary">Guardar</button> </div>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

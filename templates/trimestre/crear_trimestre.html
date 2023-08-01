@@ -1,0 +1,105 @@
+{% extends 'layouts/dashboard.html' %}
+
+{% block metadata %}
+<title>Crear usuario - SGN1302</title>
+{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+    <div class="container-xl px-4">
+        <div class="page-header-content">
+            <div class="row align-items-center justify-content-between pt-3">
+                <div class="col-auto mb-3">
+                    <h1 class="page-header-title">
+                        <div class="page-header-icon"><i data-feather="plus-square"></i></div>
+                        Agregar Trimestre
+                    </h1>
+                </div>
+                <div class="col-12 col-xl-auto mb-3">
+                    <a class="btn btn-sm btn-light text-primary" href="{% url 'sgn_app:listar_trimestres' %}">
+                        <i class="me-1" data-feather="arrow-left"></i>
+                        Regresar a Listado
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+{% if messages %}
+{% for message in messages %}
+
+<div class="container-xl px-4 mt-4">
+    <div class="alert alert-danger alert-icon" role="alert">
+        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alert-icon-aside">
+            <i class="far fa-flag"></i>
+        </div>
+        <div class="alert-icon-content">
+            <h6 class="alert-heading">{{message}}</h6>
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+{% endif %}
+
+
+
+<!-- Main page content-->
+<div class="row align-items-center justify-content-center">
+    <div class="col-xl-8 px-4">
+        <!-- Account details card-->
+        <div class="card mb-4">
+            <div class="card-header">Datos del Trimestre</div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-lg-5 mx-auto">
+
+                            <div class="mb-3">
+                                <div class="">
+                                    <div class="text-center">
+                                        <h3 class="d-flex justify-content-center mt-lg-5">Trimestre</h3>
+                                    </div>
+                                    {{form_trimestre.trimestre}}
+
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="">
+                                        <div class="text-center">
+                                            <h3 class="d-flex justify-content-center mt-lg-5">Año</h3>
+                                        </div>
+                                        {{form_trimestre.anio}}
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <button type="submit" class="btn btn-primary" id="save">Registrar</button>
+                            </div>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = function () {
+        const navTrimestre = document.getElementById('navTrimestre');
+        const collapseTrimestre = document.getElementById('collapseTrimestre');
+        const agregarTrimestre = document.getElementById('agregarTrimestre');
+        navTrimestre.classList.add('active');
+        agregarTrimestre.classList.add('active');
+        collapseTrimestre.classList.add('show');
+    };
+</script>
+
+{% endblock %}

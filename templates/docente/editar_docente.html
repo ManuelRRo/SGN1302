@@ -1,7 +1,7 @@
 {% extends 'layouts/dashboard.html' %}
 
 {% block metadata %}
-<title>Crear usuario - SGN1302</title>
+<title>Editar usuario - SGN1302</title>
 {% endblock %}
 
 {% block content %}
@@ -15,7 +15,7 @@
                 <div class="col-auto mb-3">
                     <h1 class="page-header-title">
                         <div class="page-header-icon"><i data-feather="user-plus"></i></div>
-                        Agregar Profesor
+                        Editar Profesor
                     </h1>
                 </div>
                 <div class="col-12 col-xl-auto mb-3">
@@ -72,9 +72,10 @@
                                 </div>
                                 <div class="d-none">
                                     {{user_form.username}}
+                                    
                                 </div>
                                 <div class="mb-0"><label>Nombres</label></div>
-                                <div class="d-none">
+                                <div class="d-none" >
                                     {{user_form.first_name}}
                                 </div>
                                 <div class="mb-3">
@@ -146,9 +147,9 @@
     window.onload = function () {
         const navDocentes = document.getElementById('navDocentes');
         const collapseDocentes = document.getElementById('collapseDocentes');
-        const agregarDocentes = document.getElementById('agregarDocente');
+        const listarDocentes = document.getElementById('listarDocentes');
         navDocentes.classList.add('active');
-        agregarDocentes.classList.add('active');
+        listarDocentes.classList.add('active');
         collapseDocentes.classList.add('show');
     }
 
@@ -179,6 +180,9 @@
             form_fields[8].value = form_fields[9].value;
         });
 
+    // for (var field in form_fields){
+    //     form_fields[field].className += 'form-control';
+    // }
 
 </script>
 

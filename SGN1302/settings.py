@@ -1,6 +1,7 @@
 from decouple import config
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -15,7 +16,6 @@ SECRET_KEY = 'django-insecure-c%)v#vj7k%8_e^6!(%tgo@$#avym=3xbv02v#@_1=$vt5m!$q*
 DEBUG = True
 
 ALLOWED_HOSTS = []
-MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
 # Application definition
 
@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'aplicaciones.sistemadenotas',
     'aplicaciones.usuarios',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -124,3 +125,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/usuario/login_user'
+LOGOUT_REDIRECT_URL = "/"

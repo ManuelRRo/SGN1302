@@ -1,0 +1,36 @@
+{% extends 'layouts/dashboard.html' %}
+
+{% comment %} {% include 'registration/login.html' %} {% endcomment %}
+
+{% block metadata %}
+<title>Editar Evaluacion</title>
+{% endblock %}
+
+{% block content %}
+{% load static %}
+<div class="text-center">
+  <h1 class="d-flex justify-content-center mt-5">Editar Evaluacion - {{evaluacion.nombre_evaluacion}}</h1>
+</div>
+<div class="row align-items-center justify-content-center">
+  <div class="col-xl-8 px-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <form method="post"  >{% csrf_token %}
+            <div class="row">
+                <input class="d-none" type="number" name="id_evaluacion" id="id_evaluacion" value={{evaluacion.id_evaluacion}}>
+                <label for="nombre_evalucion">Tipo</label>
+                <label >{{evaluacion.id_categoria}}</label>
+                <label for="nombre_evalucion">Nombre evaluacion</label>
+                
+                <input title="Ingrese el nuevo nombre de la evaluación" class="form-control mb-2" type="text" name="nombre_evaluacion" id="nombre_evaluacion" value="{{evaluacion.nombre_evaluacion}}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar</button>        
+        </form>
+        </div> 
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
