@@ -166,7 +166,7 @@ def ver_Promedios(request, idgrado, idtrimestre):
         for evaluacion in evaluaciones:
             evaluacion_alumno = evaluacionalumno.filter(
                 id_alumno=alumno, id_evaluacion=evaluacion).first()
-            if evaluacion_alumno:
+            if evaluacion_alumno is not None and evaluacion_alumno.nota is not None:
                 nota_ponderada = evaluacion_alumno.nota * \
                     (evaluacion.porcentaje / 100)
                 notas.append(nota_ponderada)
