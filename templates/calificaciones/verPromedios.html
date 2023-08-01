@@ -77,7 +77,15 @@
                                                
                                                 <input type="hidden" name="promedio_{{ alumno.id_alumno }}"
                                                     value="{{ promedio.promedio }}">
-                                                <td>{% if promedio.promedio > 5 %}A{% else %}R{% endif %}</td>
+                                                <td>{% if promedio.promedio > 5 %}
+                                                    A
+                                                    <input type="hidden" name="estado_{{ alumno.id_alumno }}"
+                                                    value="A">
+                                                    {% else %}
+                                                    R
+                                                    <input type="hidden" name="estado_{{ alumno.id_alumno }}"
+                                                    value="R">
+                                                    {% endif %}</td>
                                                 {% endif %}
                                                 {% empty %}
                                                 <td>-</td>

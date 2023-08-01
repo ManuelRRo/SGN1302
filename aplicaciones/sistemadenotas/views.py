@@ -191,6 +191,7 @@ class ReporteDeNotasExcel(TemplateView):
         # Obtiene los valores enviados desde el formulario
         comentarios = {}
         valores_promedio = {}
+        estados = {}
         grado = request.POST.get('grado', '')
         trimestre = request.POST.get('trimestre', '')
 
@@ -201,6 +202,9 @@ class ReporteDeNotasExcel(TemplateView):
             elif key.startswith('promedio_'):
                 alumno_id = key.replace('promedio_', '')
                 valores_promedio[alumno_id] = value
+            elif key.startswith('estado_'):
+                alumno_id = key.replace('estado_','')
+                estados[alumno_id] = value
 
         for alumno_id, valor in comentarios.items():
             # Accede a los valores por el ID del alumno
@@ -209,9 +213,10 @@ class ReporteDeNotasExcel(TemplateView):
         for alumno_id, valor in valores_promedio.items():
             # Accede a los valores por el ID del alumno
             alumno = Alumno.objects.get(id_alumno=alumno_id)
+        
 
         # Código para generar y devolver el archivo Excel
-        return self.get(request, comentarios=comentarios, trimestre=trimestre, grado=grado, valores_promedio=valores_promedio, *args, **kwargs)
+        return self.get(request, comentarios=comentarios, trimestre=trimestre, grado=grado, valores_promedio=valores_promedio,estados = estados ,*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         # Obtén los valores opcionales de los argumentos de la vista
@@ -219,6 +224,7 @@ class ReporteDeNotasExcel(TemplateView):
         notas_finales = kwargs.get('valores_promedio')
         trimestre = kwargs.get('trimestre')
         grado = kwargs.get('grado')
+        estados = kwargs.get('estados')
 
         alumnos = Alumno.objects.none()  # Inicializa una consulta vacía de Alumno
 
@@ -231,6 +237,7 @@ class ReporteDeNotasExcel(TemplateView):
         ws['B1'] = 'calificacion'
         ws['C1'] = 'fecha'
         ws['D1'] = 'observacion'
+        ws['E1'] = 'estado'
 
         cont = 2
         numero = 1
@@ -249,6 +256,9 @@ class ReporteDeNotasExcel(TemplateView):
                 ws.cell(row=cont, column=4).value = comentario
             else:
                 ws.cell(row=cont, column=4).value = ""
+            if alumno_id in estados:
+                estado = estados[alumno_id]
+                ws.cell(row= cont, column = 5).value = estado
             cont += 1
             numero += 1
 
@@ -585,6 +595,9 @@ class ListarDocentes(ListView):
 # ------------------------------------------
 
 
+
+
+
 # HU-33: Crear Trimestre
 def CrearTrimestre(request):
     form_trimestre = TrimestreForm(request.POST or None)
@@ -594,7 +607,7 @@ def CrearTrimestre(request):
             return redirect('sgn_app:crear_trimestre')
         else:
             messages.error(
-                request, "El nombre del trimestre ya existe en el mismo año.")
+                request, "la combinacion trimestre año ya ha sido registrada")
     return render(request, 'trimestre/crear_trimestre.html', {'form_trimestre': form_trimestre})
 
 
