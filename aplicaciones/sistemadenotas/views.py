@@ -697,6 +697,33 @@ def evaluacion_editar_docente(request,idEvaluacion):
     else:
         return render(request, 'evaluacion/editar_evaluacion_docente.html',{'evaluacion':evaluacion})
 
+#HU-27 cargar alumnos en excel
+def excelAlumnos(request, id):
+    #obtiene el listado de alumnos correspondiente
+    estudiantes=Alumno.objects.filter(id_gradoseccion=id).order_by('apellidos_alumno')
+    #obtiene el nombre del grado y seccion para ponerlos en el nombre del archivo
+    gradoseccion=Gradoseccion.objects.filter(id_gradoseccion=id).first()
+    nombreGrado=gradoseccion.id_grado.grado
+    nombreSeccion=gradoseccion.id_seccion.seccion
+    # Crear un libro de trabajo y una hoja
+    wb = Workbook()
+    ws = wb.active
 
+    # Escribir los encabezados de la tabla
+    headers = ['NIE', 'Apellidos', 'Nombres']
+    ws.append(headers)
+
+    # Escribir los datos en la tabla
+    for estudiante in estudiantes:
+        row = [estudiante.nie, estudiante.apellidos_alumno, estudiante.nombres_alumno]
+        ws.append(row)
+
+    # Crear una respuesta HTTP con el archivo Excel adjunto
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=alumnos '+nombreGrado+' '+nombreSeccion+'.xlsx'
+
+    # Guardar el libro de trabajo en la respuesta HTTP
+    wb.save(response)
+
+    return response
     
-

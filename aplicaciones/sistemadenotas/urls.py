@@ -177,6 +177,9 @@ urlpatterns = [
         views.Cambiar_Rol, 
         name='cambio_rol'
     ),
-
-
+    path(
+        'excelAlumnos/<int:id>/', 
+        views.excelAlumnos, 
+        name='excelAlumnos'
+    ),
 ]
