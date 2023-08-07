@@ -29,8 +29,9 @@ from datetime import datetime
 @login_required()
 def home(request):
     context = {}
+    existenciaDocente = Docente.objects.filter(numidentificacion=request.user.username).exists()
     # Al no ser admin se cumple la HU-01
-    if not request.user.is_superuser:
+    if existenciaDocente:
         docente = Docente.objects.get(numidentificacion=request.user.username)
         materia = Materia.objects.filter(id_docente=docente)
         grado_seccion_materia = Gradoseccionmateria.objects.filter(id_materia__in=materia)
