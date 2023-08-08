@@ -182,4 +182,9 @@ urlpatterns = [
         views.excelAlumnos, 
         name='excelAlumnos'
     ),
+    path(
+        'confirmar-importacion/<int:id>/', 
+        views.confirmar_importacion,
+        name='confirmar_importacion'
+        ),
 ]

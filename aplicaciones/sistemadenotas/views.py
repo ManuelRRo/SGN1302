@@ -19,7 +19,7 @@ from openpyxl import Workbook
 from django.http.response import HttpResponse
 from aplicaciones.sistemadenotas.filters import EvaluacionFilter
 from datetime import datetime
-
+from openpyxl import load_workbook
 
 
 # HU-01 Listar Grados asignados | Materias impartidas
@@ -393,6 +393,7 @@ class ListarAlumno(View):
         return contexto
 
     def get(self, request, *args, **kwargs):
+        request.session['datos_archivo'] = None
         return render(request, self.template_name, self.get_context_data())
 
     def post(self, request, *args, **kwargs):
@@ -698,32 +699,50 @@ def evaluacion_editar_docente(request,idEvaluacion):
         return render(request, 'evaluacion/editar_evaluacion_docente.html',{'evaluacion':evaluacion})
 
 #HU-27 cargar alumnos en excel
-def excelAlumnos(request, id):
-    #obtiene el listado de alumnos correspondiente
-    estudiantes=Alumno.objects.filter(id_gradoseccion=id).order_by('apellidos_alumno')
-    #obtiene el nombre del grado y seccion para ponerlos en el nombre del archivo
-    gradoseccion=Gradoseccion.objects.filter(id_gradoseccion=id).first()
-    nombreGrado=gradoseccion.id_grado.grado
-    nombreSeccion=gradoseccion.id_seccion.seccion
-    # Crear un libro de trabajo y una hoja
-    wb = Workbook()
-    ws = wb.active
+@login_required
+def excelAlumnos(request,id):
+     # Semejante al home: para el navbar
+    docente = Docente.objects.get(numidentificacion=request.user.username)
+    materia = Materia.objects.filter(id_docente=docente)
+    gradoseccionmateria = Gradoseccionmateria.objects.filter(id_materia__in=materia)
+    gradoseccion = Gradoseccion.objects.filter(gradoseccionmateria__id_materia__id_docente=docente).distinct()
+    if request.method == 'POST': 
+        if request.FILES.get('archivo_excel'):
+            archivo_excel = request.FILES['archivo_excel']
 
-    # Escribir los encabezados de la tabla
-    headers = ['NIE', 'Apellidos', 'Nombres']
-    ws.append(headers)
+            
+            # Cargar el archivo Excel
+            wb = load_workbook(archivo_excel)
+            sheet = wb.active
 
-    # Escribir los datos en la tabla
-    for estudiante in estudiantes:
-        row = [estudiante.nie, estudiante.apellidos_alumno, estudiante.nombres_alumno]
-        ws.append(row)
+            # Procesar cada fila del archivo Excel y guardar los datos en la sesión
+            datos_archivo = []
+            for row in sheet.iter_rows(min_row=2, values_only=True):
+                nie, apellidos_alumno, nombres_alumno = row
+                datos_archivo.append({'nie': nie, 'apellidos': apellidos_alumno, 'nombres': nombres_alumno})
 
-    # Crear una respuesta HTTP con el archivo Excel adjunto
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename=alumnos '+nombreGrado+' '+nombreSeccion+'.xlsx'
+            # Guardar los datos en la sesión
+            request.session['datos_archivo'] = datos_archivo
+            return render(request, 'estudiante/verAlumnosExcel.html',{'id_gradoseccion':id,'grado_seccion':gradoseccion,'datos_archivo':datos_archivo,'grado_seccion_materia':gradoseccionmateria})
+        else:
+            messages.error(request, "No se ha subido ningún excel")
+    return render(request, 'estudiante/verAlumnosExcel.html',{'id_gradoseccion':id,'grado_seccion':gradoseccion,'grado_seccion_materia':gradoseccionmateria})
 
-    # Guardar el libro de trabajo en la respuesta HTTP
-    wb.save(response)
+#Registra/importa los alumnos a la base de datos desde el excel
+@login_required
+def confirmar_importacion(request,id):
+    # Recuperar los datos del archivo desde la sesión
+    datos_archivo = request.session.get('datos_archivo', [])
 
-    return response
+    if request.method == 'POST':
+        messages.success(request,"Alumnos registrados correctamente")
+        gradoseccion=Gradoseccion.objects.filter(id_gradoseccion=id).first()
+        # Guardar los datos en la base de datos
+        for data in datos_archivo:
+            Alumno.objects.create(nie=data['nie'], apellidos_alumno=data['apellidos'], nombres_alumno=data['nombres'], id_gradoseccion=gradoseccion,estado=1)
+
+        # Limpiar los datos en la sesión después de importar
+        request.session['datos_archivo'] = None
+    return redirect('sgn_app:ListarAlumno', id_gradoseccion=id)
+
     

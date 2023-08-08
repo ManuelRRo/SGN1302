@@ -68,14 +68,15 @@
                     </table>
                 </div>
             </div>
-            {% for objeto in grado_seccion %}
-            <a href="{% url 'sgn_app:excelAlumnos' objeto.id_gradoseccion %}">
-            <button type="submit" class="btn btn-primary">
-                <i class="me-1" data-feather="download"></i>
-                Generar Reporte Excel
-            </button>
-            </a>
+            <div class="d-flex justify-content-center mt-5">
+                {% for objeto in grado_seccion %}
+                <a href="{% url 'sgn_app:excelAlumnos' objeto.id_gradoseccion %}">
+                    <button type="submit" class="btn btn-primary">
+                        Registrar alumnos desde un excel
+                    </button>
+                </a>
             {% endfor %}
+            </div>
         </div>
         <!-- Sticky Navigation-->
         <div class="col-lg-3">

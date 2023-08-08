@@ -1,0 +1,121 @@
+{% extends 'layouts/dashboard.html' %}
+
+{% comment %} {% include 'registration/login.html' %} {% endcomment %}
+
+{% block metadata %}
+<title>HU-24</title>
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<div class="col-12 col-xl-auto mb-3">
+    <a class="btn btn-sm btn-light text-primary" href="{% url 'sgn_app:ListarAlumno' id_gradoseccion %}">
+        <i class="me-1" data-feather="arrow-left"></i>
+        Regresar al listado
+    </a>
+</div>
+{% if messages %}
+{% for message in messages %}
+
+<div class="container-xl px-4 mt-4">
+    <div class="alert alert-primary alert-icon" role="alert">
+        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alert-icon-aside">
+            <i class="far fa-flag"></i>
+        </div>
+        <div class="alert-icon-content">
+            <h6 class="alert-heading">{{message}}</h6>
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+{% endif %}        
+
+
+<div class="container-xl px-2 mt-4">
+    <div class="row">
+        
+        <div class="col-lg-10">
+            <div class="card">
+                <div class="card-header">
+                    Listado de alumnos
+                </div>
+                
+                <div class="card-body"> 
+                    <div>
+                        <h2>Puede registrar alumnos desde un excel con los siguientes encabezados: </h2>
+                    </div>
+                    <table id="datatablesSimple" class = "table table-bordered" >
+                        <thead>
+                            <tr>
+                                <th>NIE</th>
+                                <th>Apellidos Alumno</th>
+                                <th>Nombres Alumno</th>
+                                <th class="d-none" >Estado</th>
+                                <th class="d-none">Salary</th>
+                                <th class="d-none">Status</th>
+                                <th class="d-none">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if datos_archivo%}
+                            {% for estudiante in datos_archivo %}
+                            <tr>
+                                <td>{{estudiante.nie}}</td>
+                                <td>{{estudiante.apellidos}}</td>
+                                <td>{{estudiante.nombres}}</td>
+                                <!-- modificar el estado dependiendo si est an e 0 o no -->
+                                <td class="d-none"><div class="badge bg-warning rounded-pill">Pending</div></td>
+                                <td class="d-none">No utilizado</td>
+                                <td class="d-none" >No utilizado</td>
+                                <td class="d-none">No utilizado</td>               
+                            </tr>
+                            {% endfor%}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>         
+        </div>
+    </div>
+    
+    
+        <form method="post" enctype="multipart/form-data" class="m-5">
+            <div class="row">
+                {% csrf_token %}
+            <div class="col-lg-5">
+                    <input type="file" class="form-control btn btn-primary" name="archivo_excel" accept=".xlsx">
+            </div>
+            <div class="col-lg-5">
+                <button type="submit" class="form-control btn btn-primary" formaction="{% url 'sgn_app:excelAlumnos' id_gradoseccion %}">
+                    Mostrar datos de excel
+                </button>
+            </div>
+        </div>
+        </form>
+     
+        
+            {% if datos_archivo %}
+            <form method="post">
+                {% csrf_token %}
+                
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <div class="d-flex justify-content-center"> 
+                            <button type="submit" class="btn btn-primary" formaction="{% url 'sgn_app:confirmar_importacion' id_gradoseccion %}">
+                                Registrar alumnos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            {% endif %}
+        
+</div>
+    
+
+
+
+{% endblock %}
