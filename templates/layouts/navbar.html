@@ -4,6 +4,59 @@
         <div class="sidenav-menu">
             <div class="nav accordion" id="accordionSidenav">
 
+                <!-- GESTOR DE UN DOCENTE-->
+                {% if grado_seccion %}
+                    <!-- Sidenav Accordion (INICIO)-->
+                    <div class="sidenav-menu-heading">INICIO</div>
+                    <a class="nav-link collapsed active" href="javascript:void(0);" data-bs-toggle="collapse"
+                        data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                        <div class="nav-link-icon"><i data-feather="grid"></i></div>
+                        Materias Impartidas
+                        <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapsePages" data-bs-parent="#accordionSidenav">
+                        {% for gradoseccion in grado_seccion %}    
+                        <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPagesMenu">
+                            <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
+                                data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                {{gradoseccion}}
+                                <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="pagesCollapseAuth" data-bs-parent="#accordionSidenavPagesMenu">
+                                {% for g in grado_seccion_materia %}
+                                {% if gradoseccion == g.id_gradoseccion%}
+                                <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPagesAuth">
+                                    <a class="nav-link collapsed" href="{% url 'sgn_app:listar_evas_grado' g.id_gradoseccionmateria%}">
+                                        {{g.id_materia.nombre_materia}}                               
+                                    </a>
+                                </nav>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </nav>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <!-- GESTOR DE UN DOCENTE CON ACCESO A AGREGAR ALUMNOS-->
+                {% if not user.is_superuser %}
+                        <!-- Sidenav Accordion (Gestion Alumnos) -->
+                        <a class="nav-link collapsed active" href="javascript:void(0);" data-bs-toggle="collapse"
+                            data-bs-target="#collapseAlumnos" aria-expanded="false" aria-controls="collapseAlumnos">
+                            <div class="nav-link-icon"><i data-feather="grid"></i></div>
+                            Alumnos
+                            <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="show" id="collapseAlumnos" data-bs-parent="#accordionAlumnos">
+                            {% for gradoseccion in grado_seccion %}    
+                            <nav class="sidenav-menu-nested nav accordion" id="accordionAlumnosPagesMenu">
+                                <a class="nav-link" href="{% url 'sgn_app:ListarAlumno' gradoseccion.id_gradoseccion%}">
+                                    {{gradoseccion}}
+                                </a>                   
+                            </nav>
+                            {% endfor %}
+                        </div>
+                {%endif%}
+
                 <!-- GESTOR DEL ADMINISTRADOR-->
                 {% if user.is_superuser %}
                     <div class="sidenav-menu-heading">ADMINISTRACIÓN DEL SISTEMA</div>
@@ -87,56 +140,9 @@
                 
                     <!-- FIN GESTOR DEL ADMINISTRADOR-->
 
-                {% else %}
-                    <!-- Sidenav Accordion (INICIO)-->
-                    <div class="sidenav-menu-heading">INICIO</div>
-                    <a class="nav-link collapsed active" href="javascript:void(0);" data-bs-toggle="collapse"
-                        data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                        <div class="nav-link-icon"><i data-feather="grid"></i></div>
-                        Materias Impartidas
-                        <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
-                    <div class="collapse" id="collapsePages" data-bs-parent="#accordionSidenav">
-                        {% for gradoseccion in grado_seccion %}    
-                        <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPagesMenu">
-                            <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
-                                data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                {{gradoseccion}}
-                                <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="pagesCollapseAuth" data-bs-parent="#accordionSidenavPagesMenu">
-                                {% for g in grado_seccion_materia %}
-                                {% if gradoseccion == g.id_gradoseccion%}
-                                <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPagesAuth">
-                                    <a class="nav-link collapsed" href="{% url 'sgn_app:listar_evas_grado' g.id_gradoseccionmateria%}">
-                                        {{g.id_materia.nombre_materia}}                               
-                                    </a>
-                                </nav>
-                                {% endif %}
-                                {% endfor %}
-                            </div>
-                        </nav>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-                    {% if not user.is_superuser %}
-                        <!-- Sidenav Accordion (Gestion Alumnos) -->
-                        <a class="nav-link collapsed active" href="javascript:void(0);" data-bs-toggle="collapse"
-                            data-bs-target="#collapseAlumnos" aria-expanded="false" aria-controls="collapseAlumnos">
-                            <div class="nav-link-icon"><i data-feather="grid"></i></div>
-                            Alumnos
-                            <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="show" id="collapseAlumnos" data-bs-parent="#accordionAlumnos">
-                            {% for gradoseccion in grado_seccion %}    
-                            <nav class="sidenav-menu-nested nav accordion" id="accordionAlumnosPagesMenu">
-                                <a class="nav-link" href="{% url 'sgn_app:ListarAlumno' gradoseccion.id_gradoseccion%}">
-                                    {{gradoseccion}}
-                                </a>                   
-                            </nav>
-                            {% endfor %}
-                        </div>
-                    {%endif%}
+                {% endif %}
+
+                
             </div>
         </div>
         <!-- Sidenav Footer-->
