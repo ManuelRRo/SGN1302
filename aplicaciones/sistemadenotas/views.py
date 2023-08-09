@@ -351,12 +351,12 @@ def graficos(request):
     masculinos = [item['masculinos'] for item in data]
     femeninos = [item['femeninos'] for item in data]
 
-    ancho_barras = 0.2  # Ajusta el valor para hacer las barras más delgadas
+    ancho_barras = 0.2  
     posicion_barras_femeninos = [pos + ancho_barras for pos in range(len(grados_secciones))]
 
     
-    fig = plt.figure(figsize=(12, 6))  # Cambia el tamaño de la figura según tus necesidades
-    plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)  # Ajusta los márgenes
+    fig = plt.figure(figsize=(12, 6))  
+    plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1) 
     bars1 = plt.bar(grados_secciones, masculinos, width=ancho_barras, label="Masculinos")
     bars2 = plt.bar(posicion_barras_femeninos, femeninos, width=ancho_barras, label="Femeninos")
     plt.grid(True, axis='y', linestyle='--', alpha=0.7)
@@ -367,7 +367,7 @@ def graficos(request):
     plt.xlabel("Grado y Sección")
     plt.ylabel("Número de alumnos")
 
-    plt.legend(loc='upper right')  # Coloca la leyenda en la esquina superior derecha
+    plt.legend(loc='upper right')  
 
    
 
@@ -376,8 +376,8 @@ def graficos(request):
     buffer.seek(0)
     image_base64 = base64.b64encode(buffer.read()).decode('utf-8')
 
-    fig = plt.figure(figsize=(12, 6))  # Cambia el tamaño de la figura según tus necesidades
-    plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)  # Ajusta los márgenes
+    fig = plt.figure(figsize=(12, 6))  
+    plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)  
     plt.title("Poblacion Estudiantil de Segundo Ciclo")
 
     # Generar el segundo gráfico de barras
@@ -443,7 +443,7 @@ def graficos(request):
         grado, seccion = item['gradoseccion'].rsplit(' ', 1)
         orden_grados = {"Septimo Grado": 1, "Octavo Grado": 2, "Noveno Grado": 3}
         return (orden_grados[grado], seccion)
-# Ordenar los datos por el nombre del grado y la sección
+
     data_3_sorted = sorted(data_3, key=custom_sort_key)
 
     grados_secciones_3 = [item['gradoseccion'] for item in data_3_sorted]
