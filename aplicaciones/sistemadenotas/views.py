@@ -19,6 +19,14 @@ from openpyxl import Workbook
 from django.http.response import HttpResponse
 from aplicaciones.sistemadenotas.filters import EvaluacionFilter
 from datetime import datetime
+import matplotlib
+matplotlib.use('Agg')
+from matplotlib import pyplot as plt
+from io import BytesIO
+import base64
+from asgiref.sync import sync_to_async
+from django.db.models import Count, Q 
+from operator import itemgetter
 
 
 
@@ -296,6 +304,178 @@ def Cambiar_Rol(request, nombreUsuario):
     except User.DoesNotExist:
         pass
     return redirect('/cambiar_Rol/')
+
+#HU-15: Reporte de Alumnos Masculinos/Femeninos
+def generar_grafico_barra(data, title):
+    grados = list(data.keys())
+    alumnos_masculinos = [item['M'] for item in data.values()]
+    alumnos_femeninos = [item['F'] for item in data.values()]
+
+    x = range(len(grados))
+    width = 0.4
+
+    plt.bar(x, alumnos_masculinos, width=width, label='Masculino')
+    plt.bar([pos + width for pos in x], alumnos_femeninos, width=width, label='Femenino')
+
+    plt.xlabel("Grados")
+    plt.ylabel("Número de alumnos")
+    plt.title(title)
+    plt.xticks([pos + width / 2 for pos in x], grados)
+    plt.legend()
+
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_base64 = base64.b64encode(buffer.read()).decode('utf-8')
+
+    plt.close()
+    return image_base64
+
+@sync_to_async
+def graficos(request):
+    grados_secciones = Gradoseccion.objects.filter(id_grado__in=range(1, 4), id_seccion__in=range(1, 5))
+    data = []
+
+    for gradoseccion in grados_secciones:
+        gradoseccion_text = f"{gradoseccion.id_grado.grado} {gradoseccion.id_seccion.seccion}"
+        alumnos = Alumno.objects.filter(id_gradoseccion=gradoseccion)
+        total_masculinos = alumnos.filter(sexo='M').count()
+        total_femeninos = alumnos.filter(sexo='F').count()
+        data.append({
+            'gradoseccion': gradoseccion_text,
+            'masculinos': total_masculinos,
+            'femeninos': total_femeninos
+        })
+    data.sort(key=itemgetter('gradoseccion'))
+    grados_secciones = [item['gradoseccion'] for item in data]
+    masculinos = [item['masculinos'] for item in data]
+    femeninos = [item['femeninos'] for item in data]
+
+    ancho_barras = 0.2  # Ajusta el valor para hacer las barras más delgadas
+    posicion_barras_femeninos = [pos + ancho_barras for pos in range(len(grados_secciones))]
+
+    
+    fig = plt.figure(figsize=(12, 6))  # Cambia el tamaño de la figura según tus necesidades
+    plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)  # Ajusta los márgenes
+    bars1 = plt.bar(grados_secciones, masculinos, width=ancho_barras, label="Masculinos")
+    bars2 = plt.bar(posicion_barras_femeninos, femeninos, width=ancho_barras, label="Femeninos")
+    plt.grid(True, axis='y', linestyle='--', alpha=0.7)
+
+    plt.xticks(rotation=0)
+    plt.title("Poblacion Estudiantil de Primer Ciclo")
+
+    plt.xlabel("Grado y Sección")
+    plt.ylabel("Número de alumnos")
+
+    plt.legend(loc='upper right')  # Coloca la leyenda en la esquina superior derecha
+
+   
+
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_base64 = base64.b64encode(buffer.read()).decode('utf-8')
+
+    fig = plt.figure(figsize=(12, 6))  # Cambia el tamaño de la figura según tus necesidades
+    plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)  # Ajusta los márgenes
+    plt.title("Poblacion Estudiantil de Segundo Ciclo")
+
+    # Generar el segundo gráfico de barras
+    grados_secciones_2 = Gradoseccion.objects.filter(id_grado__in=range(4, 7), id_seccion__in=range(1, 5))
+    data_2 = []
+
+    for gradoseccion in grados_secciones_2:
+        gradoseccion_text = f"{gradoseccion.id_grado.grado} {gradoseccion.id_seccion.seccion}"
+        alumnos = Alumno.objects.filter(id_gradoseccion=gradoseccion)
+        total_masculinos = alumnos.filter(sexo='M').count()
+        total_femeninos = alumnos.filter(sexo='F').count()
+        data_2.append({
+            'gradoseccion': gradoseccion_text,
+            'masculinos': total_masculinos,
+            'femeninos': total_femeninos
+        })
+    data_2.sort(key=itemgetter('gradoseccion'))
+    grados_secciones_2 = [item['gradoseccion'] for item in data_2]
+    masculinos_2 = [item['masculinos'] for item in data_2]
+    femeninos_2 = [item['femeninos'] for item in data_2]
+
+    ancho_barras = 0.2
+    posicion_barras_femeninos_2 = [pos + ancho_barras for pos in range(len(grados_secciones_2))]
+
+    bars1 = plt.bar(grados_secciones_2, masculinos_2, width=ancho_barras, label="Masculinos")
+    bars2 = plt.bar(posicion_barras_femeninos_2, femeninos_2, width=ancho_barras, label="Femeninos")
+    plt.grid(True, axis='y', linestyle='--', alpha=0.8)
+
+    plt.xticks(rotation=0)
+
+    plt.xlabel("Grado y Sección")
+    plt.ylabel("Número de alumnos")
+
+    plt.legend(loc='upper right')
+
+    # Guardar el segundo gráfico como imagen y convertirla a base64
+    buffer_2 = BytesIO()
+    plt.savefig(buffer_2, format='png')
+    buffer_2.seek(0)
+    image_base64_2 = base64.b64encode(buffer_2.read()).decode('utf-8')
+
+    plt.close()
+
+    # Generar el tercer gráfico de barras
+    fig = plt.figure(figsize=(12, 6))
+    plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
+    plt.title("Poblacion Estudiantil de Tercer Ciclo")  
+
+    grados_secciones_3 = Gradoseccion.objects.filter(id_grado__in=range(7, 10), id_seccion__in=range(1, 5))
+    data_3 = []
+
+    for gradoseccion in grados_secciones_3:
+        gradoseccion_text = f"{gradoseccion.id_grado.grado} {gradoseccion.id_seccion.seccion}"
+        alumnos = Alumno.objects.filter(id_gradoseccion=gradoseccion)
+        total_masculinos = alumnos.filter(sexo='M').count()
+        total_femeninos = alumnos.filter(sexo='F').count()
+        data_3.append({
+            'gradoseccion': gradoseccion_text,
+            'masculinos': total_masculinos,
+            'femeninos': total_femeninos
+        })
+    def custom_sort_key(item):
+        grado, seccion = item['gradoseccion'].rsplit(' ', 1)
+        orden_grados = {"Septimo Grado": 1, "Octavo Grado": 2, "Noveno Grado": 3}
+        return (orden_grados[grado], seccion)
+# Ordenar los datos por el nombre del grado y la sección
+    data_3_sorted = sorted(data_3, key=custom_sort_key)
+
+    grados_secciones_3 = [item['gradoseccion'] for item in data_3_sorted]
+    masculinos_3 = [item['masculinos'] for item in data_3_sorted]
+    femeninos_3 = [item['femeninos'] for item in data_3_sorted]
+
+    ancho_barras = 0.2
+    posicion_barras_femeninos_3 = [pos + ancho_barras for pos in range(len(grados_secciones_3))]
+
+    bars1 = plt.bar(grados_secciones_3, masculinos_3, width=ancho_barras, label="Masculinos")
+    bars2 = plt.bar(posicion_barras_femeninos_3, femeninos_3, width=ancho_barras, label="Femeninos")
+    plt.grid(True, axis='y', linestyle='--', alpha=0.8)
+
+    plt.xticks(rotation=0)
+
+    plt.xlabel("Grado y Sección")
+    plt.ylabel("Número de alumnos")
+
+    plt.legend(loc='upper right')
+
+    # Guardar el tercer gráfico como imagen y convertirla a base64
+    buffer_3 = BytesIO()
+    plt.savefig(buffer_3, format='png')
+    buffer_3.seek(0)
+    image_base64_3 = base64.b64encode(buffer_3.read()).decode('utf-8')
+    plt.title("Poblacion Estudiantil de Tercer Ciclo")  
+
+    plt.close()
+
+    context = {'image_base64': image_base64,'image_base64_2': image_base64_2, 'image_base64_3': image_base64_3}
+    return render(request, 'administracion/graficos.html', context)
+
 
 
 # HU-21: Insertar Alumnos

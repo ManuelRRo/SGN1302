@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from . import  views
 from .views import deshabilitar_usuario
 from .views import habilitar_usuario
+from .views import graficos
 
 app_name = "sgn_app"
 urlpatterns = [
@@ -32,6 +33,8 @@ urlpatterns = [
         views.ReporteDeNotasExcel.as_view(),
         name="reporteExcel"
     ),
+    #HU-15:Reporte de Alumnos Masculinos/Femeninos
+    path('grafico/',graficos, name='graficos'),
     # Gestión Alumnos -----------------------------
     # HU-21: Insertar Alumnos
     path(
