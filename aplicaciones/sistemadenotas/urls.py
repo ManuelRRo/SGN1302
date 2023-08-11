@@ -34,7 +34,7 @@ urlpatterns = [
         name="reporteExcel"
     ),
     #HU-15:Reporte de Alumnos Masculinos/Femeninos
-    path('grafico/',graficos, name='graficos'),
+    path('graficosEstadisticos/',views.graficos, name='graficos'),
     # Gestión Alumnos -----------------------------
     # HU-21: Insertar Alumnos
     path(

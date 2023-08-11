@@ -3,27 +3,41 @@
 {% comment %} {% include 'registration/login.html' %} {% endcomment %}
 
 {% block metadata %}
-<title>Estadisticos de Estudiantes</title>
+<title>SGN1302 | Estadisticos de Estudiantes</title>
 {% endblock %}
 {% block content %}
 {% load static %}
 <div class="container">
-    <div class="row ">
-        <div class="col-md-6 grafico-container mt-5">
-            <img src="data:image/png;base64,{{ image_base64 }}" alt="Gráfico estadístico">
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6"></div>
+        <div class="col-3 mt-5 mtl-5">
+            <button type="submit" class="btn btn-primary no-imprimir" id="imprimir-btn">
+                <i class="me-1" data-feather="download"></i>
+                Descargar como PDF
+            </button>
+        </div>
+    </div>
 
+    <div class="row ">
+        <div class="col-md-6 grafico-container mt-5">
+            <img src="data:image/png;base64,{{ image_base64_1 }}" alt="Gráfico Primer Ciclo">
         </div>
     </div>
     <div class="row ">
         <div class="col-md-6 grafico-container mt-5">
-            <img src="data:image/png;base64,{{ image_base64_2 }}" alt="Gráfico Secciones 4-6">
+            <img src="data:image/png;base64,{{ image_base64_2 }}" alt="Gráfico Segundo Ciclo">
         </div>
     </div>
     <div class="row ">
         <div class="col-md-6 grafico-container mt-5">
-            <img src="data:image/png;base64,{{ image_base64_3 }}" alt="Gráfico Secciones 7-9">
+            <img src="data:image/png;base64,{{ image_base64_3 }}" alt="Gráfico Tercer Ciclo">
         </div>
     </div>
 </div>
+
+
 {% endblock %}
+
+
 

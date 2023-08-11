@@ -62,4 +62,25 @@
         <script src="{% static 'js/datatables/datatables-simple-demo.js'%}"></script>
 
     </body>
+    <!-- Estilo usado para HU15-Reporte de Alumnos Masculinos/Femeninos -->
+    <style>
+        @media print {
+            /* Estilos de impresión */
+            /* oculta ciertos elementos que no se quieren imprimir */
+            .no-imprimir, .topnav, .sidenav-menu, .sidenav-footer, .footer-admin  {
+                display: none;
+            }
+            #layoutSidenav_nav{
+                display: none;
+            }
+
+        }
+    </style>
 </html>
+<!-- Script usado para HU15-Reporte de Alumnos Masculinos/Femeninos -->
+<script>
+    /*Muestra el Modo Impresion que Trae por defecto el navegador*/
+    document.getElementById('imprimir-btn').addEventListener('click', function() {
+        window.print();
+    });
+</script>
