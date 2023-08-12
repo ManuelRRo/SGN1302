@@ -148,17 +148,21 @@ class ListarEvaluacionesAlumnos(View):
 # HU-07: Mostrar Notas de Alumnos de todas las evaluaciones
 # Mostrarse baso en el archivo de excel que proporcionaron en el centro escolar.
 def ver_Promedios(request, idgrado, idtrimestre):
-    gradoseccion = Gradoseccionmateria.objects.get(
-        id_gradoseccionmateria=idgrado)
-    alumnos = Alumno.objects.filter(
-        id_gradoseccion=gradoseccion.id_gradoseccion)
-    evaluacionalumno = Evaluacionalumno.objects.filter(
-        id_alumno__id_gradoseccion=gradoseccion.id_gradoseccion, id_evaluacion__id_trimestre=idtrimestre).order_by('id_evaluacion')
+    
+    gradoseccion = Gradoseccionmateria.objects.get(id_gradoseccionmateria=idgrado)
+    
+    alumnos = Alumno.objects.filter(id_gradoseccion=gradoseccion.id_gradoseccion)
+    
+    evaluacionalumno = Evaluacionalumno.objects.filter(id_alumno__id_gradoseccion=gradoseccion.id_gradoseccion, 
+                                                        id_evaluacion__id_trimestre=idtrimestre, 
+                                                        id_evaluacion__id_gradoseccionmateria=gradoseccion.id_gradoseccionmateria).order_by('id_evaluacion')
+    
     evaluacion_ids = evaluacionalumno.values_list('id_evaluacion', flat=True)
-    evaluaciones = Evaluacion.objects.filter(
-        id_evaluacion__in=evaluacion_ids).filter(id_trimestre=idtrimestre)
-    materia = Materia.objects.get(
-        id_materia=gradoseccion.id_materia.id_materia)
+    
+    evaluaciones = Evaluacion.objects.filter(id_evaluacion__in=evaluacion_ids).filter(id_trimestre=idtrimestre)
+    
+    materia = Materia.objects.get(id_materia=gradoseccion.id_materia.id_materia)
+    
     trimestre = Trimestre.objects.get(id_trimestre=idtrimestre)
 
     promedios = []
@@ -183,7 +187,7 @@ def ver_Promedios(request, idgrado, idtrimestre):
         'alumnos': alumnos,
         'promedios': promedios,
     }
-    return render(request, 'calificaciones/verPromedios.html ', contexto)
+    return render(request, 'calificaciones/verPromedios.html', contexto)
 
 
 # Codigo HU-08 Generar archivo de excel de notas trimestrales 
@@ -658,8 +662,7 @@ def CrearEvaluacionAlumno(request):
                 grado = evaluacion.id_gradoseccionmateria.id_gradoseccion.id_gradoseccion
                 alumno = Alumno.objects.filter(id_gradoseccion=grado)
                 for e in alumno:
-                    evaalumno = Evaluacionalumno.objects.create(
-                        id_evaluacion=evaluacion, id_alumno=e, nota=None)
+                    evaalumno = Evaluacionalumno.objects.create(id_evaluacion=evaluacion, id_alumno=e, nota=0)
                 return HttpResponseRedirect('/estudiante/crear-eva-est?submitted=True')
         else:
             return HttpResponseRedirect('/estudiante/crear-eva-est')
