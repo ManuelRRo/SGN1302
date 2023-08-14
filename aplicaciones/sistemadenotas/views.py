@@ -21,13 +21,7 @@ from aplicaciones.sistemadenotas.filters import EvaluacionFilter
 from datetime import datetime
 from openpyxl import load_workbook
 
-
-# HU-01 Listar Grados asignados | Materias impartidas
-# Posee dos comportamientos:
-#   - Rol profesor -> cumple HU-01
-#   - Rol Administrador -> no se ejecuta HU-01
-@login_required()
-def home(request):
+def asignacionClases(request):
     context = {}
     existenciaDocente = Docente.objects.filter(numidentificacion=request.user.username).exists()
     # Al no ser admin se cumple la HU-01
@@ -38,6 +32,16 @@ def home(request):
         gradoseccion = Gradoseccion.objects.filter(gradoseccionmateria__id_materia__id_docente=docente).distinct()
         context['grado_seccion'] = gradoseccion
         context["grado_seccion_materia"] = grado_seccion_materia
+    return context
+
+# HU-01 Listar Grados asignados | Materias impartidas
+# Posee dos comportamientos:
+#   - Rol profesor -> cumple HU-01
+#   - Rol Administrador -> no se ejecuta HU-01
+@login_required()
+def home(request):
+    context = {}
+    context = asignacionClases(request)
     
     return render (request,'home/inicio.html',context)
 
@@ -59,15 +63,11 @@ class ListarEvaluacionesGrados(ListView):
         context = super().get_context_data(**kwargs)
         evaluacion_filter = EvaluacionFilter(self.request.GET,queryset = self.get_queryset())
         # Semejante al home: para el navbar
-        docente = Docente.objects.get(numidentificacion=self.request.user.username)
-        materia = Materia.objects.filter(id_docente=docente)
-        grado_seccion_materia = Gradoseccionmateria.objects.filter(id_materia__in=materia)
-        gradoseccion = Gradoseccion.objects.filter(gradoseccionmateria__id_materia__id_docente=docente).distinct()
+        context = asignacionClases(self.request)
         # ------------------------------------
         context["filter_form"] = evaluacion_filter.form
         context["evas"] = evaluacion_filter.qs
-        context['grado_seccion'] = gradoseccion
-        context["grado_seccion_materia"] = grado_seccion_materia 
+ 
         return context
 
 
@@ -116,6 +116,7 @@ class ListarEvaluacionesAlumnos(View):
 
     def get_context_data(self, **kwargs):
         contexto = {}
+        contexto = asignacionClases(self.request)
         contexto['estudiantes'] = self.get_queryset()
         contexto['form'] = self.form_class
         return contexto
@@ -178,6 +179,7 @@ def ver_Promedios(request, idgrado, idtrimestre):
         promedio = round(sum(notas), 2)
         promedios.append({'alumno': alumno, 'promedio': promedio})
 
+
     contexto = {
         'gradoseccion': gradoseccion,
         'evaluaciones': evaluaciones,
@@ -187,6 +189,10 @@ def ver_Promedios(request, idgrado, idtrimestre):
         'alumnos': alumnos,
         'promedios': promedios,
     }
+
+    contexto.update(asignacionClases(request))
+    
+
     return render(request, 'calificaciones/verPromedios.html', contexto)
 
 
@@ -276,6 +282,7 @@ class cambiarRolListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['users'] = User.objects.all()
+        context.update(asignacionClases(self.request))
         return context
 
 
@@ -364,6 +371,7 @@ class ActualizarAlumno(UpdateView):
         self.gradoseccion = self.kwargs["id_gradoseccion"]
         self.alumnos = Alumno.objects.filter(id_gradoseccion=self.gradoseccion)
         context['estudiantes'] = self.alumnos
+        context.update(asignacionClases(self.request))
         return context
     
     def get_success_url(self):
@@ -425,8 +433,9 @@ class AsignacionClases(View):
 
     def get_queryset(self):
         consultas = {}
-        consultas['grado_seccion_materia'] = self.model.objects.all()
-        consultas['grado_seccion'] = Gradoseccion.objects.all()
+        consultas = asignacionClases(self.request)
+        consultas['Grado_seccion_materia'] = self.model.objects.all()
+        consultas['Grado_seccion'] = Gradoseccion.objects.all()
         consultas['docentes'] = Docente.objects.all()
         return consultas
 
@@ -517,6 +526,7 @@ class CrearDocentes(View):
 
     def get_context_data(self, **kwargs):
         context = {}
+        context = asignacionClases(self.request)
         context['docente'] = self.get_queryset()
         context['docente_form'] = self.form_teacher
         context['user_form'] = self.form_user
@@ -531,17 +541,20 @@ class CrearDocentes(View):
         if form_teacher.is_valid() and form_user.is_valid():
             form_teacher.save()
             form_user.save()
+            messages.success(request, '!El docente se guardo exitosamente con su respectivas credenciales como usuario del sistema¡')
             return redirect('sgn_app:listado_docentes')
         else:
-            messages.error(request, 'Ocurrio un error')
+            messages.error(request, '¡Ocurrio un error!, verifica los datos ingresados anteriormente y vuelve a intentarlo')
             return render(request, self.template_name, self.get_context_data())
 
 
 # HU-30: Editar Docentes
 @login_required()
 def EditarDocente(request, id):
+    contexto = {}
     docente = get_object_or_404(Docente, numidentificacion=id)
     user = get_object_or_404(User, username=id)
+    contexto = asignacionClases(request)
     if request.method == 'POST':
         form_teacher = DocenteForm(request.POST, instance=docente)
         form_user = UserCreationForm(request.POST, instance=user)
@@ -552,7 +565,9 @@ def EditarDocente(request, id):
     else:
         form_teacher = DocenteForm(instance=docente)
         form_user = RegisterUserForm(instance=user)
-    return render(request, 'docente/editar_docente.html', {'docente_form': form_teacher, 'user_form': form_user})
+        contexto['docente_form'] = form_teacher
+        contexto['user_form'] = form_user
+    return render(request, 'docente/editar_docente.html', contexto)
 
 
 # HU-31: Habilitar/Deshabilitar Docentes
@@ -586,6 +601,7 @@ class ListarDocentes(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['users'] = User.objects.all()
+        context.update(asignacionClases(self.request))
         return context
 
 # ------------------------------------------
@@ -594,14 +610,16 @@ class ListarDocentes(ListView):
 # HU-33: Crear Trimestre
 def CrearTrimestre(request):
     form_trimestre = TrimestreForm(request.POST or None)
+    contexto = {}
+    contexto = asignacionClases(request)
     if request.method == 'POST':
         if form_trimestre.is_valid():
             form_trimestre.save()
             return redirect('sgn_app:crear_trimestre')
         else:
-            messages.error(
-                request, "El nombre del trimestre ya existe en el mismo año.")
-    return render(request, 'trimestre/crear_trimestre.html', {'form_trimestre': form_trimestre})
+            messages.error(request, "¡El trimestre ya existe para ese año!")
+    contexto['form_trimestre'] = form_trimestre
+    return render(request, 'trimestre/crear_trimestre.html', contexto)
 
 
 class Correcto(TemplateView):
@@ -614,6 +632,11 @@ class ListarTrimestres(ListView):
     template_name = 'trimestre/listar_trimestres.html'
     context_object_name = 'trimestres'
     queryset = model.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(asignacionClases(self.request))
+        return context
 
 
 # HU-35: Actualizar Trimestre
@@ -631,8 +654,7 @@ def EliminarTrimestre(request, id):
         trimestre = Trimestre.objects.get(id_trimestre=id)
         trimestre.delete()
     except Exception:
-        messages.error(
-            request, "No se puede eliminar el trimestre porque existen registros dependientes.")
+        messages.error(request, "¡No se puede eliminar el trimestre!")
     return redirect('sgn_app:listar_trimestres')
 
 
@@ -642,6 +664,11 @@ class ListarEvaluaciones(ListView):
     template_name = 'evaluacion/listar_evaluaciones.html'
     context_object_name = 'evaluaciones'
     queryset = model.objects.all()
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(asignacionClases(self.request))
+        return context
 
 # HU-38: Agregar Evaluación
 def CrearEvaluacionAlumno(request):
@@ -678,6 +705,7 @@ def CrearEvaluacionAlumno(request):
         'form': form,
         'submitted': submitted,
     }
+    context.update(asignacionClases(request))
     return render(request, 'estudiante/crear-evaluacion.html', context)
 
 
@@ -689,10 +717,10 @@ class EvaluacionEditar(UpdateView):
     success_url = reverse_lazy('sgn_app:listar_evaluaciones')
 
 def evaluacion_editar_docente(request,idEvaluacion):
-
+    contexto = asignacionClases(request)
     evaluacion = Evaluacion.objects.get(id_evaluacion = idEvaluacion)
     idgrado = evaluacion.id_gradoseccionmateria.id_gradoseccionmateria
-    print(idgrado)
+    
     if request.method == 'POST':
         id_evaluacion = request.POST['id_evaluacion']
         nombre_evaluacion = request.POST['nombre_evaluacion']
@@ -700,7 +728,8 @@ def evaluacion_editar_docente(request,idEvaluacion):
         evaluacion.save()
         return redirect('sgn_app:listar_evas_grado', idgrado=idgrado)
     else:
-        return render(request, 'evaluacion/editar_evaluacion_docente.html',{'evaluacion':evaluacion})
+        contexto['evaluacion'] = evaluacion
+        return render(request, 'evaluacion/editar_evaluacion_docente.html',contexto)
 
 #HU-27 cargar alumnos en excel
 @login_required

@@ -1,7 +1,7 @@
 {% extends 'layouts/dashboard.html' %}
 
 {% block metadata %}
-<title>Editar usuario - SGN1302</title>
+<title>Privilegios de Usuario</title>
 {% endblock %}
 
 {% block content %}
@@ -14,8 +14,8 @@
         <div class="row align-items-center justify-content-between pt-3">
           <div class="col-auto mb-3">
             <h1 class="page-header-title">
-              <div class="page-header-icon"><i data-feather="user"></i></div>
-              Listado de Docentes
+              <div class="page-header-icon"><i data-feather="star"></i></div>
+              Privilegios de Usuarios
             </h1>
           </div>
           <div class="col-12 col-xl-auto mb-3">
@@ -32,56 +32,53 @@
   <div class="container-xl px-4">
     <div class="card mb-4">
       <div class="card-body">
-        <table id="datatablesSimple" class="table table-bordered">
+        <table id="datatablesSimple" class="table table-hover">
           <thead>
             <tr>
-              <th>Username</th>
+              <th>Usuario</th>
               <th>DUI</th>
               <th>Nombres</th>
               <th>Apellidos</th>
-              <th class="text-center">Administrador</th>
+              <th class="text-center">Roles</th>
               <th class="text-center">Acciones</th>
               <th class="d-none">Status</th>
               <th class="d-none">Actions</th>
             </tr>
           </thead>
-          <tfoot>
-            <tr>
-              <th>Username</th>
-              <th>DUI</th>
-              <th>Nombres</th>
-              <th>Apellidos</th>
-              <th class="text-center">Estado</th>
-              <th class="text-center">Acciones</th>
-              <th class="d-none">Status</th>
-              <th class="d-none">Actions</th>
-            </tr>
-          </tfoot>
           <tbody>
             {% for docente in docentes %}
             {% for usuario in users %}
                 {% if usuario.username == docente.numidentificacion %}
-                 {% if usuario.is_superuser %}
-                 {% else %}
+                
             <tr>
               <td>{{docente.numidentificacion}}</td>
               <td>{{docente.dui}}</td>
               <td>{{docente.nombre_docente}}</td>
               <td>{{docente.apellido_docente}}</td>
               <td class="text-center">
-                {% for usuario in users %}
-                {% if usuario.username == docente.numidentificacion %}
-                <span>NO</span>
+                <span class="btn btn-secondary btn-xs rounded-pill">Docente</span>
+                {% if usuario.is_superuser %}
+                <span class="btn btn-primary btn-xs rounded-pill">Administrador</span>
                 {% endif %}
-                {% endfor %}
               </td>
               <td class="text-center">
-                <a  href="{{docente.numidentificacion}} " class="btn btn-primary"> Hacer Administrador </a>
+                {% if usuario.is_superuser %}
+                <a  href="{{docente.numidentificacion}} " class="btn btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Quitar a este usuario los privilegios de administrador">
+                  <i class="fa fa-star me-1" aria-hidden="true"></i>
+                  Eliminar
+                </a>
+                {% else %}
+                <a  href="{{docente.numidentificacion}} " class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Designar a este usuario los privilegios de administrador">
+                  <i class="fa fa-star me-1" aria-hidden="true"></i>
+                  Designar
+                </a>
+                {% endif %}
+                
               </td>
               <td class="d-none">No utilizado</td>
               <td class="d-none">No utilizado</td>
             </tr>
-            {% endif %}
+            
             {% endif %}
             {% endfor %}
             {% endfor %}
@@ -91,4 +88,14 @@
       </div>
     </div>
   </div>
+  <script>
+    window.onload = function () {
+      const navDocentes = document.getElementById('navDocentes');
+      const collapseDocentes = document.getElementById('collapseDocentes');
+      const cambiarRol = document.getElementById('cambiarRol');
+      navDocentes.classList.add('active');
+      cambiarRol.classList.add('active');
+      collapseDocentes.classList.add('show');
+    };
+  </script>
 {% endblock %}

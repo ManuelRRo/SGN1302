@@ -28,20 +28,21 @@
   <div class="mb-3">
     <!-- Botón insertar carga laboral trigger -->
     <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#insertarCargaLaboral">
-      Nueva Carga Laboral
+      <i data-feather="check-square"></i>&nbsp;Nueva Carga Laboral
     </button>
 
     {% if messages %}
     {% for message in messages %}
     
     <div class="container-xl px-4 mt-4">
-      <div class="alert alert-primary alert-icon" role="alert">
+      <div class="alert alert-primary alert-icon border-start-lg" role="alert">
         <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
         <div class="alert-icon-aside">
-          <i class="far fa-flag"></i>
+          <i class="far fa-bell"></i>
         </div>
         <div class="alert-icon-content">
-          <h6 class="alert-heading">{{message}}</h6>
+          <h6 class="alert-heading">Notificación</h6>
+          {{message}}
         </div>
       </div>
     </div>
@@ -65,7 +66,7 @@
             <label for="estudiante">Grado</label>
             <select class="form-select mb-3" name="idGradoSeccion" id="">
               <option value="" disabled selected>Seleccione un Grado</option>
-              {% for grado_seccion in grado_seccion %}
+              {% for grado_seccion in Grado_seccion %}
               <option value="{{grado_seccion.id_gradoseccion}}">{{grado_seccion}}</option>
               {% endfor %}
             </select>
@@ -103,7 +104,7 @@
 
   <div class="card mb-4">
     <div class="card-body">
-      <table id="datatablesSimple" class="table table-bordered">
+      <table id="datatablesSimple" class="table table-hover">
         <thead>
           <tr>
             <th>Usuario - Docente</th>
@@ -116,20 +117,8 @@
             <th class="d-none">Actions</th>
           </tr>
         </thead>
-        <tfoot>
-          <tr>
-            <th>Usuario - Docente</th>
-            <th>Grado</th>
-            <th class="text-center">Turno</th>
-            <th class="text-center">Materia</th>
-            <th class="d-none">Estado</th>
-            <th class="text-center">Acciones</th>
-            <th class="d-none">Status</th>
-            <th class="d-none">Actions</th>
-          </tr>
-        </tfoot>
         <tbody>
-          {% for grado in grado_seccion_materia %}
+          {% for grado in Grado_seccion_materia %}
           <tr>
             <td>{{grado.id_materia.id_docente.numidentificacion}} - {{grado.id_materia.id_docente}}</td>
             <td>{{grado.id_gradoseccion}}</td>
@@ -137,8 +126,8 @@
             <td class="text-center">{{grado.id_materia.nombre_materia}}</td>
             <td class="d-none">No utilizado</td>
             <td class="text-center">
-              <a href="{% url 'sgn_app:eliminar_asignar_clases' grado.id_gradoseccionmateria %}" role="button">
-                <i data-feather="trash-2"></i>
+              <a class="btn btn-outline-danger" href="{% url 'sgn_app:eliminar_asignar_clases' grado.id_gradoseccionmateria %}" role="button">
+                <i data-feather="trash-2"></i>&nbsp; Eliminar
               </a>
             </td>
             <td class="d-none">No utilizado</td>

@@ -9,24 +9,24 @@
                     <!-- Sidenav Accordion (INICIO)-->
                     <div class="sidenav-menu-heading">INICIO</div>
                     <a class="nav-link collapsed active" href="javascript:void(0);" data-bs-toggle="collapse"
-                        data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                        data-bs-target="#collapseMaterias" aria-expanded="false" aria-controls="collapsePages">
                         <div class="nav-link-icon"><i data-feather="grid"></i></div>
                         Materias Impartidas
                         <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
-                    <div class="collapse" id="collapsePages" data-bs-parent="#accordionSidenav">
+                    <div class="collapse" id="collapseMaterias" data-bs-parent="#accordionMaterias">
                         {% for gradoseccion in grado_seccion %}    
-                        <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPagesMenu">
-                            <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
-                                data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                        <nav class="sidenav-menu-nested nav accordion" id="accordionMateriasMenu">
+                            <a id="Grado{{gradoseccion.id_gradoseccion}}" class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
+                                data-bs-target="#pagesMaterias{{gradoseccion.id_gradoseccion}}" aria-expanded="false" aria-controls="pagesCollapseAuth">
                                 {{gradoseccion}}
                                 <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
-                            <div class="collapse" id="pagesCollapseAuth" data-bs-parent="#accordionSidenavPagesMenu">
+                            <div class="collapse" id="pagesMaterias{{gradoseccion.id_gradoseccion}}" data-bs-parent="#accordionSidenavPagesMenu">
                                 {% for g in grado_seccion_materia %}
                                 {% if gradoseccion == g.id_gradoseccion%}
                                 <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPagesAuth">
-                                    <a class="nav-link collapsed" href="{% url 'sgn_app:listar_evas_grado' g.id_gradoseccionmateria%}">
+                                    <a id="Materia{{g.id_gradoseccionmateria}}" class="nav-link collapsed" href="{% url 'sgn_app:listar_evas_grado' g.id_gradoseccionmateria%}">
                                         {{g.id_materia.nombre_materia}}                               
                                     </a>
                                 </nav>
@@ -39,22 +39,25 @@
                 {% endif %}
                 <!-- GESTOR DE UN DOCENTE CON ACCESO A AGREGAR ALUMNOS-->
                 {% if not user.is_superuser %}
-                        <!-- Sidenav Accordion (Gestion Alumnos) -->
-                        <a class="nav-link collapsed active" href="javascript:void(0);" data-bs-toggle="collapse"
-                            data-bs-target="#collapseAlumnos" aria-expanded="false" aria-controls="collapseAlumnos">
-                            <div class="nav-link-icon"><i data-feather="grid"></i></div>
-                            Alumnos
-                            <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="show" id="collapseAlumnos" data-bs-parent="#accordionAlumnos">
-                            {% for gradoseccion in grado_seccion %}    
-                            <nav class="sidenav-menu-nested nav accordion" id="accordionAlumnosPagesMenu">
-                                <a class="nav-link" href="{% url 'sgn_app:ListarAlumno' gradoseccion.id_gradoseccion%}">
-                                    {{gradoseccion}}
-                                </a>                   
-                            </nav>
-                            {% endfor %}
-                        </div>
+                    {% if grado_seccion %}
+                    <!-- Sidenav Accordion (Gestion Alumnos) -->
+                    <div class="sidenav-menu-heading">GESTOR DE ORIENTADOR</div>
+                    <a class="nav-link collapsed active" href="javascript:void(0);" data-bs-toggle="collapse"
+                        data-bs-target="#collapseAlumnos" aria-expanded="false" aria-controls="collapseAlumnos">
+                        <div class="nav-link-icon"><i data-feather="grid"></i></div>
+                        Alumnos
+                        <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="show" id="collapseAlumnos" data-bs-parent="#accordionAlumnos">
+                        {% for gradoseccion in grado_seccion %}    
+                        <nav class="sidenav-menu-nested nav accordion" id="accordionAlumnosPagesMenu">
+                            <a class="nav-link" href="{% url 'sgn_app:ListarAlumno' gradoseccion.id_gradoseccion%}">
+                                {{gradoseccion}}
+                            </a>                   
+                        </nav>
+                        {% endfor %}
+                    </div>
+                    {%endif%}
                 {%endif%}
 
                 <!-- GESTOR DEL ADMINISTRADOR-->
@@ -70,13 +73,13 @@
                     <div class="collapse" id="collapseDocentes" data-bs-parent="#accordionSidenav">
                         <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
                             <a id="agregarDocente" class="nav-link" href="{% url 'sgn_app:crear_docente' %}">
-                                Agregar docente
+                                Agregar Docente
                                 <span class="badge bg-primary-soft text-primary ms-auto">
                                     <i class="fa fa-user-plus" aria-hidden="true"></i>
                                 </span>
                             </a>
                             <a id="listarDocentes" class="nav-link" href="{% url 'sgn_app:listado_docentes'%}">
-                                Listado de docentes
+                                Listado de Docentes
                                 <span class="badge bg-primary-soft text-primary ms-auto">
                                     <i class="fa fa-users" aria-hidden="true"></i>
                                 </span>
@@ -88,9 +91,9 @@
                                 </span>
                             </a>
                             <a id="cambiarRol" class="nav-link" href="{% url 'sgn_app:Cambio de rol'%}">
-                                Cambiar Rol
+                                Privilegios de Usuario
                                 <span class="badge bg-primary-soft text-primary ms-auto">
-                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
                                 </span>
                             </a>
                         </nav>

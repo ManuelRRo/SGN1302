@@ -8,47 +8,71 @@
 
 {% block content %}
 {% load static %}
+<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+    <div class="container-xl px-4">
+        <div class="page-header-content">
+            <div class="row align-items-center justify-content-between pt-3">
+                <div class="text-center text-uppercase-expanded fw-900 fs-4">
+                    EVALUACIÓN
+                </div>
+                <div class="text-center text-uppercase-expanded fw-300">
+                    {{estudiantes.first.id_evaluacion}}
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
 
+<!--PARA FIJAR LA OPCIÓN EN LA BARRA DE NAVEGACIÓN-->
+<div id="idmateria" class="d-none">
+    {{estudiantes.first.id_evaluacion.id_gradoseccionmateria.id_gradoseccionmateria}}
+</div>
+<div id="idgrado" class="d-none">
+    {{estudiantes.first.id_evaluacion.id_gradoseccionmateria.id_gradoseccion.id_gradoseccion}}
+</div>
 
-<div class="container-xl px-2 mt-4">
+<div class="container-xl px-4 mt-1">
     <div class="row">
-        <div class="col-lg-9">
+        <div class="col-lg-8">
             <div class="card">
                 <div class="card-header">Listado de alumnos</div>
                 <div class="card-body"> 
-                    <table id="datatablesSimple" class = "table table-bordered" >
+                    <table id="datatablesSimple" class = "table table-hover" >
                         <thead>
                             <tr>
-                                <th>Evaluacion</th>
                                 <th>Estudiante</th>
-                                <th>Nota</th>
+                                <th class="text-center">Nota</th>
                                 <th class="d-none">Estado</th>
-                                <th>Acciones</th>
+                                <th class="text-center">Acciones</th>
                                 <th class="d-none">Salary</th>
                                 <th class="d-none">Status</th>
                                 <th class="d-none">Actions</th>
+                                <th class="d-none">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for estudiante in estudiantes %}
                             <tr>
-                                <td>{{estudiante.id_evaluacion}}</td>
                                 <td>{{estudiante.id_alumno}}</td>
                                 <!-- validar si tiene asignada evaluacion -->
                                 {% if estudiante.nota is None %}
                                     <td></td>
                                 {% else %}
-                                    <td>{{estudiante.nota}}</td>
+                                    <td class="text-center">{{estudiante.nota}}</td>
                                 {% endif %}
                                 
                                 <!-- modificar el estado dependiendo si est an e 0 o no -->
                                 <td class="d-none"></td>
-                                <td>
-                                    <a href="#"onclick="actualizarRegistro('{{estudiante.id_evaluacion.id_evaluacion}}', '{{estudiante.id_alumno.id_alumno}}','{{estudiante.id_alumno.nombres_alumno}}','{{estudiante.id_alumno.apellidos_alumno}}', '{{estudiante.nota}}')">Actualizar</a>
+                                <td class="text-center">
+                                    <a class="btn btn-outline-primary" title="Colocarle nota al alumno de este registro" href="#" onclick="actualizarRegistro('{{estudiante.id_evaluacion.id_evaluacion}}', '{{estudiante.id_alumno.id_alumno}}','{{estudiante.id_alumno.nombres_alumno}}','{{estudiante.id_alumno.apellidos_alumno}}', '{{estudiante.nota}}')">
+                                        <i class="me-1" data-feather="edit"></i>
+                                        Asignar
+                                    </a>
                                 </td> 
                                 <td class="d-none">No utilizado</td>
                                 <td class="d-none" >No utilizado</td>
-                                <td class="d-none">No utilizado</td>               
+                                <td class="d-none">No utilizado</td>   
+                                <td class="d-none">No utilizado</td>                           
                             </tr>
                             {% endfor%}
                         </tbody>
@@ -57,7 +81,7 @@
             </div>
         </div>
         <!-- Sticky Navigation-->
-        <div class="col-lg-3">
+        <div class="col-lg-4">
             <div class="nav-sticky">
                 <div class="card">
                     <div class="card-header">Calificar alumno</div>
@@ -109,6 +133,20 @@
     function activarSelect() {
         var selectAlumno = document.getElementById('idAlumno');
         selectAlumno.disabled = false;
+    }
+
+    // PARA MANEJAR LA BARRA DE NAGEVACIÓN PARA EVALUAR
+    window.onload = function () {
+        var idmateria = document.getElementById("idmateria").textContent.trim();  // Limpia el contenido del ID
+        var idgrado = document.getElementById("idgrado").textContent.trim();  // Limpia el contenido del ID
+        const collapseGrados = document.getElementById('collapseMaterias');
+        const collapseMaterias = document.getElementById('pagesMaterias'+idgrado)
+        const materia = document.getElementById('Materia'+idmateria);
+        const grado = document.getElementById('Grado'+idgrado);
+        collapseMaterias.classList.add('show');
+        materia.classList.add('active');
+        grado.classList.add('active');
+        collapseGrados.classList.add('show');
     }
 
 </script>

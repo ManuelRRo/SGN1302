@@ -8,8 +8,15 @@
 
 {% block content %}
 {% load static %}
+<!--PARA FIJAR LA OPCIÓN EN LA BARRA DE NAVEGACIÓN-->
+<div id="idmateria" class="d-none">
+  {{evaluacion.id_gradoseccionmateria.id_materia.id_materia}}
+</div>
+<div id="idgrado" class="d-none">
+  {{evaluacion.id_gradoseccionmateria.id_gradoseccion.id_gradoseccion}}
+</div>
 <div class="text-center">
-  <h1 class="d-flex justify-content-center mt-5">Editar Evaluacion - {{evaluacion.nombre_evaluacion}}</h1>
+  <h1 class="d-flex justify-content-center mt-5">{{evaluacion.nombre_evaluacion}}</h1>
 </div>
 <div class="row align-items-center justify-content-center">
   <div class="col-xl-8 px-4">
@@ -29,5 +36,19 @@
     </div>
   </div>
 </div>
-
+<script>
+  // PARA MANEJAR LA BARRA DE NAGEVACIÓN PARA EVALUAR
+  window.onload = function () {
+      var idmateria = document.getElementById("idmateria").textContent.trim();  // Limpia el contenido del ID
+      var idgrado = document.getElementById("idgrado").textContent.trim();  // Limpia el contenido del ID
+      const collapseGrados = document.getElementById('collapseMaterias');
+      const collapseMaterias = document.getElementById('pagesMaterias'+idgrado)
+      const materia = document.getElementById('Materia'+idmateria);
+      const grado = document.getElementById('Grado'+idgrado);
+      collapseMaterias.classList.add('show');
+      materia.classList.add('active');
+      grado.classList.add('active');
+      collapseGrados.classList.add('show');
+  }
+</script>
 {% endblock %}

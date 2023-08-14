@@ -11,24 +11,27 @@
 <br />
 <div class="container-xl px-4">
 
-    {% if evas.first %}
-    <div id="cargaPromedio" class="row justify-content-end mb-1 d-none">
-        <div class="col-auto">
-            <a class="btn btn-outline-primary" href="{% url 'sgn_app:ver_Promedios' idgrado=evas.first.id_gradoseccionmateria.id_gradoseccionmateria idtrimestre=evas.first.id_trimestre.id_trimestre %}">
-                <i class="me-1" data-feather="download"></i>
-                Cargar Promedio
-            </a>
-        </div>
-    </div>
-    {% endif %}
+    
     
     <form method="get">
        <div class="row mb-3">
-        <div class="col-xl-6 col-sm-10">
+        <div class="col-xl-6 col-sm-6 col-7">
             {{filter_form.id_trimestre}}
         </div>
-        <div class="col-xl-6 col-sm-2">
-            <input id="filtro_boton" onclick="activarlista()" class="btn btn-primary" type="submit"/>
+        <div class="col-xl-6 col-sm-6 col-5">
+            <button id="filtro_boton" onclick="activarlista()" class="btn btn-primary d-none" type="submit">
+                <i data-feather="search"></i> &nbsp;Buscar
+            </button>
+            {% if evas.first %}
+            <div id="cargaPromedio" class="row justify-content-end mb-1 d-none">
+                <div class="col-auto">
+                    <a class="btn btn-outline-primary" href="{% url 'sgn_app:ver_Promedios' idgrado=evas.first.id_gradoseccionmateria.id_gradoseccionmateria idtrimestre=evas.first.id_trimestre.id_trimestre %}">
+                        <i class="me-1" data-feather="download"></i>
+                        Ver promedios
+                    </a>
+                </div>
+            </div>
+            {% endif %}            
         </div>
        </div>
     </form>
@@ -53,7 +56,13 @@
                     <div class="text-uppercase">
                         {{eva.porcentaje}}%
                     </div>
-                    
+                    <!--PARA FIJAR LA OPCIÓN EN LA BARRA DE NAVEGACIÓN-->
+                    <div id="idmateria" class="d-none">
+                        {{eva.id_gradoseccionmateria.id_gradoseccionmateria}}
+                    </div>
+                    <div id="idgrado" class="d-none">
+                        {{eva.id_gradoseccionmateria.id_gradoseccion.id_gradoseccion}}
+                    </div>
                 </div>
             </div>
         </div>
@@ -81,6 +90,38 @@
         }
 
     });
+    // PARA MANEJAR LA BARRA DE NAGEVACIÓN PARA EVALUAR
+    window.onload = function () {
+        var idmateria = document.getElementById("idmateria").textContent.trim();  // Limpia el contenido del ID
+        var idgrado = document.getElementById("idgrado").textContent.trim();  // Limpia el contenido del ID
+        const collapseGrados = document.getElementById('collapseMaterias');
+        const collapseMaterias = document.getElementById('pagesMaterias'+idgrado)
+        const materia = document.getElementById('Materia'+idmateria);
+        const grado = document.getElementById('Grado'+idgrado);
+        collapseMaterias.classList.add('show');
+        materia.classList.add('active');
+        grado.classList.add('active');
+        collapseGrados.classList.add('show');
+    }
+    
+    // PARA DISPARAR Y PERSONALIZAR EL FILTRO DE EVALUACIONES TRIMESTRALES
+    document.addEventListener("DOMContentLoaded", function() {
+    const selectElement = document.querySelector("#id_id_trimestre");
+    const botonBuscar = document.querySelector("#filtro_boton");
+    const selectTrimestre = document.getElementById("id_id_trimestre");
+        
+    // Cambiar el texto de la opción predeterminada
+    selectTrimestre.querySelector("option[value='']").textContent = "Seleccione el trimestre";
+    // Evento de cambio en el select
+    selectElement.addEventListener("change", function() {
+        // Simular un clic en el botón
+        botonBuscar.click();
+    });
+    });
+
+    
+
+
 </script>
 
 {% endblock %}

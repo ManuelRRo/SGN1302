@@ -14,28 +14,29 @@
 {% for message in messages %}
 
 <div class="container-xl px-4 mt-4">
-    <div class="alert alert-primary alert-icon" role="alert">
-        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
-        <div class="alert-icon-aside">
-            <i class="far fa-flag"></i>
-        </div>
-        <div class="alert-icon-content">
-            <h6 class="alert-heading">{{message}}</h6>
-        </div>
+  <div class="alert alert-primary alert-icon border-start-lg" role="alert">
+    <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="alert-icon-aside">
+      <i class="far fa-bell"></i>
     </div>
+    <div class="alert-icon-content">
+      <h6 class="alert-heading">Notificación</h6>
+      {{message}}
+    </div>
+  </div>
 </div>
 
 {% endfor %}
-{% endif %}        
+{% endif %}       
 
 
-<div class="container-xl px-2 mt-4">
+<div class="container-xl px-4 mt-4">
     <div class="row">
-        <div class="col-lg-9">
+        <div class="col-lg-8">
             <div class="card">
                 <div class="card-header">Listado de alumnos</div>
                 <div class="card-body"> 
-                    <table id="datatablesSimple" class = "table table-bordered" >
+                    <table id="datatablesSimple" class = "table table-hover" >
                         <thead>
                             <tr>
                                 <th>NIE</th>
@@ -57,7 +58,10 @@
                                 <!-- modificar el estado dependiendo si est an e 0 o no -->
                                 <td class="d-none"><div class="badge bg-warning rounded-pill">Pending</div></td>
                                 <td>
-                                        <a href="{% url 'sgn_app:ActualizarAlumno' pk=estudiante.id_alumno id_gradoseccion=estudiante.id_gradoseccion.id_gradoseccion %}">Actualizar</a>
+                                        <a class="btn btn-outline-primary" title="Editar datos del alumno de este registro" href="{% url 'sgn_app:ActualizarAlumno' pk=estudiante.id_alumno id_gradoseccion=estudiante.id_gradoseccion.id_gradoseccion %}">
+                                            <i class="me-1" data-feather="edit"></i>
+                                            Actualizar
+                                        </a>
                                 </td> 
                                 <td class="d-none">No utilizado</td>
                                 <td class="d-none" >No utilizado</td>
@@ -79,7 +83,7 @@
             </div>
         </div>
         <!-- Sticky Navigation-->
-        <div class="col-lg-3">
+        <div class="col-lg-4">
             <div class="nav-sticky">
                 <div class="card">
                     <div class="card-header">Editar alumno</div>

@@ -14,16 +14,13 @@
             <div class="page-header-icon">
               <i class="fa fa-book-open" aria-hidden="true"></i>
             </div>
-            Trimestres del Año
+            Trimestres
           </h1>
         </div>
         <div class="col-12 col-xl-auto mb-3">
-          <a
-            class="btn btn-sm btn-light text-primary"
-            href="{% url 'sgn_app:crear_eva_est'%}"
-          >
+          <a class="btn btn-sm btn-light text-primary" href="{% url 'sgn_app:crear_eva_est'%}">
             <i class="me-1" data-feather="feather"></i>
-            Agregar nueva evaluación
+            Agregar Nueva Evaluación
           </a>
         </div>
       </div>
@@ -38,10 +35,11 @@
     <div class="alert alert-primary alert-icon" role="alert">
         <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
         <div class="alert-icon-aside">
-            <i class="far fa-flag"></i>
+            <i class="far fa-bell"></i>
         </div>
         <div class="alert-icon-content">
-            <h6 class="alert-heading">{{message}}</h6>
+            <h6 class="alert-heading">Notificación</h6>
+            {{message}}
         </div>
     </div>
 </div>
@@ -53,7 +51,7 @@
   <div class="col-xl-8 px-4">
     <div class="card mb-4">
       <div class="card-body">
-        <table id="datatablesSimple" class="table table-bordered">
+        <table id="datatablesSimple" class="table table-hover">
           <thead>
             <tr>
               <th>Trimestre</th>
@@ -66,36 +64,20 @@
               <th class="d-none"></th>
             </tr>
           </thead>
-          <tfoot>
-            <tr>
-              <th>Trimestre</th>
-              <th>Año</th>
-              <th class="text-center">Acciones</th>
-              <th class="d-none"></th>
-              <th class="d-none"></th>
-              <th class="d-none"></th>
-              <th class="d-none"></th>
-              <th class="d-none"></th>
-            </tr>
-          </tfoot>
           <tbody>
             {% for trimestre in trimestres %}
             <tr>
               <td>{{trimestre.trimestre}}</td>
               <td>{{trimestre.anio}}</td>
               <td class="text-center">
-                <a
-                  href="{% url 'sgn_app:modificar_trimestre' trimestre.id_trimestre %}"
-                  role="button"
-                >
-                  <i data-feather="edit"></i>
+                <a class="btn btn-outline-primary" title="Editar este trimestre" href="{% url 'sgn_app:modificar_trimestre' trimestre.id_trimestre %}" role="button">
+                  <i class="me-1" data-feather="edit"></i>
+                  Editar
                 </a>
 
-                <a
-                  href="{% url 'sgn_app:eliminar_trimestre' trimestre.id_trimestre %}"
-                  role="button"
-                >
-                  <i data-feather="trash-2"></i>
+                <a class="btn btn-outline-danger" title="Eliminar este trimestre" href="{% url 'sgn_app:eliminar_trimestre' trimestre.id_trimestre %}" role="button">
+                  <i class="me-1" data-feather="trash-2"></i>
+                  Eliminar
                 </a>
               </td>
               <td class="d-none"></td>

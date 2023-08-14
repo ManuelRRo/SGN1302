@@ -7,10 +7,17 @@
 {% endblock %}
 {% block content %}
 {% load static %}
-<div class="container-xl mb-3">
+<!--PARA FIJAR LA OPCIÓN EN LA BARRA DE NAVEGACIÓN-->
+<div id="idmateria" class="d-none">
+    {{gradoseccion.id_materia.id_materia}}
+</div>
+<div id="idgrado" class="d-none">
+    {{gradoseccion.id_gradoseccion.id_gradoseccion}}
+</div>
+<div class="container-xl px-4 mb-3">
     <div class="row">
         <div class="col-12">
-            <div class="card mt-4">
+            <div class="card mt-4 px-4">
                 <div class="card-body">
                     <div class="text-center text-uppercase-expanded fw-900 fs-4">
                         CENTRO ESCOLAR "13 DE FEBRERO DE 2001"
@@ -18,7 +25,7 @@
                     <div class="text-center text-uppercase-expanded fw-100">
                         RENDIMIENTO ACADEMICO DE ESTUDIANTES
                     </div>
-                    <dl class="row mt-2">
+                    <dl class="row">
                         <dd class="col-xl-6 col-sm-6">
                             <dl class="row">
                                 <dt class="col-xl-3 col-sm-5">Asignatura</dt>
@@ -37,25 +44,32 @@
                             </dl>
                         </dd> 
                     </dl> 
-                    <div class="row mt-4">
+                    <div class="row">
                         <div class="col-xl-12">
-                            <form method="post" action="{% url 'sgn_app:reporteExcel'%}"> {% csrf_token %}
+                            <form method="post" action="{% url 'sgn_app:reporteExcel'%}"> 
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary mb-3">
+                                    <i class="me-1" data-feather="file"></i>
+                                    Descargar Archivo Excel
+                                </button>
                                 <div class="table-responsive">
-                                    <table class="table">
-                                        <thead class="text-center text-sm text-uppercase">
-                                            <tr>
+                                    <table class="table table-hover">
+                                        <thead class="text-center text-sm">
+                                            <tr class="bg-gray-100" >
                                                 <th>N°</th>
                                                 <th>NIE</th>
-                                                <th>ALUMNO/A</th>
+                                                <th>Alumno/a</th>
                                                 {% for evaluacion in evaluaciones %}
                                                 <th>
                                                     {{ evaluacion.nombre_evaluacion }}
-                                                    {{ evaluacion.porcentaje }}%
+                                                    <div>
+                                                        {{ evaluacion.porcentaje }}%
+                                                    </div>
                                                 </th>
                                                 {% endfor %}
-                                                <th>NT</th>
-                                                <th>CATEGORIA</th>
-                                                <th>OBSERVACIÓN</th>
+                                                <th>Nota Promedio Trimestral</th>
+                                                <th>Estado</th>
+                                                <th>Observación</th>
                                             </tr>
                                         </thead>
                                         <tbody class="text-center text-sm">
@@ -77,14 +91,25 @@
                                                
                                                 <input type="hidden" name="promedio_{{ alumno.id_alumno }}"
                                                     value="{{ promedio.promedio }}">
-                                                <td>{% if promedio.promedio > 5 %}A{% else %}R{% endif %}</td>
+                                                <td>
+                                                    {% if promedio.promedio > 5 %}
+                                                    <button class="btn btn-outline-green btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Aprobado">
+                                                        <i data-feather="feather"></i>
+                                                    </button>
+                                                    {% else %}
+                                                    <button class="btn btn-outline-red btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Reprobado">
+                                                        <i data-feather="feather"></i>
+                                                    </button>
+                                                    {% endif %}
+
+                                                </td>
                                                 {% endif %}
                                                 {% empty %}
                                                 <td>-</td>
                                                 <td>-</td>
                                                 {% endfor %}
                                                 <td>
-                                                    <div class="form-floating mb-3">
+                                                    <div class="form-floating">
                                                         <input type="input" class="form-control"
                                                             name="opcional_{{alumno.id_alumno }}" id="floatingInput">
                                                         <label for="floatingInput">Opcional</label>
@@ -95,10 +120,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="me-1" data-feather="download"></i>
-                                    Generar Reporte Excel
-                                </button>
                                 <input type="hidden" name="trimestre" value="{{trimestre}}">
                                 <input type="hidden" name="grado" value="{{gradoseccion.id_gradoseccion}}">
                             </form>
@@ -111,4 +132,19 @@
         </div>
     </div>
 </div>
+<script>
+    // PARA MANEJAR LA BARRA DE NAGEVACIÓN PARA EVALUAR
+    window.onload = function () {
+        var idmateria = document.getElementById("idmateria").textContent.trim();  // Limpia el contenido del ID
+        var idgrado = document.getElementById("idgrado").textContent.trim();  // Limpia el contenido del ID
+        const collapseGrados = document.getElementById('collapseMaterias');
+        const collapseMaterias = document.getElementById('pagesMaterias'+idgrado)
+        const materia = document.getElementById('Materia'+idmateria);
+        const grado = document.getElementById('Grado'+idgrado);
+        collapseMaterias.classList.add('show');
+        materia.classList.add('active');
+        grado.classList.add('active');
+        collapseGrados.classList.add('show');
+    }
+</script>
 {% endblock %}
