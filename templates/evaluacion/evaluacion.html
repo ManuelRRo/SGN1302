@@ -15,19 +15,19 @@
     
     <form method="get">
        <div class="row mb-3">
-        <div class="col-xl-6 col-sm-6 col-7">
+        <div class="col-xl-6 col-sm-5 col-12">
             {{filter_form.id_trimestre}}
         </div>
-        <div class="col-xl-6 col-sm-6 col-5">
+        <div class="col-xl-6 col-sm-7">
             <button id="filtro_boton" onclick="activarlista()" class="btn btn-primary d-none" type="submit">
                 <i data-feather="search"></i> &nbsp;Buscar
             </button>
             {% if evas.first %}
-            <div id="cargaPromedio" class="row justify-content-end mb-1 d-none">
+            <div id="cargaPromedio" class="row justify-content-end d-none">
                 <div class="col-auto">
                     <a class="btn btn-outline-primary" href="{% url 'sgn_app:ver_Promedios' idgrado=evas.first.id_gradoseccionmateria.id_gradoseccionmateria idtrimestre=evas.first.id_trimestre.id_trimestre %}">
                         <i class="me-1" data-feather="download"></i>
-                        Ver promedios
+                        Ver Promedios
                     </a>
                 </div>
             </div>

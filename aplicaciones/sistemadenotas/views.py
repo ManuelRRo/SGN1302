@@ -167,6 +167,8 @@ def ver_Promedios(request, idgrado, idtrimestre):
     trimestre = Trimestre.objects.get(id_trimestre=idtrimestre)
 
     promedios = []
+    aprobados = 0
+    reprobados = 0
     for alumno in alumnos:
         notas = []
         for evaluacion in evaluaciones:
@@ -177,6 +179,10 @@ def ver_Promedios(request, idgrado, idtrimestre):
                     (evaluacion.porcentaje / 100)
                 notas.append(nota_ponderada)
         promedio = round(sum(notas), 2)
+        if(promedio >= 5.0):
+            aprobados += 1
+        else:
+            reprobados += 1
         promedios.append({'alumno': alumno, 'promedio': promedio})
 
 
@@ -188,6 +194,8 @@ def ver_Promedios(request, idgrado, idtrimestre):
         'trimestre': trimestre,
         'alumnos': alumnos,
         'promedios': promedios,
+        'aprobados': aprobados,
+        'reprobados': reprobados
     }
 
     contexto.update(asignacionClases(request))

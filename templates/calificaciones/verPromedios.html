@@ -7,6 +7,7 @@
 {% endblock %}
 {% block content %}
 {% load static %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!--PARA FIJAR LA OPCIÓN EN LA BARRA DE NAVEGACIÓN-->
 <div id="idmateria" class="d-none">
     {{gradoseccion.id_materia.id_materia}}
@@ -48,14 +49,23 @@
                         <div class="col-xl-12">
                             <form method="post" action="{% url 'sgn_app:reporteExcel'%}"> 
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-primary mb-3">
-                                    <i class="me-1" data-feather="file"></i>
-                                    Descargar Archivo Excel
-                                </button>
+                                <div class="row text-end">
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="me-1" data-feather="file"></i>
+                                            Descargar Archivo Excel
+                                        </button>
+                                        <!-- Botón Estadistico de Aprobados/Reprobados trigger -->
+                                        <button class="btn btn-outline-success" type="button" data-bs-toggle="modal" data-bs-target="#estadistica">
+                                            <i class="fa-solid fa-chart-column me-1"></i>
+                                            Estadistica
+                                        </button>
+                                    </div>
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table table-hover">
                                         <thead class="text-center text-sm">
-                                            <tr class="bg-gray-100" >
+                                            <tr>
                                                 <th>N°</th>
                                                 <th>NIE</th>
                                                 <th>Alumno/a</th>
@@ -93,13 +103,13 @@
                                                     value="{{ promedio.promedio }}">
                                                 <td>
                                                     {% if promedio.promedio > 5 %}
-                                                    <button class="btn btn-outline-green btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Aprobado">
+                                                    <a class="btn btn-outline-green btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Aprobado">
                                                         <i data-feather="feather"></i>
-                                                    </button>
+                                                    </a>
                                                     {% else %}
-                                                    <button class="btn btn-outline-red btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Reprobado">
+                                                    <a class="btn btn-outline-red btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Reprobado">
                                                         <i data-feather="feather"></i>
-                                                    </button>
+                                                    </a>
                                                     {% endif %}
 
                                                 </td>
@@ -125,7 +135,91 @@
                             </form>
                         </div>
                     </div>
-                    <div class="container-xl px-4 mt-5">
+                    <!-- Modal -->
+                    <div class="modal fade" id="estadistica" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">Estadistica</h5>
+                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form method="post"> {% csrf_token %}
+                                <div class="card-body">
+                                    <div class="text-center text-uppercase-expanded fw-900 fs-6">
+                                        CENTRO ESCOLAR "13 DE FEBRERO DE 2001"
+                                    </div>
+                                    <div class="text-center text-uppercase-expanded fw-100 fs-6">
+                                        Rendimiento Académico
+                                    </div>
+                                    <div class="row text-sm mt-4">
+                                        <div class="col-3 fw-bold">Asignatura:</div>
+                                        <div class="col-9">{{materia.nombre_materia}}</div>
+                                    </div>
+                                    <div class="row text-sm">
+                                        <div class="col-3 fw-bold">Grado:</div>
+                                        <div class="col-9">{{ gradoseccion.id_gradoseccion }}</div>
+                                    </div>
+                                    <canvas id="reporte"></canvas>
+                                </div>
+                                <script>
+                                    var ctx = document.getElementById('reporte').getContext('2d');
+                                    var myChart = new Chart(ctx, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: ['Aprobados','Reprobados'],
+                                            datasets: [{
+                                                data: [{{aprobados}}, {{reprobados}}],
+                                                backgroundColor: [
+                                                    'rgb(93, 156, 89, 0.8)',
+                                                    'rgba(255, 99, 132, 0.8)',
+                                                ],
+                                            borderColor: [
+                                                    'rgba(93, 156, 89, 1)',
+                                                    'rgba(255, 99, 132, 1)',
+                                                ],
+                                            borderWidth: 2,
+                                            borderSkipped: false,
+                                            }]
+                                        },
+                                        options: {
+                                            plugins: {
+                                                responsive: true,
+                                                legend: {
+                                                    display: false,
+                                                },
+                                                title: {
+                                                display: true,
+                                                text: 'Distribución de Alumnos según estado de nota trimestral',
+                                                }
+                                            },
+                                            scales: {
+                                                x: {
+                                                  title: {
+                                                    display: true,
+                                                    text: 'Estado'
+                                                  }
+                                                },
+                                                y: {
+                                                    title: {
+                                                      display: true,
+                                                      text: 'Cantidad de Alumnos'
+                                                    }
+                                                  }
+                                              }
+    
+                                        }
+                                    });
+                                </script>
+                                <div class="modal-footer">
+                                {% comment %} <button class="btn btn-primary" type="submit">
+                                    Descargar Reporte
+                                </button> {% endcomment %}
+                                <button class="btn btn-danger" type="button" data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
