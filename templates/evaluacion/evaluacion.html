@@ -35,10 +35,12 @@
         </div>
        </div>
     </form>
+    
 
     <div id="lista_evaluaciones" class="row d-none">
-        {% for eva in evas%}
-
+   
+        {% for eva in evas %}
+            
         <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
             <div class="card border-top-lg border-primary lift rounded overflow-hidden mb-2">
                 <div class="card-body text-center">
@@ -47,6 +49,23 @@
                             <i data-feather="edit"></i>
                         </a>
                     </div>
+                    
+                    {% if eva.estado == 0 %}
+                    <div>
+                        <a title="Habilitar Evaluación" class="btn btn-danger btn-sm position-absolute top-0 end-0 mt-2 me-2" href="{% url 'sgn_app:habilitar_evaluacion' idgsm=eva.id_gradoseccionmateria.id_gradoseccionmateria idtri=evas.first.id_trimestre.id_trimestre id=eva.id_evaluacion %}" role="button">
+                            <i data-feather="eye-off"></i> 
+                        </a>
+                    </div>
+                    {%else%}
+                    <div>
+                         <a title="Deshabilitar Evaluación" class="btn btn-success btn-sm position-absolute top-0 end-0 mt-2 me-2" href="{% url 'sgn_app:deshabilitar_evaluacion' idgsm=eva.id_gradoseccionmateria.id_gradoseccionmateria idtri=evas.first.id_trimestre.id_trimestre id=eva.id_evaluacion %}" role="button">
+                            <i data-feather="eye"></i> 
+                            
+                        </a>
+                    </div>
+                    {%endif%}
+
+
                     <div class="text-uppercase-expanded">
                         {{eva.id_categoria}}
                     </div>
@@ -68,7 +87,9 @@
         </div>
 
         {% endfor %}
+
     </div>
+    
     
 </div>
 

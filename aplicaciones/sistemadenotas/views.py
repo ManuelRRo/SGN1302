@@ -689,7 +689,10 @@ def CrearEvaluacionAlumno(request):
         except ValueError:
             form_valid = False
         if form_valid:
-            evaluacion = form.save()  # contiene los datos de la evaluacion que se acaba de crear
+            evaluacion = form.save(commit=False)  # Evita guardar inmediatamente en la base de datos
+            evaluacion.estado = 1  # Asigna el valor 1 a la columna "estado"
+            evaluacion.save()  # Ahora guarda el objeto con el nuevo valor en la base de datos
+            # evaluacion = form.save()  # contiene los datos de la evaluacion que se acaba de crear
             # grado = form.cleaned_data['id_gradoseccionmateria'].id_gradoseccion.id_gradoseccion
             if evaluacion.id_trimestre is None:
                 return HttpResponseRedirect('/estudiante/crear-eva-est')
@@ -786,4 +789,25 @@ def confirmar_importacion(request,id):
         request.session['datos_archivo'] = None
     return redirect('sgn_app:ListarAlumno', id_gradoseccion=id)
 
-    
+
+
+#HU: 39 Habilitar/Deshabilitar Evaluaciones 
+# Vista para deshabilitar Evaluación
+@login_required
+def deshabilitar_evaluacion(request, idgsm,idtri, id):
+    evaluacion = get_object_or_404(Evaluacion, id_evaluacion=id)
+    #Deshabilitar Evaluación
+    evaluacion.estado = 0
+    evaluacion.save()
+    # Redirigir al usuario a la página deseada
+    return redirect(f'/evaluacion/listar-evas-grado/{idgsm}/?id_trimestre={idtri}') 
+
+
+@login_required     
+def habilitar_evaluacion(request,idgsm, idtri, id):
+    evaluacion = get_object_or_404(Evaluacion, id_evaluacion=id)
+    #Habilitar Evaluación
+    evaluacion.estado = 1
+    evaluacion.save()
+    # Redirigir al usuario a la página deseada
+    return redirect(f'/evaluacion/listar-evas-grado/{idgsm}/?id_trimestre={idtri}')

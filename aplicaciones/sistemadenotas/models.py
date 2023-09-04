@@ -59,13 +59,13 @@ class Evaluacion(models.Model):
     id_trimestre = models.ForeignKey('Trimestre', models.DO_NOTHING, db_column='ID_TRIMESTRE', blank=True, null=True)  # Field name made lowercase.
     nombre_evaluacion = models.CharField(db_column='NOMBRE_EVALUACION', max_length=50, blank=True, null=True)  # Field name made lowercase.
     porcentaje = models.IntegerField(db_column='PORCENTAJE', blank=True, null=False)  # Field name made lowercase.
-
+    estado = models.IntegerField(db_column='ESTADO')  # Field name made lowercase.
     class Meta:
         managed = False
         db_table = 'evaluacion'
     def __str__(self):
         return self.nombre_evaluacion
-
+    
 
 class Evaluacionalumno(models.Model):
     id_evaluacionalumno = models.AutoField(db_column='ID_EVALUACIONALUMNO', primary_key=True)  # Field name made lowercase.

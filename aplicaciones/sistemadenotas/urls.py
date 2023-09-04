@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from . import  views
 from .views import deshabilitar_usuario
 from .views import habilitar_usuario
+from .views import deshabilitar_evaluacion
+from .views import habilitar_evaluacion
 
 app_name = "sgn_app"
 urlpatterns = [
@@ -187,4 +189,16 @@ urlpatterns = [
         views.confirmar_importacion,
         name='confirmar_importacion'
         ),
+
+    # HU-39: Habilitar/Deshabilitar Evaluación
+    path(
+        'deshabilitar_evaluacion/<int:idgsm>/<int:idtri>/<int:id>/', 
+        deshabilitar_evaluacion, 
+        name='deshabilitar_evaluacion'
+    ),
+    path(
+        'habilitar_evaluacion/<int:idgsm>/<int:idtri>/<int:id>/', 
+        habilitar_evaluacion, 
+        name='habilitar_evaluacion'
+    ),
 ]
