@@ -20,6 +20,14 @@ from django.http.response import HttpResponse
 from aplicaciones.sistemadenotas.filters import EvaluacionFilter
 from datetime import datetime
 from openpyxl import load_workbook
+import matplotlib
+matplotlib.use('Agg')
+from matplotlib import pyplot as plt
+from io import BytesIO
+import base64
+from asgiref.sync import sync_to_async
+from django.db.models import Count, Q 
+from operator import itemgetter
 
 def asignacionClases(request):
     context = {}
@@ -306,7 +314,103 @@ def Cambiar_Rol(request, nombreUsuario):
         pass
     return redirect('/cambiar_Rol/')
 
+#HU-15: Reporte de Alumnos Masculinos/Femeninos
+def generar_grafico_barra(data, title):
+    grados = list(data.keys())
+    alumnos_masculinos = [item['M'] for item in data.values()]
+    alumnos_femeninos = [item['F'] for item in data.values()]
 
+    x = range(len(grados))
+    width = 0.4
+
+    plt.bar(x, alumnos_masculinos, width=width, label='Masculino')
+    plt.bar([pos + width for pos in x], alumnos_femeninos, width=width, label='Femenino')
+
+    plt.xlabel("Grados")
+    plt.ylabel("Número de alumnos")
+    plt.title(title)
+    plt.xticks([pos + width / 2 for pos in x], grados)
+    plt.legend()
+
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_base64 = base64.b64encode(buffer.read()).decode('utf-8')
+
+    plt.close()
+    return image_base64
+
+def generar_graficos_por_ciclo(ciclo):
+    grados_secciones = Gradoseccion.objects.filter(id_grado__in=range(ciclo[0], ciclo[1]), id_seccion__in=range(1, 5))
+    data = []
+
+    for gradoseccion in grados_secciones:
+        gradoseccion_text = f"{gradoseccion.id_grado.grado} {gradoseccion.id_seccion.seccion}"
+        alumnos = Alumno.objects.filter(id_gradoseccion=gradoseccion)
+        total_masculinos = alumnos.filter(sexo='M').count()
+        total_femeninos = alumnos.filter(sexo='F').count()
+        data.append({
+            'gradoseccion': gradoseccion_text,
+            'masculinos': total_masculinos,
+            'femeninos': total_femeninos
+        })
+    data.sort(key=itemgetter('gradoseccion'))
+    ciclo_nombre = ""
+    if ciclo == (1, 4):
+        ciclo_nombre = "Primer Ciclo"
+    elif ciclo == (4, 7):
+        ciclo_nombre = "Segundo Ciclo"
+    elif ciclo == (7, 10):
+        ciclo_nombre = "Tercer Ciclo"
+        
+        def custom_sort_key(item):
+            grado, seccion = item['gradoseccion'].rsplit(' ', 1)
+            orden_grados = {"Septimo Grado": 1, "Octavo Grado": 2, "Noveno Grado": 3}
+            return (orden_grados.get(grado, 0), seccion)
+
+        data.sort(key=custom_sort_key)
+
+    grados_secciones = [item['gradoseccion'] for item in data]
+    masculinos = [item['masculinos'] for item in data]
+    femeninos = [item['femeninos'] for item in data]
+
+    ancho_barras = 0.2
+    posicion_barras_femeninos = [pos + ancho_barras for pos in range(len(grados_secciones))]
+
+    fig = plt.figure(figsize=(12, 6))
+    plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
+    bars1 = plt.bar(range(len(grados_secciones)), masculinos, width=ancho_barras, label="Masculinos")
+    bars2 = plt.bar(posicion_barras_femeninos, femeninos, width=ancho_barras, label="Femeninos")
+    plt.grid(True, axis='y', linestyle='--', alpha=0.7)
+
+    plt.xticks(range(len(grados_secciones)), grados_secciones, rotation=0)
+    plt.title(f"Población Estudiantil de {ciclo_nombre}")
+
+    plt.xlabel("Grado y Sección")
+    plt.ylabel("Número de alumnos")
+
+    plt.legend(loc='upper right')
+
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_base64 = base64.b64encode(buffer.read()).decode('utf-8')
+
+    plt.close()
+    return image_base64
+
+@sync_to_async
+def graficos(request):
+    image_base64_1 = generar_graficos_por_ciclo((1, 4))
+    image_base64_2 = generar_graficos_por_ciclo((4, 7))
+    image_base64_3 = generar_graficos_por_ciclo((7, 10))
+
+    context = {
+        'image_base64_1': image_base64_1,
+        'image_base64_2': image_base64_2,
+        'image_base64_3': image_base64_3
+    }
+    return render(request, 'administracion/graficos.html', context)
 # HU-21: Insertar Alumnos
 class CrearAlumno(CreateView):
     form_class = AlumnoForm

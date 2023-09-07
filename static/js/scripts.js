@@ -83,3 +83,27 @@
         targetAnchor.classList.add('active');
     });
 });
+$(document).ready(function() {
+    // Crea un nuevo controlador ScrollMagic
+    var controller = new ScrollMagic.Controller();
+
+    // Selecciona las imágenes que deseas animar
+    var images = $(".animated-image");
+
+    // Define una animación con GSAP para mostrar las imágenes
+    var animation = gsap.from(images, {
+        opacity: 0,
+        y: 100, // Puedes ajustar la dirección y la distancia de desplazamiento
+        stagger: 0.2, // Controla el espacio entre las animaciones de las imágenes
+        duration: 0.5, // Duración de la animación en segundos
+        ease: "power1.out" // Tipo de aceleración de la animación
+    });
+
+    // Crea una escena ScrollMagic para activar la animación al desplazarse
+    new ScrollMagic.Scene({
+        triggerElement: ".grafico-container", // Puedes ajustar el elemento que desencadena la animación
+        triggerHook: 0.8 // Controla cuándo se inicia la animación en relación con la parte superior de la ventana
+    })
+    .setTween(animation)
+    .addTo(controller);
+});

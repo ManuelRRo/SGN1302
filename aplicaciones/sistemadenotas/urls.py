@@ -34,6 +34,8 @@ urlpatterns = [
         views.ReporteDeNotasExcel.as_view(),
         name="reporteExcel"
     ),
+    #HU-15:Reporte de Alumnos Masculinos/Femeninos
+    path('graficosEstadisticos/',views.graficos, name='graficos'),
     # Gestión Alumnos -----------------------------
     # HU-21: Insertar Alumnos
     path(

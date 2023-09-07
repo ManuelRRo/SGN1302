@@ -18,6 +18,7 @@ class Alumno(models.Model):
     apellidos_alumno = models.CharField(db_column='APELLIDOS_ALUMNO', max_length=50, blank=True, null=True)  # Field name made lowercase.
     nombres_alumno = models.CharField(db_column='NOMBRES_ALUMNO', max_length=50, blank=True, null=True)  # Field name made lowercase.
     estado = models.CharField(db_column='HABILITADO',max_length=1,null=True)
+    sexo = models.CharField(db_column="SEXO", max_length=1,null=False)
     class Meta:
         managed = False
         db_table = 'alumno'
