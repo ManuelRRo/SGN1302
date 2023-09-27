@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm,UserChangeForm,SetPasswordForm
 from openpyxl import Workbook
 from django.http.response import HttpResponse
 from aplicaciones.sistemadenotas.filters import EvaluacionFilter
@@ -662,24 +662,36 @@ class CrearDocentes(View):
 
 # HU-30: Editar Docentes
 @login_required()
+@login_required
 def EditarDocente(request, id):
     contexto = {}
     docente = get_object_or_404(Docente, numidentificacion=id)
     user = get_object_or_404(User, username=id)
     contexto = asignacionClases(request)
+    
     if request.method == 'POST':
         form_teacher = DocenteForm(request.POST, instance=docente)
-        form_user = UserCreationForm(request.POST, instance=user)
-        if form_teacher.is_valid() and form_user.is_valid():
+        form_user = UserChangeForm(request.POST, instance=user)
+        password_form = SetPasswordForm(user, request.POST)  # Agrega el formulario de cambio de contraseña
+       
+        if form_teacher.is_valid() and form_user.is_valid() and password_form.is_valid():
             form_teacher.save()
             form_user.save()
+            password_form.save()  # Guarda los cambios de contraseña
+            #update_session_auth_hash(request, user)  # Actualiza la sesión de autenticación
             return redirect('sgn_app:listado_docentes')
     else:
         form_teacher = DocenteForm(instance=docente)
-        form_user = RegisterUserForm(instance=user)
+        form_user = UserChangeForm(instance=user)
+        password_form = SetPasswordForm(user)  # Crea el formulario de cambio de contraseña
+        
         contexto['docente_form'] = form_teacher
         contexto['user_form'] = form_user
+        contexto['password_form'] = password_form  # Agrega el formulario de cambio de contraseña al contexto
+        contexto['user_date_join'] = user.date_joined
+
     return render(request, 'docente/editar_docente.html', contexto)
+
 
 
 # HU-31: Habilitar/Deshabilitar Docentes
