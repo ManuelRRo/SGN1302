@@ -164,7 +164,8 @@ def ver_Promedios(request, idgrado, idtrimestre):
     
     evaluacionalumno = Evaluacionalumno.objects.filter(id_alumno__id_gradoseccion=gradoseccion.id_gradoseccion, 
                                                         id_evaluacion__id_trimestre=idtrimestre, 
-                                                        id_evaluacion__id_gradoseccionmateria=gradoseccion.id_gradoseccionmateria).order_by('id_evaluacion')
+                                                        id_evaluacion__id_gradoseccionmateria=gradoseccion.id_gradoseccionmateria,
+                                                        id_evaluacion__estado=1).order_by('id_evaluacion')
     
     evaluacion_ids = evaluacionalumno.values_list('id_evaluacion', flat=True)
     
