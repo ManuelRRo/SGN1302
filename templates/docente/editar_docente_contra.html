@@ -1,7 +1,7 @@
 {% extends 'layouts/dashboard.html' %}
 
 {% block metadata %}
-<title>Editar usuario - SGN1302</title>
+<title>Crear usuario - SGN1302</title>
 {% endblock %}
 
 {% block content %}
@@ -15,7 +15,7 @@
                 <div class="col-auto mb-3">
                     <h1 class="page-header-title">
                         <div class="page-header-icon"><i data-feather="user-plus"></i></div>
-                        Editar Profesor
+                        Agregar Profesor
                     </h1>
                 </div>
                 <div class="col-12 col-xl-auto mb-3">
@@ -61,58 +61,43 @@
                     <form method = "POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="row">
+
+                        <div class="row">
                             <div class="col-xl-6">
-                                <div class="mb-0"><label>Usuario</label></div>
+                                <div class="mb-0"><label>Contraseña</label></div>
                                 <div class="mb-3">
                                     <div class="input-group input-group-joined">
                                         <span class="input-group-text">
-                                            <i data-feather="user"></i>
+                                            <i data-feather="key"></i>
                                         </span>
-                                        {{docente_form.numidentificacion}}
+                                        {{password_form.new_password1}}
                                     </div>
-                                </div>
-                                <div class="d-none">
-                                    {{user_form.username}}
-                                    
-                                </div>
-                                <div class="mb-0"><label>Nombres</label></div>
-                                <div class="d-none" >
-                                    {{user_form.first_name}}
-                                </div>
-                                <div class="mb-3">
-                                    {{docente_form.nombre_docente}}
+                                    <ul>
+                                        <li>Su contraseña no puede ser muy similar a su otra información personal.</li>
+                                        <li>Su contraseña debe contener al menos 8 caracteres.</li>
+                                        <li>Su contraseña no puede ser una contraseña de uso común.</li>
+                                        <li>Tu contraseña no puede ser completamente numérica.</li>
+                                    </ul>
+
                                 </div>
                             </div>
                             <div class="col-xl-6">
-
-                                <div class="mb-0"><label>DUI</label></div>
+                                <div class="mb-0"><label>Confirme contraseña</label></div>
                                 <div class="mb-3">
-                                    {{docente_form.dui}}
+                                    <div class="input-group input-group-joined">
+                                        <span class="input-group-text">
+                                            <i data-feather="key"></i>
+                                        </span>
+                                        {{password_form.new_password2}}
+                                    </div>
                                 </div>
-
-                                <div class="mb-0"><label>Apellidos</label></div>
-                                <div class="d-none">
-                                    {{user_form.last_name}}
-                                </div>
-
-                                <div class="mb-3">
-                                    {{docente_form.apellido_docente}}
-                                </div>                            
                             </div>
                         </div>
-
-                        <div class="mb-0"><label>Correo electrónico</label></div>
-                        <div class="mb-3">
-                            {{user_form.email}}
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary" id="save">Registrar</button>
                         </div>
                         
-                        <div class="d-none">
-                            {{user_form.date_joined}}
-                        </div>
-                        <div class="d-none">
-                            {{user_form.is_active}}
-                        </div>
-                        <button type="submit" class="btn btn-primary" id="save">Registrar</button>
                     </form>
                 </div>
             </div>
@@ -124,17 +109,21 @@
     window.onload = function () {
         const navDocentes = document.getElementById('navDocentes');
         const collapseDocentes = document.getElementById('collapseDocentes');
-        const listarDocentes = document.getElementById('listarDocentes');
+        const agregarDocentes = document.getElementById('agregarDocente');
         navDocentes.classList.add('active');
-        listarDocentes.classList.add('active');
+        agregarDocentes.classList.add('active');
         collapseDocentes.classList.add('show');
     }
-     
+    
     let form_fields = document.getElementsByTagName('input');
+    console.log(form_fields)
     let savebtn = document.getElementById('save');
-    form_fields[3].placeholder = 'Username';
+    form_fields[3].placeholder = 'Contraseña';
     form_fields[3].required=true;
     form_fields[3].className += 'form-control ps-0';
+    form_fields[4].placeholder = 'Contraseña';
+    form_fields[4].required=true;
+    form_fields[4].className += 'form-control ps-0';
     form_fields[6].placeholder = 'Nombres';
     form_fields[6].required=true;
     form_fields[6].className += 'form-control';
@@ -150,6 +139,8 @@
     form_fields[11].className += 'form-control ps-0';
     form_fields[12].placeholder = 'Confirme contraseña';
     form_fields[12].className += 'form-control ps-0';
+    
+    console.log("Hola")
 
     savebtn.addEventListener('click', function () {
             form_fields[4].value = form_fields[3].value;
@@ -157,9 +148,6 @@
             form_fields[8].value = form_fields[9].value;
         });
 
-    // for (var field in form_fields){
-    //     form_fields[field].className += 'form-control';
-    // }
 
 </script>
 

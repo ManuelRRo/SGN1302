@@ -92,6 +92,11 @@ urlpatterns = [
         views.EditarDocente, 
         name='editar_docente'
     ),
+    path(
+        'editar_docente_password/<str:id>', 
+        views.EditarDocenteContra, 
+        name='editar_docente_password'
+    ),
     # HU-31: Habilitar/Deshabilitar Docentes
     path(
         'deshabilitar-usuario/<str:id>/', 
