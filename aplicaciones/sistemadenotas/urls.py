@@ -34,6 +34,8 @@ urlpatterns = [
         views.ReporteDeNotasExcel.as_view(),
         name="reporteExcel"
     ),
+    # HU-14: Reporte de Alumnos Aprobados/Reprobados
+    path('graficoAR/<aprobados>/<reprobados>/<gradoseccionmateria>',views.graficoAR, name='graficoAR'),
     #HU-15:Reporte de Alumnos Masculinos/Femeninos
     path('graficosEstadisticos/',views.graficos, name='graficos'),
     # Gestión Alumnos -----------------------------

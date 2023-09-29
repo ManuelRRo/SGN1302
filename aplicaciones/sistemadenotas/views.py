@@ -164,7 +164,8 @@ def ver_Promedios(request, idgrado, idtrimestre):
     
     evaluacionalumno = Evaluacionalumno.objects.filter(id_alumno__id_gradoseccion=gradoseccion.id_gradoseccion, 
                                                         id_evaluacion__id_trimestre=idtrimestre, 
-                                                        id_evaluacion__id_gradoseccionmateria=gradoseccion.id_gradoseccionmateria).order_by('id_evaluacion')
+                                                        id_evaluacion__id_gradoseccionmateria=gradoseccion.id_gradoseccionmateria,
+                                                        id_evaluacion__estado=1).order_by('id_evaluacion')
     
     evaluacion_ids = evaluacionalumno.values_list('id_evaluacion', flat=True)
     
@@ -313,6 +314,14 @@ def Cambiar_Rol(request, nombreUsuario):
     except User.DoesNotExist:
         pass
     return redirect('/cambiar_Rol/')
+# HU-14: Reporte de Alumnos Aprobados/Reprobados
+def graficoAR(request, aprobados, reprobados, gradoseccionmateria):
+    contexto = {}
+    contexto.update(asignacionClases(request))
+    contexto['aprobados'] = aprobados
+    contexto['reprobados'] = reprobados
+    contexto['gradoseccionmateria'] = Gradoseccionmateria.objects.get(id_gradoseccionmateria = gradoseccionmateria)
+    return render(request, 'administracion/graficoAR.html', contexto)
 
 #HU-15: Reporte de Alumnos Masculinos/Femeninos
 def generar_grafico_barra(data, title):
