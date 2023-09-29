@@ -314,6 +314,14 @@ def Cambiar_Rol(request, nombreUsuario):
     except User.DoesNotExist:
         pass
     return redirect('/cambiar_Rol/')
+# HU-14: Reporte de Alumnos Aprobados/Reprobados
+def graficoAR(request, aprobados, reprobados, gradoseccionmateria):
+    contexto = {}
+    contexto.update(asignacionClases(request))
+    contexto['aprobados'] = aprobados
+    contexto['reprobados'] = reprobados
+    contexto['gradoseccionmateria'] = Gradoseccionmateria.objects.get(id_gradoseccionmateria = gradoseccionmateria)
+    return render(request, 'administracion/graficoAR.html', contexto)
 
 #HU-15: Reporte de Alumnos Masculinos/Femeninos
 def generar_grafico_barra(data, title):
