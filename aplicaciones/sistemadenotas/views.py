@@ -184,8 +184,11 @@ def ver_Promedios(request, idgrado, idtrimestre):
             evaluacion_alumno = evaluacionalumno.filter(
                 id_alumno=alumno, id_evaluacion=evaluacion).first()
             if evaluacion_alumno:
-                nota_ponderada = evaluacion_alumno.nota * \
+                try:
+                    nota_ponderada = evaluacion_alumno.nota * \
                     (evaluacion.porcentaje / 100)
+                except:
+                    nota_ponderada = 0
                 notas.append(nota_ponderada)
         promedio = round(sum(notas), 2)
         if(promedio >= 5.0):
@@ -851,7 +854,7 @@ def CrearEvaluacionAlumno(request):
                 grado = evaluacion.id_gradoseccionmateria.id_gradoseccion.id_gradoseccion
                 alumno = Alumno.objects.filter(id_gradoseccion=grado)
                 for e in alumno:
-                    evaalumno = Evaluacionalumno.objects.create(id_evaluacion=evaluacion, id_alumno=e, nota=0)
+                    evaalumno = Evaluacionalumno.objects.create(id_evaluacion=evaluacion, id_alumno=e, nota=None)
                 return HttpResponseRedirect('/estudiante/crear-eva-est?submitted=True')
         else:
             return HttpResponseRedirect('/estudiante/crear-eva-est')

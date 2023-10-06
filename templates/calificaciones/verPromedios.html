@@ -90,7 +90,11 @@
                                                 <td  class="text-start">{{ alumno }}</td>
                                                 {% for evasalumno in evaluacionesalumno %}
                                                 {% if alumno.id_alumno == evasalumno.id_alumno.id_alumno %}
-                                                <td>{{ evasalumno.nota }}</td>
+                                                {% if evasalumno.nota  is None %}
+                                                    <td> 0.0 </td>
+                                                {% else %}
+                                                    <td>{{ evasalumno.nota }}</td>
+                                                {% endif %}
                                                 {% endif %}
                                                 {% empty %}
                                                 <td>No hay nota</td>
