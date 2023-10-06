@@ -91,7 +91,7 @@
                                                 {% for evasalumno in evaluacionesalumno %}
                                                 {% if alumno.id_alumno == evasalumno.id_alumno.id_alumno %}
                                                 {% if evasalumno.nota  is None %}
-                                                    <td> 0.0 </td>
+                                                    <td> -- </td>
                                                 {% else %}
                                                     <td>{{ evasalumno.nota }}</td>
                                                 {% endif %}
