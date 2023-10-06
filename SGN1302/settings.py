@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-c%)v#vj7k%8_e^6!(%tgo@$#avym=3xbv02v#@_1=$vt5m!$q*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -67,13 +67,14 @@ WSGI_APPLICATION = 'SGN1302.wsgi.application'
 DATABASES = {
 'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':'dbjulio',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
+        'NAME':'dsi115$sgn1302',
+        'USER': 'dsi115',
+        'PASSWORD': 'n3Y5sHj4kHiDUP_',
+        'HOST': 'dsi115.mysql.pythonanywhere-services.com',
         'PORT': 3306,
     }
 }
+
 
 
 # Password validation
@@ -98,7 +99,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-sv'
 
 TIME_ZONE = 'UTC'
 
