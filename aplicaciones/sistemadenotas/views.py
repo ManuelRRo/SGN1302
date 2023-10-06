@@ -160,7 +160,7 @@ def ver_Promedios(request, idgrado, idtrimestre):
     
     gradoseccion = Gradoseccionmateria.objects.get(id_gradoseccionmateria=idgrado)
     
-    alumnos = Alumno.objects.filter(id_gradoseccion=gradoseccion.id_gradoseccion)
+    alumnos = Alumno.objects.filter(id_gradoseccion=gradoseccion.id_gradoseccion,estado='1')
     
     evaluacionalumno = Evaluacionalumno.objects.filter(id_alumno__id_gradoseccion=gradoseccion.id_gradoseccion, 
                                                         id_evaluacion__id_trimestre=idtrimestre, 

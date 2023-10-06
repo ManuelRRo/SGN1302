@@ -3,4 +3,5 @@
 .SGN1302/__pycache__/settings.cpython-311.pyc
 .SGN1302/__pycache__/urls.cpython-311.pyc
 .SGN1302/__pycache__/wsgi.cpython-311.pyc
+aplicaciones/sistemadenotas/__pycache__/
 *.pyc
