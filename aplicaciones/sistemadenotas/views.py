@@ -533,7 +533,18 @@ class ListarAlumno(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            form.save()
+            alumno = form.save()
+            numEvaluaciones = Evaluacionalumno.objects.filter(id_alumno=alumno).count()
+            if numEvaluaciones == 0:
+                gradoseccionmaterias = Gradoseccionmateria.objects.filter(id_gradoseccion=alumno.id_gradoseccion)
+                for gradoseccionmateria in gradoseccionmaterias:
+                    evaluaciones = Evaluacion.objects.filter(id_gradoseccionmateria=gradoseccionmateria)
+                    for evaluacion in evaluaciones:
+                        evaluacion_alumno = Evaluacionalumno.objects.create(id_evaluacion=evaluacion,
+                                                                            id_alumno=alumno,
+                                                                            nota=None)
+                print("Evaluacion Creada")
+            #evaluaciones = Evaluacion.
         else:
             print(form.errors)
         
