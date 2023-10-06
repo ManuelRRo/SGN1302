@@ -157,6 +157,8 @@ class ListarEvaluacionesAlumnos(View):
 # HU-07: Mostrar Notas de Alumnos de todas las evaluaciones
 # Mostrarse baso en el archivo de excel que proporcionaron en el centro escolar.
 def ver_Promedios(request, idgrado, idtrimestre):
+
+    nulos = False
     
     gradoseccion = Gradoseccionmateria.objects.get(id_gradoseccionmateria=idgrado)
     
@@ -187,8 +189,10 @@ def ver_Promedios(request, idgrado, idtrimestre):
                 try:
                     nota_ponderada = evaluacion_alumno.nota * \
                     (evaluacion.porcentaje / 100)
+                    
                 except:
                     nota_ponderada = 0
+                    nulos = True
                 notas.append(nota_ponderada)
         promedio = round(sum(notas), 2)
         if(promedio >= 5.0):
@@ -207,7 +211,8 @@ def ver_Promedios(request, idgrado, idtrimestre):
         'alumnos': alumnos,
         'promedios': promedios,
         'aprobados': aprobados,
-        'reprobados': reprobados
+        'reprobados': reprobados,
+        'nulos':nulos,
     }
 
     contexto.update(asignacionClases(request))

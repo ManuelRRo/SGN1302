@@ -51,10 +51,17 @@
                                 {% csrf_token %}
                                 <div class="row text-end">
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="me-1" data-feather="file"></i>
+                                        {% if nulos %}
+                                        <button id="btn1" type="submit" class="btn btn-primary" disabled>
+                                            <i class="me-1" data-feather="file" ></i>
+                                            Descargar Archivo Nulo
+                                        </button>
+                                        {% else %}
+                                        <button id="btn1" type="submit" class="btn btn-primary">
+                                            <i class="me-1" data-feather="file" ></i>
                                             Descargar Archivo Excel
                                         </button>
+                                        {% endif %}
                                         <!-- Botón Estadistico de Aprobados/Reprobados trigger -->
                                         <a class="btn btn-outline-success" href="{% url 'sgn_app:graficoAR' aprobados=aprobados reprobados=reprobados gradoseccionmateria=gradoseccion.id_gradoseccionmateria%}">
                                             <i class="fa-solid fa-chart-column me-1"></i>
