@@ -903,33 +903,44 @@ def evaluacion_editar_docente(request,idEvaluacion):
 
 #HU-27 cargar alumnos en excel
 @login_required
-def excelAlumnos(request,id):
-     # Semejante al home: para el navbar
+def excelAlumnos(request, id):
+      # Semejante al home: para el navbar
     docente = Docente.objects.get(numidentificacion=request.user.username)
     materia = Materia.objects.filter(id_docente=docente)
     gradoseccionmateria = Gradoseccionmateria.objects.filter(id_materia__in=materia)
     gradoseccion = Gradoseccion.objects.filter(gradoseccionmateria__id_materia__id_docente=docente).distinct()
-    if request.method == 'POST': 
+    if request.method == 'POST':
         if request.FILES.get('archivo_excel'):
             archivo_excel = request.FILES['archivo_excel']
-
-            
             # Cargar el archivo Excel
             wb = load_workbook(archivo_excel)
             sheet = wb.active
 
             # Procesar cada fila del archivo Excel y guardar los datos en la sesión
             datos_archivo = []
+            error_en_excel = False  # Variable para rastrear errores en el Excel
+
             for row in sheet.iter_rows(min_row=2, values_only=True):
                 nie, apellidos_alumno, nombres_alumno = row
+
+                # Validar si algún campo está vacío
+                if not nie or not apellidos_alumno or not nombres_alumno:
+                    error_en_excel = True
+                    break  # Salir del bucle si hay un campo vacío en alguna fila
+
                 datos_archivo.append({'nie': nie, 'apellidos': apellidos_alumno, 'nombres': nombres_alumno})
 
-            # Guardar los datos en la sesión
-            request.session['datos_archivo'] = datos_archivo
-            return render(request, 'estudiante/verAlumnosExcel.html',{'id_gradoseccion':id,'grado_seccion':gradoseccion,'datos_archivo':datos_archivo,'grado_seccion_materia':gradoseccionmateria})
+            if error_en_excel:
+                messages.error(request, "El excel no debe tener campos vacíos")
+            else:
+                # Guardar los datos en la sesión
+                request.session['datos_archivo'] = datos_archivo
+                return render(request, 'estudiante/verAlumnosExcel.html', {'id_gradoseccion': id, 'grado_seccion': gradoseccion, 'datos_archivo': datos_archivo, 'grado_seccion_materia': gradoseccionmateria})
         else:
             messages.error(request, "No se ha subido ningún excel")
-    return render(request, 'estudiante/verAlumnosExcel.html',{'id_gradoseccion':id,'grado_seccion':gradoseccion,'grado_seccion_materia':gradoseccionmateria})
+    
+    return render(request, 'estudiante/verAlumnosExcel.html', {'id_gradoseccion': id, 'grado_seccion': gradoseccion, 'grado_seccion_materia': gradoseccionmateria})
+
 
 #Registra/importa los alumnos a la base de datos desde el excel
 @login_required
