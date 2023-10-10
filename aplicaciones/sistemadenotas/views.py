@@ -918,20 +918,28 @@ def excelAlumnos(request, id):
 
             # Procesar cada fila del archivo Excel y guardar los datos en la sesión
             datos_archivo = []
-            error_en_excel = False  # Variable para rastrear errores en el Excel
+            error=""  # Variable para rastrear errores en el Excel
 
             for row in sheet.iter_rows(min_row=2, values_only=True):
-                nie, apellidos_alumno, nombres_alumno = row
+                nie, apellidos_alumno, nombres_alumno, sexo  = row
 
                 # Validar si algún campo está vacío
-                if not nie or not apellidos_alumno or not nombres_alumno:
-                    error_en_excel = True
+                if not nie or not apellidos_alumno or not nombres_alumno or not sexo:
+                    error="El excel no debe tener campos vacíos"
                     break  # Salir del bucle si hay un campo vacío en alguna fila
+                
+                # Convertir el valor de sexo a mayúsculas
+                sexo = sexo.upper()  # Esto convierte a mayúsculas independientemente de si estaba en minúsculas o mayúsculas
 
-                datos_archivo.append({'nie': nie, 'apellidos': apellidos_alumno, 'nombres': nombres_alumno})
+                # Validar que el valor de sexo sea "M" o "F"
+                if sexo not in ["M", "F"]:
+                    error="Error, el sexo debe ser M o F."
+                    break  # Salir del bucle si se encuentra un valor no válido
 
-            if error_en_excel:
-                messages.error(request, "El excel no debe tener campos vacíos")
+                datos_archivo.append({'nie': nie, 'apellidos': apellidos_alumno, 'nombres': nombres_alumno,'sexo':sexo})
+
+            if error:
+                messages.error(request, error)
             else:
                 # Guardar los datos en la sesión
                 request.session['datos_archivo'] = datos_archivo
@@ -953,7 +961,7 @@ def confirmar_importacion(request,id):
         gradoseccion=Gradoseccion.objects.filter(id_gradoseccion=id).first()
         # Guardar los datos en la base de datos
         for data in datos_archivo:
-            Alumno.objects.create(nie=data['nie'], apellidos_alumno=data['apellidos'], nombres_alumno=data['nombres'], id_gradoseccion=gradoseccion,estado=1)
+            Alumno.objects.create(nie=data['nie'], apellidos_alumno=data['apellidos'], nombres_alumno=data['nombres'], id_gradoseccion=gradoseccion,estado=1,sexo=data['sexo'])
 
         # Limpiar los datos en la sesión después de importar
         request.session['datos_archivo'] = None
