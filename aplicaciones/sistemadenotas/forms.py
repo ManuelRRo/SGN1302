@@ -168,7 +168,8 @@ class AlumnoForm(ModelForm):
             'nie',
             'apellidos_alumno',
             'nombres_alumno',
-            'estado'
+            'estado',
+            'sexo'
         ]
         ACTIVO = "1"
         INACTIVO = "0"
@@ -181,7 +182,9 @@ class AlumnoForm(ModelForm):
             'nie': forms.TextInput(attrs={'class': 'form-control form-control-lg', 'placeholder': 'NIE'}),
             'apellidos_alumno': forms.TextInput(attrs={'class': 'form-control form-control-lg', 'placeholder': 'Apellidos'}),
             'nombres_alumno': forms.TextInput(attrs={'class': 'form-control form-control-lg', 'placeholder': 'Nombres'}),
-            'estado': forms.Select(attrs={'class': 'form-control form-control-lg', 'placeholder': 'Estado'}, choices=ESTADO_CHOICES),
+            'estado': forms.Select(attrs={'class': 'form-control form-control-lg',
+                                           'placeholder': 'Estado'}, choices=ESTADO_CHOICES),
+            'sexo': forms.Select(attrs={'class': 'form-control form-control-lg',}),
         }
         labels = {
             'id_gradoseccion': 'Grado y seccion',
