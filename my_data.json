@@ -1,0 +1,1773 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2023-06-16T19:49:41.665Z",
+    "user": 2,
+    "content_type": 1,
+    "object_id": "1",
+    "object_repr": "admin",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"password\"]}}]"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 1,
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": 1,
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 2,
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": 1,
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 3,
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": 1,
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 4,
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": 1,
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 5,
+  "fields": {
+    "name": "Can add permission",
+    "content_type": 2,
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 6,
+  "fields": {
+    "name": "Can change permission",
+    "content_type": 2,
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 7,
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": 2,
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 8,
+  "fields": {
+    "name": "Can view permission",
+    "content_type": 2,
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 9,
+  "fields": {
+    "name": "Can add group",
+    "content_type": 3,
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 10,
+  "fields": {
+    "name": "Can change group",
+    "content_type": 3,
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 11,
+  "fields": {
+    "name": "Can delete group",
+    "content_type": 3,
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 12,
+  "fields": {
+    "name": "Can view group",
+    "content_type": 3,
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 13,
+  "fields": {
+    "name": "Can add user",
+    "content_type": 4,
+    "codename": "add_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 14,
+  "fields": {
+    "name": "Can change user",
+    "content_type": 4,
+    "codename": "change_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 15,
+  "fields": {
+    "name": "Can delete user",
+    "content_type": 4,
+    "codename": "delete_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 16,
+  "fields": {
+    "name": "Can view user",
+    "content_type": 4,
+    "codename": "view_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 17,
+  "fields": {
+    "name": "Can add content type",
+    "content_type": 5,
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 18,
+  "fields": {
+    "name": "Can change content type",
+    "content_type": 5,
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 19,
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": 5,
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 20,
+  "fields": {
+    "name": "Can view content type",
+    "content_type": 5,
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 21,
+  "fields": {
+    "name": "Can add session",
+    "content_type": 6,
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 22,
+  "fields": {
+    "name": "Can change session",
+    "content_type": 6,
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 23,
+  "fields": {
+    "name": "Can delete session",
+    "content_type": 6,
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 24,
+  "fields": {
+    "name": "Can view session",
+    "content_type": 6,
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 25,
+  "fields": {
+    "name": "Can add alumno",
+    "content_type": 7,
+    "codename": "add_alumno"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 26,
+  "fields": {
+    "name": "Can change alumno",
+    "content_type": 7,
+    "codename": "change_alumno"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 27,
+  "fields": {
+    "name": "Can delete alumno",
+    "content_type": 7,
+    "codename": "delete_alumno"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 28,
+  "fields": {
+    "name": "Can view alumno",
+    "content_type": 7,
+    "codename": "view_alumno"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 29,
+  "fields": {
+    "name": "Can add categoria",
+    "content_type": 8,
+    "codename": "add_categoria"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 30,
+  "fields": {
+    "name": "Can change categoria",
+    "content_type": 8,
+    "codename": "change_categoria"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 31,
+  "fields": {
+    "name": "Can delete categoria",
+    "content_type": 8,
+    "codename": "delete_categoria"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 32,
+  "fields": {
+    "name": "Can view categoria",
+    "content_type": 8,
+    "codename": "view_categoria"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 33,
+  "fields": {
+    "name": "Can add docente",
+    "content_type": 9,
+    "codename": "add_docente"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 34,
+  "fields": {
+    "name": "Can change docente",
+    "content_type": 9,
+    "codename": "change_docente"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 35,
+  "fields": {
+    "name": "Can delete docente",
+    "content_type": 9,
+    "codename": "delete_docente"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 36,
+  "fields": {
+    "name": "Can view docente",
+    "content_type": 9,
+    "codename": "view_docente"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 37,
+  "fields": {
+    "name": "Can add evaluacion",
+    "content_type": 10,
+    "codename": "add_evaluacion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 38,
+  "fields": {
+    "name": "Can change evaluacion",
+    "content_type": 10,
+    "codename": "change_evaluacion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 39,
+  "fields": {
+    "name": "Can delete evaluacion",
+    "content_type": 10,
+    "codename": "delete_evaluacion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 40,
+  "fields": {
+    "name": "Can view evaluacion",
+    "content_type": 10,
+    "codename": "view_evaluacion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 41,
+  "fields": {
+    "name": "Can add evaluacionalumno",
+    "content_type": 11,
+    "codename": "add_evaluacionalumno"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 42,
+  "fields": {
+    "name": "Can change evaluacionalumno",
+    "content_type": 11,
+    "codename": "change_evaluacionalumno"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 43,
+  "fields": {
+    "name": "Can delete evaluacionalumno",
+    "content_type": 11,
+    "codename": "delete_evaluacionalumno"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 44,
+  "fields": {
+    "name": "Can view evaluacionalumno",
+    "content_type": 11,
+    "codename": "view_evaluacionalumno"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 45,
+  "fields": {
+    "name": "Can add grado",
+    "content_type": 12,
+    "codename": "add_grado"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 46,
+  "fields": {
+    "name": "Can change grado",
+    "content_type": 12,
+    "codename": "change_grado"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 47,
+  "fields": {
+    "name": "Can delete grado",
+    "content_type": 12,
+    "codename": "delete_grado"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 48,
+  "fields": {
+    "name": "Can view grado",
+    "content_type": 12,
+    "codename": "view_grado"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 49,
+  "fields": {
+    "name": "Can add gradoseccion",
+    "content_type": 13,
+    "codename": "add_gradoseccion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 50,
+  "fields": {
+    "name": "Can change gradoseccion",
+    "content_type": 13,
+    "codename": "change_gradoseccion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 51,
+  "fields": {
+    "name": "Can delete gradoseccion",
+    "content_type": 13,
+    "codename": "delete_gradoseccion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 52,
+  "fields": {
+    "name": "Can view gradoseccion",
+    "content_type": 13,
+    "codename": "view_gradoseccion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 53,
+  "fields": {
+    "name": "Can add gradoseccionmateria",
+    "content_type": 14,
+    "codename": "add_gradoseccionmateria"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 54,
+  "fields": {
+    "name": "Can change gradoseccionmateria",
+    "content_type": 14,
+    "codename": "change_gradoseccionmateria"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 55,
+  "fields": {
+    "name": "Can delete gradoseccionmateria",
+    "content_type": 14,
+    "codename": "delete_gradoseccionmateria"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 56,
+  "fields": {
+    "name": "Can view gradoseccionmateria",
+    "content_type": 14,
+    "codename": "view_gradoseccionmateria"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 57,
+  "fields": {
+    "name": "Can add materia",
+    "content_type": 15,
+    "codename": "add_materia"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 58,
+  "fields": {
+    "name": "Can change materia",
+    "content_type": 15,
+    "codename": "change_materia"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 59,
+  "fields": {
+    "name": "Can delete materia",
+    "content_type": 15,
+    "codename": "delete_materia"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 60,
+  "fields": {
+    "name": "Can view materia",
+    "content_type": 15,
+    "codename": "view_materia"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 61,
+  "fields": {
+    "name": "Can add seccion",
+    "content_type": 16,
+    "codename": "add_seccion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 62,
+  "fields": {
+    "name": "Can change seccion",
+    "content_type": 16,
+    "codename": "change_seccion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 63,
+  "fields": {
+    "name": "Can delete seccion",
+    "content_type": 16,
+    "codename": "delete_seccion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 64,
+  "fields": {
+    "name": "Can view seccion",
+    "content_type": 16,
+    "codename": "view_seccion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 65,
+  "fields": {
+    "name": "Can add trimestre",
+    "content_type": 17,
+    "codename": "add_trimestre"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 66,
+  "fields": {
+    "name": "Can change trimestre",
+    "content_type": 17,
+    "codename": "change_trimestre"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 67,
+  "fields": {
+    "name": "Can delete trimestre",
+    "content_type": 17,
+    "codename": "delete_trimestre"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 68,
+  "fields": {
+    "name": "Can view trimestre",
+    "content_type": 17,
+    "codename": "view_trimestre"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 69,
+  "fields": {
+    "name": "Can add promediomateria",
+    "content_type": 18,
+    "codename": "add_promediomateria"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 70,
+  "fields": {
+    "name": "Can change promediomateria",
+    "content_type": 18,
+    "codename": "change_promediomateria"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 71,
+  "fields": {
+    "name": "Can delete promediomateria",
+    "content_type": 18,
+    "codename": "delete_promediomateria"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 72,
+  "fields": {
+    "name": "Can view promediomateria",
+    "content_type": 18,
+    "codename": "view_promediomateria"
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$QeOIPcFXiLsKPwoeE86hxr$4LhV3mVTVSoj3So6o+wjWywEfhrx9XoTVRZJVLIduXI=",
+    "last_login": "2023-09-04T05:03:57.491Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "Administrador del sistema",
+    "last_name": "",
+    "email": "admin@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2023-06-16T19:46:01.253Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$elrFoLX8svuogzNJTJZXZg$MMEzTgk+DMZJnGUq2s4fahFf8zlLdeYI8fLR1i5k4YI=",
+    "last_login": "2023-06-17T01:05:20.359Z",
+    "is_superuser": true,
+    "username": "django",
+    "first_name": "",
+    "last_name": "",
+    "email": "django@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2023-06-16T19:47:28.818Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$tgJ4Qokqas8n4JXvRg6QaB$teIt7AOXlbVuPggGHtBcDhC3nz674RdQBZHEQBLjqI4=",
+    "last_login": "2023-06-17T01:06:11.765Z",
+    "is_superuser": false,
+    "username": "rm20001",
+    "first_name": "Elmer Edenilson",
+    "last_name": "Rosales Molina",
+    "email": "rm20001@ues.edu.sv",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-06-16T20:03:07.155Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$LQDGRendmMkXVf0a6blIPi$EQ/NepU6ENmFzAoVWeiB0+NPXTcDM5WWfNhhUWxn5vA=",
+    "last_login": "2023-09-04T05:04:23.827Z",
+    "is_superuser": false,
+    "username": "rr20044",
+    "first_name": "Manuel Alejandro",
+    "last_name": "Rico Rodriguez",
+    "email": "rc20044@ues.edu.sv",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-06-16T20:07:10.803Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 7,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$5lOcoSUW69OfaCWWbTJWHa$fRjSMcCfMJE5bxhbBY2CthN7JQ2zIlWmt4sLKo+bxfc=",
+    "last_login": "2023-06-17T01:05:53.208Z",
+    "is_superuser": false,
+    "username": "rc18087",
+    "first_name": "Tomás Eduardo",
+    "last_name": "Romero Cañas",
+    "email": "rc18087@ues.edu.sv",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-06-16T20:34:19.375Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 8,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$vF7jc993INZf8S9Zt5KxNp$4iyMvew2i/S733ZP5qQIM15q20/6XX2XdSAAXj7rik4=",
+    "last_login": "2023-06-17T01:08:06.288Z",
+    "is_superuser": false,
+    "username": "mr20084",
+    "first_name": "Julio Cesar",
+    "last_name": "Mejia Rodriguez",
+    "email": "mr20084@ues.edu.sv",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-06-16T20:39:07.861Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 1,
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 2,
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 3,
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 4,
+  "fields": {
+    "app_label": "auth",
+    "model": "user"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 5,
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 6,
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 7,
+  "fields": {
+    "app_label": "sistemadenotas",
+    "model": "alumno"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 8,
+  "fields": {
+    "app_label": "sistemadenotas",
+    "model": "categoria"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 9,
+  "fields": {
+    "app_label": "sistemadenotas",
+    "model": "docente"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 10,
+  "fields": {
+    "app_label": "sistemadenotas",
+    "model": "evaluacion"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 11,
+  "fields": {
+    "app_label": "sistemadenotas",
+    "model": "evaluacionalumno"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 12,
+  "fields": {
+    "app_label": "sistemadenotas",
+    "model": "grado"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 13,
+  "fields": {
+    "app_label": "sistemadenotas",
+    "model": "gradoseccion"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 14,
+  "fields": {
+    "app_label": "sistemadenotas",
+    "model": "gradoseccionmateria"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 15,
+  "fields": {
+    "app_label": "sistemadenotas",
+    "model": "materia"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 16,
+  "fields": {
+    "app_label": "sistemadenotas",
+    "model": "seccion"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 17,
+  "fields": {
+    "app_label": "sistemadenotas",
+    "model": "trimestre"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 18,
+  "fields": {
+    "app_label": "sistemadenotas",
+    "model": "promediomateria"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "3d4b5r4s9rvrgeonp0jcdi3oge1y6h7v",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGllefxNKes5grb1eHEC2lE-FuDtESgHtm5n3EhG3tcZtKXOcSJwFiNPvljA_StsB3bHdusy9rfOU5K7Igy7y2qk8L4f7d1Bxqd96xDIMGoBVZoaRRx-ISFMCVZyFrINRyMF455yxijDlYkijZ6uBrRfvD-u6N_c:1qAH5P:61ew6EOZ5iQAKl-F3BdwGwQnqa8mo-RDuw0THo1Cnus",
+    "expire_date": "2023-06-30T21:34:27.900Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ec20yntmghkxqix9v1egekq5y65f52p3",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2pAMhcF26d4zkAEGqTaQFOrGeHdt0oVu_3v_vYSjrWe3NV7dHMUktDj9bp7Cg8sO4p3KrcpQS19nL3dFHrTJa428XA73L5Cp5f0NlggYOKFFAJu0ZaWSHq3BwWhEMzL4FEEF1EZZMBF4sHhm5ZUf6BuN1GtztIY8P6uYyrYs7w-h5T7l:1qd2UC:v3uSsyYeWpsnFV3KxqNxJyIm20oRS-LpsYUaLdGB5f4",
+    "expire_date": "2023-09-18T05:50:56.172Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "lqtcclygx4dgxrazlq03n4tqv85rcjhx",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyGBBRY8evcbCLCLVE2blPZk_Hcl6UFPk8x7My8R0761uHde40TiLLQ4_XY5lQfPA9A9zbdFlmXe1inLociDdnldiJ-Xw_07aKm3sa4ARrHPNhmuzpJDA-hyQO3RExBgLdYiI7AP1vkS1Deo2gJahSLeH9dVN04:1qAG6a:ktwW3VHFEOKPVwsliPW3MnqvgpjgbGd5SBY2Z2hDn_g",
+    "expire_date": "2023-06-30T20:31:36.915Z"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 1,
+  "fields": {
+    "id_gradoseccion": 1,
+    "nie": "1234567",
+    "apellidos_alumno": "García",
+    "nombres_alumno": "Juan",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 2,
+  "fields": {
+    "id_gradoseccion": 1,
+    "nie": "5432167",
+    "apellidos_alumno": "Martínez",
+    "nombres_alumno": "Carlos",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 3,
+  "fields": {
+    "id_gradoseccion": 1,
+    "nie": "8765432",
+    "apellidos_alumno": "Gómez",
+    "nombres_alumno": "Pedro",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 4,
+  "fields": {
+    "id_gradoseccion": 1,
+    "nie": "9876541",
+    "apellidos_alumno": "Hernández",
+    "nombres_alumno": "Sofía",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 5,
+  "fields": {
+    "id_gradoseccion": 1,
+    "nie": "6543217",
+    "apellidos_alumno": "Luna",
+    "nombres_alumno": "Elena",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 6,
+  "fields": {
+    "id_gradoseccion": 1,
+    "nie": "8765439",
+    "apellidos_alumno": "Morales",
+    "nombres_alumno": "Julia",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 7,
+  "fields": {
+    "id_gradoseccion": 1,
+    "nie": "2345678",
+    "apellidos_alumno": "Sánchez",
+    "nombres_alumno": "Mario",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 8,
+  "fields": {
+    "id_gradoseccion": 1,
+    "nie": "5432168",
+    "apellidos_alumno": "Delgado",
+    "nombres_alumno": "Luis",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 9,
+  "fields": {
+    "id_gradoseccion": 1,
+    "nie": "9876543",
+    "apellidos_alumno": "Castillo",
+    "nombres_alumno": "Marta",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 10,
+  "fields": {
+    "id_gradoseccion": 1,
+    "nie": "7654329",
+    "apellidos_alumno": "Rojas",
+    "nombres_alumno": "Fernanda",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 11,
+  "fields": {
+    "id_gradoseccion": 2,
+    "nie": "9876544",
+    "apellidos_alumno": "López",
+    "nombres_alumno": "María",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 12,
+  "fields": {
+    "id_gradoseccion": 2,
+    "nie": "2345679",
+    "apellidos_alumno": "Rodríguez",
+    "nombres_alumno": "Ana",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 13,
+  "fields": {
+    "id_gradoseccion": 2,
+    "nie": "7654321",
+    "apellidos_alumno": "Silva",
+    "nombres_alumno": "Andrés",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 14,
+  "fields": {
+    "id_gradoseccion": 2,
+    "nie": "5432160",
+    "apellidos_alumno": "Paredes",
+    "nombres_alumno": "Diego",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 15,
+  "fields": {
+    "id_gradoseccion": 2,
+    "nie": "8765432",
+    "apellidos_alumno": "Fuentes",
+    "nombres_alumno": "Carla",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 16,
+  "fields": {
+    "id_gradoseccion": 2,
+    "nie": "2345678",
+    "apellidos_alumno": "Vargas",
+    "nombres_alumno": "Sergio",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 17,
+  "fields": {
+    "id_gradoseccion": 2,
+    "nie": "8765431",
+    "apellidos_alumno": "Valdez",
+    "nombres_alumno": "Camila",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 18,
+  "fields": {
+    "id_gradoseccion": 2,
+    "nie": "5432166",
+    "apellidos_alumno": "Mendoza",
+    "nombres_alumno": "Lorena",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 19,
+  "fields": {
+    "id_gradoseccion": 2,
+    "nie": "9876542",
+    "apellidos_alumno": "Cabrera",
+    "nombres_alumno": "Roberto",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 20,
+  "fields": {
+    "id_gradoseccion": 2,
+    "nie": "3456789",
+    "apellidos_alumno": "Vera",
+    "nombres_alumno": "Patricia",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 21,
+  "fields": {
+    "id_gradoseccion": 3,
+    "nie": "7654321",
+    "apellidos_alumno": "Pérez",
+    "nombres_alumno": "Luisa",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 22,
+  "fields": {
+    "id_gradoseccion": 3,
+    "nie": "3456789",
+    "apellidos_alumno": "Fernández",
+    "nombres_alumno": "Laura",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 23,
+  "fields": {
+    "id_gradoseccion": 3,
+    "nie": "1234568",
+    "apellidos_alumno": "Torres",
+    "nombres_alumno": "Daniel",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 24,
+  "fields": {
+    "id_gradoseccion": 3,
+    "nie": "2345679",
+    "apellidos_alumno": "Soto",
+    "nombres_alumno": "Carolina",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 25,
+  "fields": {
+    "id_gradoseccion": 3,
+    "nie": "9876541",
+    "apellidos_alumno": "Guzmán",
+    "nombres_alumno": "Javier",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 26,
+  "fields": {
+    "id_gradoseccion": 3,
+    "nie": "8765432",
+    "apellidos_alumno": "Ríos",
+    "nombres_alumno": "Valentina",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 27,
+  "fields": {
+    "id_gradoseccion": 3,
+    "nie": "5432167",
+    "apellidos_alumno": "Aguilar",
+    "nombres_alumno": "Marcos",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 28,
+  "fields": {
+    "id_gradoseccion": 3,
+    "nie": "2345678",
+    "apellidos_alumno": "Navarro",
+    "nombres_alumno": "Sofía",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 29,
+  "fields": {
+    "id_gradoseccion": 3,
+    "nie": "9876542",
+    "apellidos_alumno": "Giménez",
+    "nombres_alumno": "Hugo",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.alumno",
+  "pk": 30,
+  "fields": {
+    "id_gradoseccion": 3,
+    "nie": "7654329",
+    "apellidos_alumno": "Acosta",
+    "nombres_alumno": "Marcela",
+    "estado": "1"
+  }
+},
+{
+  "model": "sistemadenotas.categoria",
+  "pk": 1,
+  "fields": {
+    "nombre_categoria": "Actividad"
+  }
+},
+{
+  "model": "sistemadenotas.categoria",
+  "pk": 2,
+  "fields": {
+    "nombre_categoria": "Examen"
+  }
+},
+{
+  "model": "sistemadenotas.docente",
+  "pk": 1,
+  "fields": {
+    "numidentificacion": "rm20001",
+    "dui": "06700783",
+    "nombre_docente": "Elmer Edenilson",
+    "apellido_docente": "Rosales Molina",
+    "idgradoseccion": null,
+    "docente": null
+  }
+},
+{
+  "model": "sistemadenotas.docente",
+  "pk": 2,
+  "fields": {
+    "numidentificacion": "rr20044",
+    "dui": "06700784",
+    "nombre_docente": "Manuel Alejandro",
+    "apellido_docente": "Rico Rodriguez",
+    "idgradoseccion": null,
+    "docente": null
+  }
+},
+{
+  "model": "sistemadenotas.docente",
+  "pk": 5,
+  "fields": {
+    "numidentificacion": "rc18087",
+    "dui": "06700785",
+    "nombre_docente": "Tomás Eduardo",
+    "apellido_docente": "Romero Cañas",
+    "idgradoseccion": null,
+    "docente": null
+  }
+},
+{
+  "model": "sistemadenotas.docente",
+  "pk": 6,
+  "fields": {
+    "numidentificacion": "mr20084",
+    "dui": "06700786",
+    "nombre_docente": "Julio Cesar",
+    "apellido_docente": "Mejia Rodriguez",
+    "idgradoseccion": null,
+    "docente": null
+  }
+},
+{
+  "model": "sistemadenotas.evaluacion",
+  "pk": 1,
+  "fields": {
+    "id_categoria": 1,
+    "id_gradoseccionmateria": 6,
+    "id_trimestre": 1,
+    "nombre_evaluacion": "Reconocimiento de números",
+    "porcentaje": 10.0,
+    "estado": 0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacion",
+  "pk": 2,
+  "fields": {
+    "id_categoria": 1,
+    "id_gradoseccionmateria": 6,
+    "id_trimestre": 1,
+    "nombre_evaluacion": "Formas y Figuras",
+    "porcentaje": 10.0,
+    "estado": 0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacion",
+  "pk": 3,
+  "fields": {
+    "id_categoria": 1,
+    "id_gradoseccionmateria": 6,
+    "id_trimestre": 1,
+    "nombre_evaluacion": "Patrones",
+    "porcentaje": 10.0,
+    "estado": 0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacion",
+  "pk": 4,
+  "fields": {
+    "id_categoria": 2,
+    "id_gradoseccionmateria": 6,
+    "id_trimestre": 1,
+    "nombre_evaluacion": "Sumas básicas",
+    "porcentaje": 20.0,
+    "estado": 1
+  }
+},
+{
+  "model": "sistemadenotas.evaluacion",
+  "pk": 5,
+  "fields": {
+    "id_categoria": 1,
+    "id_gradoseccionmateria": 8,
+    "id_trimestre": 1,
+    "nombre_evaluacion": "Resolver Cuestionario",
+    "porcentaje": 15.0,
+    "estado": 0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacion",
+  "pk": 6,
+  "fields": {
+    "id_categoria": 1,
+    "id_gradoseccionmateria": 6,
+    "id_trimestre": 2,
+    "nombre_evaluacion": "EDOL",
+    "porcentaje": 25.0,
+    "estado": 0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacionalumno",
+  "pk": 1,
+  "fields": {
+    "id_evaluacion": 5,
+    "id_alumno": 1,
+    "nota": 0.0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacionalumno",
+  "pk": 2,
+  "fields": {
+    "id_evaluacion": 5,
+    "id_alumno": 2,
+    "nota": 0.0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacionalumno",
+  "pk": 3,
+  "fields": {
+    "id_evaluacion": 5,
+    "id_alumno": 3,
+    "nota": 0.0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacionalumno",
+  "pk": 4,
+  "fields": {
+    "id_evaluacion": 5,
+    "id_alumno": 4,
+    "nota": 0.0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacionalumno",
+  "pk": 5,
+  "fields": {
+    "id_evaluacion": 5,
+    "id_alumno": 5,
+    "nota": 0.0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacionalumno",
+  "pk": 6,
+  "fields": {
+    "id_evaluacion": 5,
+    "id_alumno": 6,
+    "nota": 0.0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacionalumno",
+  "pk": 7,
+  "fields": {
+    "id_evaluacion": 5,
+    "id_alumno": 7,
+    "nota": 0.0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacionalumno",
+  "pk": 8,
+  "fields": {
+    "id_evaluacion": 5,
+    "id_alumno": 8,
+    "nota": 0.0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacionalumno",
+  "pk": 9,
+  "fields": {
+    "id_evaluacion": 5,
+    "id_alumno": 9,
+    "nota": 0.0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacionalumno",
+  "pk": 10,
+  "fields": {
+    "id_evaluacion": 5,
+    "id_alumno": 10,
+    "nota": 0.0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacionalumno",
+  "pk": 11,
+  "fields": {
+    "id_evaluacion": 6,
+    "id_alumno": 1,
+    "nota": 0.0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacionalumno",
+  "pk": 12,
+  "fields": {
+    "id_evaluacion": 6,
+    "id_alumno": 2,
+    "nota": 0.0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacionalumno",
+  "pk": 13,
+  "fields": {
+    "id_evaluacion": 6,
+    "id_alumno": 3,
+    "nota": 0.0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacionalumno",
+  "pk": 14,
+  "fields": {
+    "id_evaluacion": 6,
+    "id_alumno": 4,
+    "nota": 0.0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacionalumno",
+  "pk": 15,
+  "fields": {
+    "id_evaluacion": 6,
+    "id_alumno": 5,
+    "nota": 0.0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacionalumno",
+  "pk": 16,
+  "fields": {
+    "id_evaluacion": 6,
+    "id_alumno": 6,
+    "nota": 0.0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacionalumno",
+  "pk": 17,
+  "fields": {
+    "id_evaluacion": 6,
+    "id_alumno": 7,
+    "nota": 0.0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacionalumno",
+  "pk": 18,
+  "fields": {
+    "id_evaluacion": 6,
+    "id_alumno": 8,
+    "nota": 0.0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacionalumno",
+  "pk": 19,
+  "fields": {
+    "id_evaluacion": 6,
+    "id_alumno": 9,
+    "nota": 0.0
+  }
+},
+{
+  "model": "sistemadenotas.evaluacionalumno",
+  "pk": 20,
+  "fields": {
+    "id_evaluacion": 6,
+    "id_alumno": 10,
+    "nota": 0.0
+  }
+},
+{
+  "model": "sistemadenotas.grado",
+  "pk": 1,
+  "fields": {
+    "grado": "Primer Grado"
+  }
+},
+{
+  "model": "sistemadenotas.grado",
+  "pk": 2,
+  "fields": {
+    "grado": "Segundo Grado"
+  }
+},
+{
+  "model": "sistemadenotas.grado",
+  "pk": 3,
+  "fields": {
+    "grado": "Terce Grado"
+  }
+},
+{
+  "model": "sistemadenotas.grado",
+  "pk": 4,
+  "fields": {
+    "grado": "Cuarto Grado"
+  }
+},
+{
+  "model": "sistemadenotas.grado",
+  "pk": 5,
+  "fields": {
+    "grado": "Quinto Grado"
+  }
+},
+{
+  "model": "sistemadenotas.grado",
+  "pk": 6,
+  "fields": {
+    "grado": "Sexto Grado"
+  }
+},
+{
+  "model": "sistemadenotas.grado",
+  "pk": 7,
+  "fields": {
+    "grado": "Septimo Grado"
+  }
+},
+{
+  "model": "sistemadenotas.grado",
+  "pk": 8,
+  "fields": {
+    "grado": "Octavo Grado"
+  }
+},
+{
+  "model": "sistemadenotas.grado",
+  "pk": 9,
+  "fields": {
+    "grado": "Noveno Grado"
+  }
+},
+{
+  "model": "sistemadenotas.gradoseccion",
+  "pk": 1,
+  "fields": {
+    "id_grado": 1,
+    "id_seccion": 1,
+    "turno_gradoseccion": "M"
+  }
+},
+{
+  "model": "sistemadenotas.gradoseccion",
+  "pk": 2,
+  "fields": {
+    "id_grado": 2,
+    "id_seccion": 1,
+    "turno_gradoseccion": "M"
+  }
+},
+{
+  "model": "sistemadenotas.gradoseccion",
+  "pk": 3,
+  "fields": {
+    "id_grado": 2,
+    "id_seccion": 2,
+    "turno_gradoseccion": "V"
+  }
+},
+{
+  "model": "sistemadenotas.gradoseccionmateria",
+  "pk": 6,
+  "fields": {
+    "id_gradoseccion": 1,
+    "id_materia": 6
+  }
+},
+{
+  "model": "sistemadenotas.gradoseccionmateria",
+  "pk": 7,
+  "fields": {
+    "id_gradoseccion": 1,
+    "id_materia": 7
+  }
+},
+{
+  "model": "sistemadenotas.gradoseccionmateria",
+  "pk": 8,
+  "fields": {
+    "id_gradoseccion": 1,
+    "id_materia": 8
+  }
+},
+{
+  "model": "sistemadenotas.materia",
+  "pk": 6,
+  "fields": {
+    "id_docente": 2,
+    "nombre_materia": "Matematica"
+  }
+},
+{
+  "model": "sistemadenotas.materia",
+  "pk": 7,
+  "fields": {
+    "id_docente": 2,
+    "nombre_materia": "Lenguaje"
+  }
+},
+{
+  "model": "sistemadenotas.materia",
+  "pk": 8,
+  "fields": {
+    "id_docente": 2,
+    "nombre_materia": "Estudios Sociales"
+  }
+},
+{
+  "model": "sistemadenotas.seccion",
+  "pk": 1,
+  "fields": {
+    "seccion": "A"
+  }
+},
+{
+  "model": "sistemadenotas.seccion",
+  "pk": 2,
+  "fields": {
+    "seccion": "B"
+  }
+},
+{
+  "model": "sistemadenotas.seccion",
+  "pk": 3,
+  "fields": {
+    "seccion": "C"
+  }
+},
+{
+  "model": "sistemadenotas.seccion",
+  "pk": 4,
+  "fields": {
+    "seccion": "D"
+  }
+},
+{
+  "model": "sistemadenotas.trimestre",
+  "pk": 1,
+  "fields": {
+    "trimestre": "Primer Trimestre",
+    "anio": "2023"
+  }
+},
+{
+  "model": "sistemadenotas.trimestre",
+  "pk": 2,
+  "fields": {
+    "trimestre": "Segundo Trimestre",
+    "anio": "2023"
+  }
+},
+{
+  "model": "sistemadenotas.trimestre",
+  "pk": 3,
+  "fields": {
+    "trimestre": "Tercer Trimestre",
+    "anio": "2023"
+  }
+}
+]

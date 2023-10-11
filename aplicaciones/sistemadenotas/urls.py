@@ -34,6 +34,8 @@ urlpatterns = [
         views.ReporteDeNotasExcel.as_view(),
         name="reporteExcel"
     ),
+    # HU-14: Reporte de Alumnos Aprobados/Reprobados
+    path('graficoAR/<aprobados>/<reprobados>/<gradoseccionmateria>',views.graficoAR, name='graficoAR'),
     #HU-15:Reporte de Alumnos Masculinos/Femeninos
     path('graficosEstadisticos/',views.graficos, name='graficos'),
     # Gestión Alumnos -----------------------------
@@ -91,6 +93,11 @@ urlpatterns = [
         'editar_docente/<str:id>', 
         views.EditarDocente, 
         name='editar_docente'
+    ),
+    path(
+        'editar_docente_password/<str:id>', 
+        views.EditarDocenteContra, 
+        name='editar_docente_password'
     ),
     # HU-31: Habilitar/Deshabilitar Docentes
     path(

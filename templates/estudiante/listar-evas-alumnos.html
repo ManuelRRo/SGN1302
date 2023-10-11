@@ -52,28 +52,32 @@
                         </thead>
                         <tbody>
                             {% for estudiante in estudiantes %}
-                            <tr>
-                                <td>{{estudiante.id_alumno}}</td>
-                                <!-- validar si tiene asignada evaluacion -->
-                                {% if estudiante.nota is None %}
-                                    <td></td>
-                                {% else %}
-                                    <td class="text-center">{{estudiante.nota}}</td>
+                                {% if estudiante.id_alumno.estado == '1' %}
+                                <tr>
+                                    <td>{{estudiante.id_alumno}}</td>
+                                    <!-- validar si tiene asignada evaluacion -->
+                                    {% if estudiante.nota is None %}
+                                        <td class="text-center">
+                                            <span class="btn btn-warning btn-xs rounded-pill">Sin nota</span>
+                                        </td>
+                                    {% else %}
+                                        <td class="text-center">{{estudiante.nota}}</td>
+                                    {% endif %}
+                                    
+                                    <!-- modificar el estado dependiendo si est an e 0 o no -->
+                                    <td class="d-none"></td>
+                                    <td class="text-center">
+                                        <a class="btn btn-outline-primary" title="Colocarle nota al alumno de este registro" href="#" onclick="actualizarRegistro('{{estudiante.id_evaluacion.id_evaluacion}}', '{{estudiante.id_alumno.id_alumno}}','{{estudiante.id_alumno.nombres_alumno}}','{{estudiante.id_alumno.apellidos_alumno}}', '{{estudiante.nota}}')">
+                                            <i class="me-1" data-feather="edit"></i>
+                                            Asignar
+                                        </a>
+                                    </td> 
+                                    <td class="d-none">No utilizado</td>
+                                    <td class="d-none" >No utilizado</td>
+                                    <td class="d-none">No utilizado</td>   
+                                    <td class="d-none">No utilizado</td>                           
+                                </tr>
                                 {% endif %}
-                                
-                                <!-- modificar el estado dependiendo si est an e 0 o no -->
-                                <td class="d-none"></td>
-                                <td class="text-center">
-                                    <a class="btn btn-outline-primary" title="Colocarle nota al alumno de este registro" href="#" onclick="actualizarRegistro('{{estudiante.id_evaluacion.id_evaluacion}}', '{{estudiante.id_alumno.id_alumno}}','{{estudiante.id_alumno.nombres_alumno}}','{{estudiante.id_alumno.apellidos_alumno}}', '{{estudiante.nota}}')">
-                                        <i class="me-1" data-feather="edit"></i>
-                                        Asignar
-                                    </a>
-                                </td> 
-                                <td class="d-none">No utilizado</td>
-                                <td class="d-none" >No utilizado</td>
-                                <td class="d-none">No utilizado</td>   
-                                <td class="d-none">No utilizado</td>                           
-                            </tr>
                             {% endfor%}
                         </tbody>
                     </table>

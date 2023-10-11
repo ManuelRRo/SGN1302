@@ -1,0 +1,128 @@
+{% extends 'layouts/dashboard.html' %}
+
+{% block metadata %}
+<title>Reporte</title>
+{% endblock %}
+{% block content %}
+{% load static %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!--PARA FIJAR LA OPCIÓN EN LA BARRA DE NAVEGACIÓN-->
+<div id="idmateria" class="d-none">
+    {{gradoseccionmateria.id_materia.id_materia}}
+</div>
+<div id="idgrado" class="d-none">
+    {{gradoseccionmateria.id_gradoseccion.id_gradoseccion}}
+</div>
+
+<div class="px-15">
+    <div class="row">
+        <div class="col-12">
+            <div class="mt-4 px-4">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div>
+                            <div class="text-center text-uppercase-expanded fw-900 fs-6">
+                                CENTRO ESCOLAR "13 DE FEBRERO DE 2001"
+                            </div>
+                            <div class="text-center text-uppercase-expanded fw-100 fs-6">
+                                Rendimiento Académico
+                            </div>
+                            <div class="row text-sm mt-4">
+                                <div class="col-xl-2 fw-bold">Asignatura:</div>
+                                <div class="col-xl-10">{{gradoseccionmateria.id_materia.nombre_materia}}</div>
+                            </div>
+                            <div class="row text-sm">
+                                <div class="col-xl-2 fw-bold">Grado:</div>
+                                <div class="col-xl-10">{{gradoseccionmateria.id_gradoseccion }}</div>
+                            </div>
+                            <div>
+                                <canvas id="reporte"></canvas>
+                            </div>
+                        </div>
+                        <script>
+                            var ctx = document.getElementById('reporte').getContext('2d');
+                            var myChart = new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: ['Aprobados','Reprobados'],
+                                    datasets: [{
+                                        data: [{{aprobados}}, {{reprobados}}],
+                                        backgroundColor: [
+                                            'rgb(93, 156, 89, 0.8)',
+                                            'rgba(255, 99, 132, 0.8)',
+                                        ],
+                                        fill: false,
+                                        borderColor: [
+                                            'rgba(93, 156, 89, 1)',
+                                            'rgba(255, 99, 132, 1)',
+                                        ],
+                                        borderWidth: 2,
+                                        borderSkipped: false,
+                                    }]
+                                },
+                                options: {
+                                    interaction: {
+                                        mode: 'index',
+                                        intersect: false,
+                                      },
+                                    plugins: {
+                                        responsive: true,
+                                        legend: {
+                                            display: false,
+                                        },
+                                        title: {
+                                        display: true,
+                                        text: 'Distribución de Alumnos según estado de nota trimestral',
+                                        },
+                                        
+                                    },
+                                    scales: {
+                                        x: {
+                                          title: {
+                                            display: true,
+                                            text: 'Estado'
+                                          }
+                                        },
+                                        y: {
+                                            title: {
+                                              display: true,
+                                              text: 'Alumnos'
+                                            }
+                                          }
+                                      },
+                                      
+
+                                }
+                            });
+                        </script>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary no-imprimir" id="imprimir-btn">
+                                <i class="me-1" data-feather="download"></i>
+                                Descargar como PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // PARA MANEJAR LA BARRA DE NAGEVACIÓN PARA EVALUAR
+    window.onload = function () {
+        var idmateria = document.getElementById("idmateria").textContent.trim();  // Limpia el contenido del ID
+        var idgrado = document.getElementById("idgrado").textContent.trim();  // Limpia el contenido del ID
+        const collapseGrados = document.getElementById('collapseMaterias');
+        const collapseMaterias = document.getElementById('pagesMaterias'+idgrado)
+        const materia = document.getElementById('Materia'+idmateria);
+        const grado = document.getElementById('Grado'+idgrado);
+        collapseMaterias.classList.add('show');
+        materia.classList.add('active');
+        grado.classList.add('active');
+        collapseGrados.classList.add('show');
+    }
+</script>
+
+{% endblock %}

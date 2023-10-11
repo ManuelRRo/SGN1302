@@ -80,6 +80,13 @@
                 Editar
               </a>
             </td>
+
+            <td class="text-center">
+              <a class="btn btn-outline-primary" title="Cambiar Contraseña" href="{% url 'sgn_app:editar_docente_password' docente.numidentificacion %}">
+                <i data-feather="key"></i>&nbsp;
+              </a>
+            </td>
+            
             <td>
               {% for usuario in users %}
               {% if usuario.username == docente.numidentificacion %}

@@ -157,14 +157,17 @@ class ListarEvaluacionesAlumnos(View):
 # HU-07: Mostrar Notas de Alumnos de todas las evaluaciones
 # Mostrarse baso en el archivo de excel que proporcionaron en el centro escolar.
 def ver_Promedios(request, idgrado, idtrimestre):
+
+    nulos = False
     
     gradoseccion = Gradoseccionmateria.objects.get(id_gradoseccionmateria=idgrado)
     
-    alumnos = Alumno.objects.filter(id_gradoseccion=gradoseccion.id_gradoseccion)
+    alumnos = Alumno.objects.filter(id_gradoseccion=gradoseccion.id_gradoseccion,estado='1')
     
     evaluacionalumno = Evaluacionalumno.objects.filter(id_alumno__id_gradoseccion=gradoseccion.id_gradoseccion, 
                                                         id_evaluacion__id_trimestre=idtrimestre, 
-                                                        id_evaluacion__id_gradoseccionmateria=gradoseccion.id_gradoseccionmateria).order_by('id_evaluacion')
+                                                        id_evaluacion__id_gradoseccionmateria=gradoseccion.id_gradoseccionmateria,
+                                                        id_evaluacion__estado=1).order_by('id_evaluacion')
     
     evaluacion_ids = evaluacionalumno.values_list('id_evaluacion', flat=True)
     
@@ -183,8 +186,13 @@ def ver_Promedios(request, idgrado, idtrimestre):
             evaluacion_alumno = evaluacionalumno.filter(
                 id_alumno=alumno, id_evaluacion=evaluacion).first()
             if evaluacion_alumno:
-                nota_ponderada = evaluacion_alumno.nota * \
+                try:
+                    nota_ponderada = evaluacion_alumno.nota * \
                     (evaluacion.porcentaje / 100)
+                    
+                except:
+                    nota_ponderada = 0
+                    nulos = True
                 notas.append(nota_ponderada)
         promedio = round(sum(notas), 2)
         if(promedio >= 5.0):
@@ -203,7 +211,8 @@ def ver_Promedios(request, idgrado, idtrimestre):
         'alumnos': alumnos,
         'promedios': promedios,
         'aprobados': aprobados,
-        'reprobados': reprobados
+        'reprobados': reprobados,
+        'nulos':nulos,
     }
 
     contexto.update(asignacionClases(request))
@@ -313,6 +322,14 @@ def Cambiar_Rol(request, nombreUsuario):
     except User.DoesNotExist:
         pass
     return redirect('/cambiar_Rol/')
+# HU-14: Reporte de Alumnos Aprobados/Reprobados
+def graficoAR(request, aprobados, reprobados, gradoseccionmateria):
+    contexto = {}
+    contexto.update(asignacionClases(request))
+    contexto['aprobados'] = aprobados
+    contexto['reprobados'] = reprobados
+    contexto['gradoseccionmateria'] = Gradoseccionmateria.objects.get(id_gradoseccionmateria = gradoseccionmateria)
+    return render(request, 'administracion/graficoAR.html', contexto)
 
 #HU-15: Reporte de Alumnos Masculinos/Femeninos
 def generar_grafico_barra(data, title):
@@ -524,7 +541,18 @@ class ListarAlumno(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            form.save()
+            alumno = form.save()
+            numEvaluaciones = Evaluacionalumno.objects.filter(id_alumno=alumno).count()
+            if numEvaluaciones == 0:
+                gradoseccionmaterias = Gradoseccionmateria.objects.filter(id_gradoseccion=alumno.id_gradoseccion)
+                for gradoseccionmateria in gradoseccionmaterias:
+                    evaluaciones = Evaluacion.objects.filter(id_gradoseccionmateria=gradoseccionmateria)
+                    for evaluacion in evaluaciones:
+                        evaluacion_alumno = Evaluacionalumno.objects.create(id_evaluacion=evaluacion,
+                                                                            id_alumno=alumno,
+                                                                            nota=None)
+                print("Evaluacion Creada")
+            #evaluaciones = Evaluacion.
         else:
             print(form.errors)
         
@@ -662,7 +690,6 @@ class CrearDocentes(View):
 
 # HU-30: Editar Docentes
 @login_required()
-@login_required
 def EditarDocente(request, id):
     contexto = {}
     docente = get_object_or_404(Docente, numidentificacion=id)
@@ -672,25 +699,41 @@ def EditarDocente(request, id):
     if request.method == 'POST':
         form_teacher = DocenteForm(request.POST, instance=docente)
         form_user = UserChangeForm(request.POST, instance=user)
-        password_form = SetPasswordForm(user, request.POST)  # Agrega el formulario de cambio de contraseña
-       
-        if form_teacher.is_valid() and form_user.is_valid() and password_form.is_valid():
+      
+        if form_teacher.is_valid() and form_user.is_valid():
             form_teacher.save()
             form_user.save()
-            password_form.save()  # Guarda los cambios de contraseña
             #update_session_auth_hash(request, user)  # Actualiza la sesión de autenticación
             return redirect('sgn_app:listado_docentes')
     else:
         form_teacher = DocenteForm(instance=docente)
         form_user = UserChangeForm(instance=user)
-        password_form = SetPasswordForm(user)  # Crea el formulario de cambio de contraseña
-        
+       
         contexto['docente_form'] = form_teacher
         contexto['user_form'] = form_user
-        contexto['password_form'] = password_form  # Agrega el formulario de cambio de contraseña al contexto
         contexto['user_date_join'] = user.date_joined
 
     return render(request, 'docente/editar_docente.html', contexto)
+
+@login_required()
+def EditarDocenteContra(request, id):
+    contexto = {}
+    user = get_object_or_404(User, username=id)
+    contexto = asignacionClases(request)
+    
+    if request.method == 'POST':
+        password_form = SetPasswordForm(user, request.POST)  # Agrega el formulario de cambio de contraseña
+       
+        if password_form.is_valid():
+            password_form.save()  # Guarda los cambios de contraseña
+            #update_session_auth_hash(request, user)  # Actualiza la sesión de autenticación
+            return redirect('sgn_app:listado_docentes')
+    else:
+        password_form = SetPasswordForm(user)  # Crea el formulario de cambio de contraseña
+        contexto['password_form'] = password_form  # Agrega el formulario de cambio de contraseña al contexto
+        contexto['user_date_join'] = user.date_joined
+
+    return render(request, 'docente/editar_docente_contra.html',contexto)
 
 
 
@@ -816,7 +859,7 @@ def CrearEvaluacionAlumno(request):
                 grado = evaluacion.id_gradoseccionmateria.id_gradoseccion.id_gradoseccion
                 alumno = Alumno.objects.filter(id_gradoseccion=grado)
                 for e in alumno:
-                    evaalumno = Evaluacionalumno.objects.create(id_evaluacion=evaluacion, id_alumno=e, nota=0)
+                    evaalumno = Evaluacionalumno.objects.create(id_evaluacion=evaluacion, id_alumno=e, nota=None)
                 return HttpResponseRedirect('/estudiante/crear-eva-est?submitted=True')
         else:
             return HttpResponseRedirect('/estudiante/crear-eva-est')
