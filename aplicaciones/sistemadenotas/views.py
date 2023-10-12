@@ -498,8 +498,11 @@ class ActualizarAlumno(UpdateView):
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         self.gradoseccion = self.kwargs["id_gradoseccion"]
+        grado_del_docente = Gradoseccion.objects.get(id_gradoseccion=self.kwargs["id_gradoseccion"])
+        
         self.alumnos = Alumno.objects.filter(id_gradoseccion=self.gradoseccion)
         context['estudiantes'] = self.alumnos
+        context['grado_docente'] = grado_del_docente
         context.update(asignacionClases(self.request))
         return context
     
@@ -528,10 +531,14 @@ class ListarAlumno(View):
         grado_seccion_materia = Gradoseccionmateria.objects.filter(id_materia__in=materia)
         gradoseccion = Gradoseccion.objects.filter(gradoseccionmateria__id_materia__id_docente=docente).distinct()
         # ------------------------------------
+        #nueva query de grados
+        grado_del_docente = Gradoseccion.objects.get(id_gradoseccion=self.kwargs["id_gradoseccion"])
+        # ------------------------------------
         contexto['grado_seccion'] = gradoseccion
         contexto["grado_seccion_materia"] = grado_seccion_materia
         contexto['estudiantes'] = self.get_queryset()
-        contexto['form'] = self.form_class
+        contexto['grado_docente'] = grado_del_docente
+        contexto['form'] = AlumnoForm()
         return contexto
 
     def get(self, request, *args, **kwargs):
