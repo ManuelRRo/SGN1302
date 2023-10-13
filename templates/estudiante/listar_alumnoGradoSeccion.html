@@ -9,25 +9,25 @@
 {% block content %}
 {% load static %}
 
-        
+
 {% if messages %}
 {% for message in messages %}
 
 <div class="container-xl px-4 mt-4">
-  <div class="alert alert-primary alert-icon border-start-lg" role="alert">
-    <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
-    <div class="alert-icon-aside">
-      <i class="far fa-bell"></i>
+    <div class="alert alert-primary alert-icon border-start-lg" role="alert">
+        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alert-icon-aside">
+            <i class="far fa-bell"></i>
+        </div>
+        <div class="alert-icon-content">
+            <h6 class="alert-heading">Notificación</h6>
+            {{message}}
+        </div>
     </div>
-    <div class="alert-icon-content">
-      <h6 class="alert-heading">Notificación</h6>
-      {{message}}
-    </div>
-  </div>
 </div>
 
 {% endfor %}
-{% endif %}       
+{% endif %}
 
 
 <div class="container-xl px-4 mt-4">
@@ -35,14 +35,14 @@
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-header">Listado de alumnos</div>
-                <div class="card-body"> 
-                    <table id="datatablesSimple" class = "table table-hover" >
+                <div class="card-body">
+                    <table id="datatablesSimple" class="table table-hover">
                         <thead>
                             <tr>
                                 <th>NIE</th>
                                 <th>Apellido Alumno</th>
                                 <th>Nombres Alumno</th>
-                                <th class="d-none" >Estado</th>
+                                <th class="d-none">Estado</th>
                                 <th>Acciones</th>
                                 <th class="d-none">Salary</th>
                                 <th class="d-none">Status</th>
@@ -56,16 +56,19 @@
                                 <td>{{estudiante.apellidos_alumno}}</td>
                                 <td>{{estudiante.nombres_alumno}}</td>
                                 <!-- modificar el estado dependiendo si est an e 0 o no -->
-                                <td class="d-none"><div class="badge bg-warning rounded-pill">Pending</div></td>
+                                <td class="d-none">
+                                    <div class="badge bg-warning rounded-pill">Pending</div>
+                                </td>
                                 <td>
-                                        <a class="btn btn-outline-primary" title="Editar datos del alumno de este registro" href="{% url 'sgn_app:ActualizarAlumno' pk=estudiante.id_alumno id_gradoseccion=estudiante.id_gradoseccion.id_gradoseccion %}">
-                                            <i class="me-1" data-feather="edit"></i>
-                                            Actualizar
-                                        </a>
-                                </td> 
+                                    <a class="btn btn-outline-primary" title="Editar datos del alumno de este registro"
+                                        href="{% url 'sgn_app:ActualizarAlumno' pk=estudiante.id_alumno id_gradoseccion=estudiante.id_gradoseccion.id_gradoseccion %}">
+                                        <i class="me-1" data-feather="edit"></i>
+                                        Actualizar
+                                    </a>
+                                </td>
                                 <td class="d-none">No utilizado</td>
-                                <td class="d-none" >No utilizado</td>
-                                <td class="d-none">No utilizado</td>               
+                                <td class="d-none">No utilizado</td>
+                                <td class="d-none">No utilizado</td>
                             </tr>
                             {% endfor%}
                         </tbody>
@@ -79,7 +82,7 @@
                         Registrar alumnos desde un excel
                     </button>
                 </a>
-            {% endfor %}
+                {% endfor %}
             </div>
         </div>
         <!-- Sticky Navigation-->
@@ -91,42 +94,51 @@
                         <form action="" method="post"> {% csrf_token %}
 
                             <div class="mb-0"><label>Nombres</label></div>
-                                <div class="mb-3">
-                                    {{ form.nombres_alumno}}
-                                </div>
-                            
-                            
+                            <div class="mb-3">
+                                {{ form.nombres_alumno}}
+                            </div>
+
+
                             <div class="mb-0"><label>Apellidos</label></div>
-                                <div class="mb-3">
-                                    {{ form.apellidos_alumno}}
-                                </div>
-                           
+                            <div class="mb-3">
+                                {{ form.apellidos_alumno}}
+                            </div>
+
 
                             <div class="mb-0"><label>Estado</label></div>
-                                <div class="mb-3">
-                                    {{ form.estado}}
-                                </div>
-                           
-                            
+                            <div class="mb-3">
+                                {{ form.estado}}
+                            </div>
+
+
                             <div class="mb-0"><label>NIE</label></div>
-                                <div class="mb-3">
-                                    {{ form.nie}}
-                                </div>
-                            
+                            <div class="mb-3">
+                                {{ form.nie}}
+                            </div>
+
 
                             <div class="mb-0"><label>Grado/Sección</label></div>
-                                <div class="mb-3">
-                                    {{ form.id_gradoseccion}}
-                                </div>
+                            <div class="mb-3">
+                               
+                                <select name="id_gradoseccion" class="form-control form-control-lg"
+                                    id="id_id_gradoseccion">
+                                   
+                                    <option value="{{grado_docente.id_gradoseccion}}">{{grado_docente.id_grado.grado}}
+                                        {{grado_docente.id_seccion.seccion}}</option>
 
-                                <div class="mb-0"><label>Sexo</label></div>
-                                <div class="mb-3">
-                                    {{ form.sexo}}
-                                </div>
-                           
-                
+                                </select>
+                            </div>
+
+
+
+                            <div class="mb-0"><label>Sexo</label></div>
+                            <div class="mb-3">
+                                {{ form.sexo}}
+                            </div>
+
+
                             <div align='center'> <button type="submit" class="btn btn-primary">Guardar</button> </div>
-                            
+
                         </form>
                     </div>
                 </div>
