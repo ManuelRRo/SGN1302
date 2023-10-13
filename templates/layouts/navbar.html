@@ -57,7 +57,7 @@
                         </nav>
                         {% endfor %}
                     </div>
-                    {%endif%}
+                        {%endif%}                   
                 {%endif%}
 
                 <!-- GESTOR DEL ADMINISTRADOR-->
@@ -139,6 +139,34 @@
                                 Listar Evaluaciones
                             </a>
                         </nav>
+                    </div>
+                    <a class="nav-link collapsed active" href="javascript:void(0);" data-bs-toggle="collapse"
+                        data-bs-target="#collapseAlumnos" aria-expanded="false" aria-controls="collapseAlumnos">
+                        <div class="nav-link-icon"><i data-feather="grid"></i></div>
+                        Cuadro de honor
+                        <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="show" id="collapseAlumnos" data-bs-parent="#accordionAlumnos">
+                        <nav class="sidenav-menu-nested nav accordion" id="accordionAlumnosPagesMenu">
+                            <!---
+                            {% if request.session.estado_cuadro_honor %}  
+                            <a href="#">                   
+                                <button class="btn btn-outline-danger" >
+                                    Deshabilitar para docentes
+                                </button>
+                            </a>
+                            {% else %}
+                            <a href="#">  
+                                <button class="btn btn-outline-success" href="{% url 'sgn_app:cambiar-estado-cuadro-honor' %}">
+                                    Habilitar para docentes
+                                </button>
+                            </a>
+                            {% endif %}
+                        -->
+                        <a class="nav-link" href="{% url 'sgn_app:elegir_trimestre' %}">
+                            Ver cuadro de honor
+                        </a> 
+                        </nav>                      
                     </div>
                 
                     <!-- FIN GESTOR DEL ADMINISTRADOR-->

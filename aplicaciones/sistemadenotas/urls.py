@@ -210,4 +210,19 @@ urlpatterns = [
         habilitar_evaluacion, 
         name='habilitar_evaluacion'
     ),
+    path(
+        'cuadro_de_honor/',
+        views.cuadro_honor,
+        name='cuadro_honor'
+    ),
+    path(
+        'elegir_trimestre/',
+        views.Elegir_trimestre,
+        name="elegir_trimestre"
+    ),
+    #path(
+    #    'cambiar_estado_cuadro_honor/',
+    #    views.habilitar_deshabilitar_cuadro_de_honor,
+    #    name="cambiar-estado-cuadro-honor"
+    #),
 ]

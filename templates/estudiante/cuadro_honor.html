@@ -1,0 +1,79 @@
+{% extends 'layouts/dashboard.html' %}
+
+{% comment %} {% include 'registration/login.html' %} {% endcomment %}
+
+{% block metadata %}
+<title>Cuadro de honor</title>
+{% endblock %}
+
+{% block content %}
+{% load static %}
+<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+    <div class="container-xl px-4">
+        <div class="page-header-content">
+            <div class="row align-items-center justify-content-between pt-3">
+                <div class="text-center text-uppercase-expanded fw-900 fs-4">
+                    CUADRO DE HONOR
+                </div>
+                <div class="text-center text-uppercase-expanded fw-300">
+                    {{trimestre}}
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container-xl px-4 mt-1">
+    <div class="row">
+        <div class="col-lg">
+            <div class="card">
+                <div class="card-header">Listado de alumnos</div>
+                <div class="card-body"> 
+                    <table id="datatablesSimple" class = "table table-hover" >
+                        <thead >
+                            <tr>
+                                <th>N°</th>
+                                <th>Grado-sección</th>                              
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Promedio global</th>
+                                <th class="d-none">Salary</th>
+                                <th class="d-none">Status</th>
+                                <th class="d-none">Actions</th>
+                                <th class="d-none">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            {% for fila in cuadroHonor %}
+                                <tr>
+                                    <th>{{ forloop.counter }}</th>
+                                    <td>
+                                        {{fila.alumno.id_gradoseccion}}
+                                    </td>
+                                    <td>
+                                        {{fila.alumno.nombres_alumno}}
+                                    </td>
+                                    <td>
+                                        {{fila.alumno.apellidos_alumno}}
+                                    </td>
+                                    <td>
+                                        {{fila.promedioAlumno|floatformat:2}}
+                                    </td>
+                                    <td class="d-none">No utilizado</td>
+                                    <td class="d-none" >No utilizado</td>
+                                    <td class="d-none">No utilizado</td>   
+                                    <td class="d-none">No utilizado</td>
+                                </tr>                          
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>
+
+
+
+
+{% endblock %}
