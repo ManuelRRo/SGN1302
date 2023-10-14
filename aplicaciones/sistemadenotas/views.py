@@ -1020,7 +1020,8 @@ def cuadro_honor(request):
             evaluacionesAlumno=Evaluacionalumno.objects.filter(
                 id_alumno=alumno.id_alumno,
                 id_evaluacion__id_gradoseccionmateria__id_materia=materia.id_materia,
-                id_evaluacion__id_trimestre=trimestre_seleccionado)
+                id_evaluacion__id_trimestre=trimestre_seleccionado,
+                id_evaluacion__estado=1)
             for evaluacion in evaluacionesAlumno:
                 promedioMateria+=evaluacion.nota*(evaluacion.id_evaluacion.porcentaje/100)
             promedioAlumno+=promedioMateria/len(materiasAlumno)
