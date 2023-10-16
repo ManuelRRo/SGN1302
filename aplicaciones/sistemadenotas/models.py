@@ -18,9 +18,9 @@ class Alumno(models.Model):
 
     id_alumno = models.AutoField(db_column='ID_ALUMNO', primary_key=True)  # Field name made lowercase.
     id_gradoseccion = models.ForeignKey('Gradoseccion', models.DO_NOTHING, db_column='ID_GRADOSECCION', blank=True, null=True)  # Field name made lowercase.
-    nie = models.CharField(db_column='NIE', max_length=7, blank=True, null=True)  # Field name made lowercase.
-    apellidos_alumno = models.CharField(db_column='APELLIDOS_ALUMNO', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    nombres_alumno = models.CharField(db_column='NOMBRES_ALUMNO', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    nie = models.CharField(db_column='NIE', max_length=7, blank=False, null=True)  # Field name made lowercase.
+    apellidos_alumno = models.CharField(db_column='APELLIDOS_ALUMNO', max_length=50, blank=False, null=True)  # Field name made lowercase.
+    nombres_alumno = models.CharField(db_column='NOMBRES_ALUMNO', max_length=50, blank=False, null=True)  # Field name made lowercase.
     estado = models.CharField(db_column='HABILITADO',max_length=1,null=True)
     sexo = models.CharField(db_column="SEXO", max_length=1,null=False,choices=Sexo.choices,default=Sexo.FEMENINO)
     class Meta:
@@ -145,8 +145,8 @@ class Seccion(models.Model):
 
 class Trimestre(models.Model):
     id_trimestre = models.AutoField(db_column='ID_TRIMESTRE', primary_key=True)  # Field name made lowercase.
-    trimestre = models.CharField(db_column='TRIMESTRE', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    anio = models.CharField(db_column='ANIO', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    trimestre = models.CharField(db_column='TRIMESTRE', max_length=50, blank=False, null=True)  # Field name made lowercase.
+    anio = models.CharField(db_column='ANIO', max_length=50, blank=False, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
