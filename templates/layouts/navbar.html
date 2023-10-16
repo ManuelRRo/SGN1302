@@ -148,21 +148,6 @@
                     </a>
                     <div class="show" id="collapseAlumnos" data-bs-parent="#accordionAlumnos">
                         <nav class="sidenav-menu-nested nav accordion" id="accordionAlumnosPagesMenu">
-                            <!---
-                            {% if request.session.estado_cuadro_honor %}  
-                            <a href="#">                   
-                                <button class="btn btn-outline-danger" >
-                                    Deshabilitar para docentes
-                                </button>
-                            </a>
-                            {% else %}
-                            <a href="#">  
-                                <button class="btn btn-outline-success" href="{% url 'sgn_app:cambiar-estado-cuadro-honor' %}">
-                                    Habilitar para docentes
-                                </button>
-                            </a>
-                            {% endif %}
-                        -->
                         <a class="nav-link" href="{% url 'sgn_app:elegir_trimestre' %}">
                             Ver cuadro de honor
                         </a> 

@@ -220,9 +220,4 @@ urlpatterns = [
         views.Elegir_trimestre,
         name="elegir_trimestre"
     ),
-    #path(
-    #    'cambiar_estado_cuadro_honor/',
-    #    views.habilitar_deshabilitar_cuadro_de_honor,
-    #    name="cambiar-estado-cuadro-honor"
-    #),
 ]

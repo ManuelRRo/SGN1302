@@ -1023,7 +1023,8 @@ def cuadro_honor(request):
                 id_evaluacion__id_trimestre=trimestre_seleccionado,
                 id_evaluacion__estado=1)
             for evaluacion in evaluacionesAlumno:
-                promedioMateria+=evaluacion.nota*(evaluacion.id_evaluacion.porcentaje/100)
+                if evaluacion.nota:
+                    promedioMateria+=evaluacion.nota*(evaluacion.id_evaluacion.porcentaje/100)
             promedioAlumno+=promedioMateria/len(materiasAlumno)
             
         if promedioAlumno==9.99:
@@ -1034,6 +1035,3 @@ def cuadro_honor(request):
     contexto={"cuadroHonor":cuadroHonor,"trimestre":trimestre}
     contexto.update(asignacionClases(request))
     return render(request, "estudiante/cuadro_honor.html",contexto)
-
-#def habilitar_deshabilitar_cuadro_de_honor(request):
-#    return redirect("sgn_app:home")
