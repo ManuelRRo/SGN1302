@@ -1,0 +1,44 @@
+{% extends 'layouts/dashboard.html' %}
+
+{% comment %} {% include 'registration/login.html' %} {% endcomment %}
+
+{% block metadata %}
+<title>Elegir trimestre</title>
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+<br />
+<div class="container-xl px-4 mt-1">
+    <form method="post" action="{% url 'sgn_app:cuadro_honor' %}">
+        {% csrf_token %}
+        <div class="row mb-3">
+         <div class="col-xl-6 col-sm-5 col-12">
+             <select name="trimestreSelect" class="form-select" id="trimestreSelect" onchange="enviarFormulario()">
+                <option value="">Seleccione el trimestre</option>
+                {% for trimestre in trimestres %}
+                <option value="{{trimestre.id_trimestre}}">{{trimestre}}</option>
+                {% endfor %}
+             </select>
+         </div>
+         <div class="col-xl-6 col-sm-7">
+             <button id="filtro_boton" class="btn btn-primary d-none" type="submit">
+                 <i data-feather="search"></i> &nbsp;Buscar
+             </button>           
+         </div>
+        </div>
+     </form>
+</div>
+
+<script>
+    function enviarFormulario() {
+        let button=document.getElementById("filtro_boton")
+        button.click()
+    }
+</script>
+
+
+
+{% endblock %}

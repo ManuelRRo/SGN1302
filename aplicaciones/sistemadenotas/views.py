@@ -478,8 +478,11 @@ class ActualizarAlumno(UpdateView):
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         self.gradoseccion = self.kwargs["id_gradoseccion"]
+        grado_del_docente = Gradoseccion.objects.get(id_gradoseccion=self.kwargs["id_gradoseccion"])
+        
         self.alumnos = Alumno.objects.filter(id_gradoseccion=self.gradoseccion)
         context['estudiantes'] = self.alumnos
+        context['grado_docente'] = grado_del_docente
         context.update(asignacionClases(self.request))
         return context
     
@@ -508,10 +511,14 @@ class ListarAlumno(View):
         grado_seccion_materia = Gradoseccionmateria.objects.filter(id_materia__in=materia)
         gradoseccion = Gradoseccion.objects.filter(gradoseccionmateria__id_materia__id_docente=docente).distinct()
         # ------------------------------------
+        #nueva query de grados
+        grado_del_docente = Gradoseccion.objects.get(id_gradoseccion=self.kwargs["id_gradoseccion"])
+        # ------------------------------------
         contexto['grado_seccion'] = gradoseccion
         contexto["grado_seccion_materia"] = grado_seccion_materia
         contexto['estudiantes'] = self.get_queryset()
-        contexto['form'] = self.form_class
+        contexto['grado_docente'] = grado_del_docente
+        contexto['form'] = AlumnoForm()
         return contexto
 
     def get(self, request, *args, **kwargs):
@@ -986,3 +993,42 @@ def habilitar_evaluacion(request,idgsm, idtri, id):
     evaluacion.save()
     # Redirigir al usuario a la página deseada
     return redirect(f'/evaluacion/listar-evas-grado/{idgsm}/?id_trimestre={idtri}')
+
+#HU-17 Cuadro de honor
+@login_required
+def Elegir_trimestre(request):
+    trimestres=Trimestre.objects.all()
+    contexto={"trimestres":trimestres}
+    contexto.update(asignacionClases(request))
+    return render(request,"estudiante/elegir-trimestre.html",contexto)
+
+@login_required
+def cuadro_honor(request):
+    trimestre_seleccionado = request.POST.get('trimestreSelect')
+    alumnos=Alumno.objects.filter(estado=1)
+    trimestre=Trimestre.objects.filter(id_trimestre=trimestre_seleccionado).first()
+    cuadroHonor=[]
+    for alumno in alumnos:
+        promedioAlumno=0.00
+        materiasAlumno=Gradoseccionmateria.objects.filter(id_gradoseccion=alumno.id_gradoseccion)     
+        for materia in materiasAlumno:
+            promedioMateria=0.00
+
+            evaluacionesAlumno=Evaluacionalumno.objects.filter(
+                id_alumno=alumno.id_alumno,
+                id_evaluacion__id_gradoseccionmateria__id_materia=materia.id_materia,
+                id_evaluacion__id_trimestre=trimestre_seleccionado,
+                id_evaluacion__estado=1)
+            for evaluacion in evaluacionesAlumno:
+                if evaluacion.nota:
+                    promedioMateria+=evaluacion.nota*(evaluacion.id_evaluacion.porcentaje/100)
+            promedioAlumno+=promedioMateria/len(materiasAlumno)
+            
+        if promedioAlumno==9.99:
+            promedioAlumno=10
+        if promedioAlumno>=8:
+            cuadroHonor.append({'alumno': alumno, 'promedioAlumno':promedioAlumno})
+            
+    contexto={"cuadroHonor":cuadroHonor,"trimestre":trimestre}
+    contexto.update(asignacionClases(request))
+    return render(request, "estudiante/cuadro_honor.html",contexto)
