@@ -151,7 +151,7 @@ class EvaluacionEditarForm(forms.ModelForm):
                 attrs={
                     'placeholder': 'porcentaje de Evaluación',
                     'class': 'form-control form-control-lg mt-4',
-                    'id': 'percentageUpdateEva'
+                    'id': 'id_porcentaje'
                 }
             )
 

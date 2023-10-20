@@ -9,6 +9,13 @@
 {% block content %}
 {% load static %}
 <!--PARA FIJAR LA OPCIÓN EN LA BARRA DE NAVEGACIÓN-->
+{ if messages }
+<div class="alert alert-danger">
+  <ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
 <div id="idmateria" class="d-none">
   {{evaluacion.id_gradoseccionmateria.id_materia.id_materia}}
 </div>

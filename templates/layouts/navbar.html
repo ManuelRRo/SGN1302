@@ -55,8 +55,15 @@
                                 {{gradoseccion}}
                             </a>                   
                         </nav>
+                        <nav class="sidenav-menu-nested nav accordion" id="accordionAlumnosPagesMenu">
+                            <a class="nav-link" href="{% url 'sgn_app:Habilitar-DeshabilitarAlumno' gradoseccion.id_gradoseccion%}">
+                                Estado de Alumnos {{gradoseccion}}
+                            </a>                   
+                        </nav>
                         {% endfor %}
                     </div>
+                        
+                    
                     {%endif%}
                 {%endif%}
 

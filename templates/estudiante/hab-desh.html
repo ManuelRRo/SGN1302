@@ -1,7 +1,5 @@
 {% extends 'layouts/dashboard.html' %}
 
-{% comment %} {% include 'registration/login.html' %} {% endcomment %}
-
 {% block metadata %}
 <title>Habilitar Deshabilitar Alumnos</title>
 {% endblock %}
@@ -9,7 +7,7 @@
 {% load static %}
 
 <div class="text-center">
-  <h1 class="d-flex justify-content-center mt-5">Alumnos de su grado y seccion</h1>
+  <h1 class="d-flex justify-content-center mt-5">Alumnos de {{ seccion }}</h1>
 </div>
 <div class="container-xl px-4 mt-5">
     <div class="card mb-4">

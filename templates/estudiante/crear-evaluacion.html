@@ -23,6 +23,15 @@
     </div>
 </div>
 {% else %}
+{% if messages %}
+<div class="alert alert-danger">
+    <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% else %}
 <div class="container-xl px-4 mt-4">
     <div class="alert alert-primary alert-icon border-start-lg" role="alert">
         <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -35,7 +44,9 @@
         </div>
     </div>
 </div>
+{% endif %}
 {% endif%}
+
 <div class="row align-items-center justify-content-center">
     <div class="col-xl-8 px-4 mt-4">
         <!-- Account details card-->
@@ -110,6 +121,8 @@
 </div>
 
 <script>
+    
+
     window.onload = function () {
         const navDocentes = document.getElementById('navGrado');
         const collapseDocentes = document.getElementById('collapseGrado');

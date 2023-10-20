@@ -439,12 +439,17 @@ class HabDeshabiAlumno(ListView):
     model = Alumno
     template_name = 'estudiante/hab-desh.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        id = self.kwargs['id']
+        context['seccion'] = Gradoseccion.objects.get(id_gradoseccion=id)
+        return context
+
     def get_queryset(self):
         id = self.kwargs['id']
         alumnos = Alumno.objects.filter(
             id_gradoseccion=id
         )
-        print(alumnos)
         return alumnos
 
 
@@ -462,32 +467,7 @@ def deshabilitar(request, id, idAlumno):
     return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
 
 
-# HU-23: Habilitar/Deshabilitar Alumnos
-class HabDeshabiAlumno(ListView):
-    model = Alumno
-    template_name = 'estudiante/hab-desh.html'
 
-    def get_queryset(self):
-        id = self.kwargs['id']
-        alumnos = Alumno.objects.filter(
-            id_gradoseccion=id
-        )
-        print(alumnos)
-        return alumnos
-
-
-def habilitar(request, id, idAlumno):
-    alumno = Alumno.objects.get(id_alumno=idAlumno)
-    alumno.estado = "1"
-    alumno.save()
-    return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
-
-
-def deshabilitar(request, id, idAlumno):
-    alumno = Alumno.objects.get(id_alumno=idAlumno)
-    alumno.estado = "0"
-    alumno.save()
-    return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
 
 # HU-22: Editar Alumno
 class ActualizarAlumno(UpdateView):
@@ -850,16 +830,20 @@ def CrearEvaluacionAlumno(request):
         if form_valid:
             evaluacion = form.save(commit=False)  # Evita guardar inmediatamente en la base de datos
             evaluacion.estado = 1  # Asigna el valor 1 a la columna "estado"
-            evaluacion.save()  # Ahora guarda el objeto con el nuevo valor en la base de datos
+              # Ahora guarda el objeto con el nuevo valor en la base de datos
             # evaluacion = form.save()  # contiene los datos de la evaluacion que se acaba de crear
             # grado = form.cleaned_data['id_gradoseccionmateria'].id_gradoseccion.id_gradoseccion
             if evaluacion.id_trimestre is None:
                 return HttpResponseRedirect('/estudiante/crear-eva-est')
+            if evaluacion.porcentaje is None or evaluacion.porcentaje < 0 or evaluacion.porcentaje > 100:
+                 messages.error(request, "El porcentaje de la evaluacion debe estar entre 0 y 100.")
+                 return HttpResponseRedirect('/estudiante/crear-eva-est')
             if evaluacion is not None :
                 grado = evaluacion.id_gradoseccionmateria.id_gradoseccion.id_gradoseccion
                 alumno = Alumno.objects.filter(id_gradoseccion=grado)
                 for e in alumno:
                     evaalumno = Evaluacionalumno.objects.create(id_evaluacion=evaluacion, id_alumno=e, nota=None)
+                    evaluacion.save()
                 return HttpResponseRedirect('/estudiante/crear-eva-est?submitted=True')
         else:
             return HttpResponseRedirect('/estudiante/crear-eva-est')
@@ -921,7 +905,11 @@ def excelAlumnos(request, id):
             error=""  # Variable para rastrear errores en el Excel
 
             for row in sheet.iter_rows(min_row=2, values_only=True):
-                nie, apellidos_alumno, nombres_alumno, sexo  = row
+                try:
+                    nie, apellidos_alumno, nombres_alumno, sexo = row
+                except ValueError:
+                    error = "Archivo de excel con formato incorrecto"
+                    break  
 
                 # Validar si algún campo está vacío
                 if not nie or not apellidos_alumno or not nombres_alumno or not sexo:
@@ -957,12 +945,21 @@ def confirmar_importacion(request,id):
     datos_archivo = request.session.get('datos_archivo', [])
 
     if request.method == 'POST':
-        messages.success(request,"Alumnos registrados correctamente")
         gradoseccion=Gradoseccion.objects.filter(id_gradoseccion=id).first()
         # Guardar los datos en la base de datos
+        existing_alumno = None
         for data in datos_archivo:
-            Alumno.objects.create(nie=data['nie'], apellidos_alumno=data['apellidos'], nombres_alumno=data['nombres'], id_gradoseccion=gradoseccion,estado=1,sexo=data['sexo'])
+            nie = data['nie']
 
+            try:
+                # Verificar si el alumno ya existe en la base de datos por su NIE
+                existing_alumno = Alumno.objects.get(nie=nie, id_gradoseccion=gradoseccion)
+                messages.error(request, f"El alumno con NIE {nie} ya está registrado.")
+            except ObjectDoesNotExist:
+
+                Alumno.objects.create(nie=data['nie'], apellidos_alumno=data['apellidos'], nombres_alumno=data['nombres'], id_gradoseccion=gradoseccion,estado=1,sexo=data['sexo'])
+        if existing_alumno is None:
+            messages.success(request,"Alumnos registrados correctamente")
         # Limpiar los datos en la sesión después de importar
         request.session['datos_archivo'] = None
     return redirect('sgn_app:ListarAlumno', id_gradoseccion=id)
