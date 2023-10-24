@@ -8,6 +8,8 @@
 
 {% block content %}
 {% load static %}
+
+
 <header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
     <div class="container-xl px-4">
         <div class="page-header-content">
@@ -22,7 +24,22 @@
         </div>
     </div>
 </header>
-
+{% if messages %}
+{% for message in messages %}
+<div class="container-xl px-4 mt-4">
+    <div class="alert alert-primary alert-icon border-start-lg" role="alert">
+        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alert-icon-aside">
+            <i class="far fa-bell"></i>
+        </div>
+        <div class="alert-icon-content">
+            <h6 class="alert-heading">Notificación</h6>
+            {{message}}
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
 <!--PARA FIJAR LA OPCIÓN EN LA BARRA DE NAVEGACIÓN-->
 <div id="idmateria" class="d-none">
     {{estudiantes.first.id_evaluacion.id_gradoseccionmateria.id_gradoseccionmateria}}

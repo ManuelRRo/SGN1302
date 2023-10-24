@@ -11,7 +11,22 @@
 <br />
 <div class="container-xl px-4">
 
-    
+    {% if messages %}
+    {% for message in messages %}
+    <div class="container-xl px-4 mt-4">
+        <div class="alert alert-primary alert-icon border-start-lg" role="alert">
+            <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="alert-icon-aside">
+                <i class="far fa-bell"></i>
+            </div>
+            <div class="alert-icon-content">
+                <h6 class="alert-heading">Notificación</h6>
+                {{message}}
+            </div>
+        </div>
+      </div>
+    {% endfor %}
+    {% endif %}
     
     <form method="get">
        <div class="row mb-3">

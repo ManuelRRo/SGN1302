@@ -147,6 +147,7 @@ class ListarEvaluacionesAlumnos(View):
                         id_evaluacion=self.Evaluacion, id_alumno=self.Alumno)
                     self.EvaluacionAlumno.nota = nota
                     self.EvaluacionAlumno.save()
+                    messages.success(request, 'Calificado correctamente')
             except Exception:
                 messages.error(request, 'Ocurrio un error')
 
@@ -319,6 +320,7 @@ def Cambiar_Rol(request, nombreUsuario):
         # Cambia el estado is_superuser
         registro.is_superuser = not registro.is_superuser
         registro.save()
+        messages.success(request, 'Rol cambiado con éxito')
     except User.DoesNotExist:
         pass
     return redirect('/cambiar_Rol/')
@@ -457,6 +459,7 @@ def habilitar(request, id, idAlumno):
     alumno = Alumno.objects.get(id_alumno=idAlumno)
     alumno.estado = "1"
     alumno.save()
+    messages.success(request, 'Alumno habilitado correctamente')
     return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
 
 
@@ -464,6 +467,7 @@ def deshabilitar(request, id, idAlumno):
     alumno = Alumno.objects.get(id_alumno=idAlumno)
     alumno.estado = "0"
     alumno.save()
+    messages.success(request, 'Alumno deshabilitado correctamente')
     return redirect(f'/habilitarDeshabilitarAlumno/{id}/')
 
 
@@ -690,6 +694,7 @@ def EditarDocente(request, id):
         if form_teacher.is_valid() and form_user.is_valid():
             form_teacher.save()
             form_user.save()
+            messages.success(request, '!El docente se actualizo exitosamente¡')
             #update_session_auth_hash(request, user)  # Actualiza la sesión de autenticación
             return redirect('sgn_app:listado_docentes')
     else:
@@ -849,8 +854,9 @@ def CrearEvaluacionAlumno(request):
                 grado = evaluacion.id_gradoseccionmateria.id_gradoseccion.id_gradoseccion
                 alumno = Alumno.objects.filter(id_gradoseccion=grado)
                 for e in alumno:
-                    evaalumno = Evaluacionalumno.objects.create(id_evaluacion=evaluacion, id_alumno=e, nota=None)
                     evaluacion.save()
+                    evaalumno = Evaluacionalumno.objects.create(id_evaluacion=evaluacion, id_alumno=e, nota=None)
+                    evaalumno.save()
                 return HttpResponseRedirect('/estudiante/crear-eva-est?submitted=True')
         else:
             return HttpResponseRedirect('/estudiante/crear-eva-est')
@@ -900,47 +906,51 @@ def excelAlumnos(request, id):
     materia = Materia.objects.filter(id_docente=docente)
     gradoseccionmateria = Gradoseccionmateria.objects.filter(id_materia__in=materia)
     gradoseccion = Gradoseccion.objects.filter(gradoseccionmateria__id_materia__id_docente=docente).distinct()
+        
     if request.method == 'POST':
-        if request.FILES.get('archivo_excel'):
-            archivo_excel = request.FILES['archivo_excel']
+        try:
+            if request.FILES.get('archivo_excel'):
+                archivo_excel = request.FILES['archivo_excel']
             # Cargar el archivo Excel
-            wb = load_workbook(archivo_excel)
-            sheet = wb.active
+                wb = load_workbook(archivo_excel)
+                sheet = wb.active
 
             # Procesar cada fila del archivo Excel y guardar los datos en la sesión
-            datos_archivo = []
-            error=""  # Variable para rastrear errores en el Excel
+                datos_archivo = []
+                error=""  # Variable para rastrear errores en el Excel
 
-            for row in sheet.iter_rows(min_row=2, values_only=True):
-                try:
-                    nie, apellidos_alumno, nombres_alumno, sexo = row
-                except ValueError:
-                    error = "Archivo de excel con formato incorrecto"
-                    break  
+                for row in sheet.iter_rows(min_row=2, values_only=True):
+                    try:
+                        nie, apellidos_alumno, nombres_alumno, sexo = row
+                    except ValueError:
+                        error = "Archivo de excel con formato incorrecto"
+                        break  
 
                 # Validar si algún campo está vacío
-                if not nie or not apellidos_alumno or not nombres_alumno or not sexo:
-                    error="El excel no debe tener campos vacíos"
-                    break  # Salir del bucle si hay un campo vacío en alguna fila
+                    if not nie or not apellidos_alumno or not nombres_alumno or not sexo:
+                        error="El excel no debe tener campos vacíos"
+                        break  # Salir del bucle si hay un campo vacío en alguna fila
                 
                 # Convertir el valor de sexo a mayúsculas
-                sexo = sexo.upper()  # Esto convierte a mayúsculas independientemente de si estaba en minúsculas o mayúsculas
+                    sexo = sexo.upper()  # Esto convierte a mayúsculas independientemente de si estaba en minúsculas o mayúsculas
 
                 # Validar que el valor de sexo sea "M" o "F"
-                if sexo not in ["M", "F"]:
-                    error="Error, el sexo debe ser M o F."
-                    break  # Salir del bucle si se encuentra un valor no válido
+                    if sexo not in ["M", "F"]:
+                        error="Error, el sexo debe ser M o F."
+                        break  # Salir del bucle si se encuentra un valor no válido
 
-                datos_archivo.append({'nie': nie, 'apellidos': apellidos_alumno, 'nombres': nombres_alumno,'sexo':sexo})
+                    datos_archivo.append({'nie': nie, 'apellidos': apellidos_alumno, 'nombres': nombres_alumno,'sexo':sexo})
 
-            if error:
-                messages.error(request, error)
+                if error:
+                    messages.error(request, error)
+                else:
+                    # Guardar los datos en la sesión
+                    request.session['datos_archivo'] = datos_archivo
+                    return render(request, 'estudiante/verAlumnosExcel.html', {'id_gradoseccion': id, 'grado_seccion': gradoseccion, 'datos_archivo': datos_archivo, 'grado_seccion_materia': gradoseccionmateria})
             else:
-                # Guardar los datos en la sesión
-                request.session['datos_archivo'] = datos_archivo
-                return render(request, 'estudiante/verAlumnosExcel.html', {'id_gradoseccion': id, 'grado_seccion': gradoseccion, 'datos_archivo': datos_archivo, 'grado_seccion_materia': gradoseccionmateria})
-        else:
-            messages.error(request, "No se ha subido ningún excel")
+                messages.error(request, "No se ha subido ningún excel")
+        except:
+            messages.error(request, "Archivo de excel con formato incorrecto")
     
     return render(request, 'estudiante/verAlumnosExcel.html', {'id_gradoseccion': id, 'grado_seccion': gradoseccion, 'grado_seccion_materia': gradoseccionmateria})
 
@@ -981,6 +991,7 @@ def deshabilitar_evaluacion(request, idgsm,idtri, id):
     #Deshabilitar Evaluación
     evaluacion.estado = 0
     evaluacion.save()
+    messages.success(request, f"La evaluación {evaluacion.nombre_evaluacion} ha sido deshabilitada con exito")
     # Redirigir al usuario a la página deseada
     return redirect(f'/evaluacion/listar-evas-grado/{idgsm}/?id_trimestre={idtri}') 
 
@@ -992,6 +1003,7 @@ def habilitar_evaluacion(request,idgsm, idtri, id):
     evaluacion.estado = 1
     evaluacion.save()
     # Redirigir al usuario a la página deseada
+    messages.success(request, f"La evaluación {evaluacion.nombre_evaluacion} ha sido habilitada con exito")
     return redirect(f'/evaluacion/listar-evas-grado/{idgsm}/?id_trimestre={idtri}')
 
 #HU-17 Cuadro de honor
