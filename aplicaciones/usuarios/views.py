@@ -12,7 +12,7 @@ def login_user(request):
             login(request,user)
             return redirect('sgn_app:home')
         else:
-            messages.success(request,("There Was An Error,Try Login Again"))
+            messages.success(request,("Hubo un error, intente iniciar sesión nuevamente"))
             return redirect('login')
 
     else:

@@ -64,7 +64,7 @@
           <div class="modal-body">
             <input class="form-control d-none" type="number" id="operacion" name="operacion" value = 1>
             <label for="estudiante">Grado</label>
-            <select class="form-select mb-3" name="idGradoSeccion" id="">
+            <select class="form-select mb-3" name="idGradoSeccion" id="" required>
               <option value="" disabled selected>Seleccione un Grado</option>
               {% for grado_seccion in Grado_seccion %}
               <option value="{{grado_seccion.id_gradoseccion}}">{{grado_seccion}}</option>
@@ -72,7 +72,7 @@
             </select>
 
             <label for="estudiante">Docente</label>
-            <select class="form-select mb-3" name="idDocente" id="">
+            <select class="form-select mb-3" name="idDocente" id="" required>
               <option value="" disabled selected>Seleccione un Docente</option>
               {% for docente in docentes %}
               <option value="{{docente.id_docente}}">{{docente}}</option>
@@ -80,7 +80,7 @@
             </select>
 
             <label for="estudiante">Materia</label>
-            <select class="form-select mb-3" name="nombreMateria" id="">
+            <select class="form-select mb-3" name="nombreMateria" id="" required>
               <option value="" disabled selected>Seleccione una Materia</option>
               <option value="Lenguaje">Lenguaje</option>
               <option value="Ciencia y Tecnologia">Ciencia y Tecnología</option>

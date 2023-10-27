@@ -589,13 +589,10 @@ class AsignacionClases(View):
                     id_grado_seccion = request.POST.get('idGradoSeccion', None)
                     id_docente = request.POST.get('idDocente', None)
                     nombre_materia = request.POST.get('nombreMateria', None)
-                    existe_materia = Materia.objects.filter(
-                        nombre_materia=nombre_materia, id_docente_id=id_docente).exists()
+                    existe_materia = Materia.objects.filter(nombre_materia=nombre_materia, id_docente_id=id_docente).exists()
                     if existe_materia:
-                        materias = Materia.objects.filter(
-                            nombre_materia=nombre_materia, id_docente_id=id_docente)
-                        existencia_grado_seccion_materia = Gradoseccionmateria.objects.filter(
-                            id_materia__in=materias, id_gradoseccion_id=id_grado_seccion).exists()
+                        materias = Materia.objects.filter(nombre_materia=nombre_materia, id_docente_id=id_docente)
+                        existencia_grado_seccion_materia = Gradoseccionmateria.objects.filter(id_materia__in=materias, id_gradoseccion_id=id_grado_seccion).exists()
                         if existencia_grado_seccion_materia:
                             messages.error(
                                 request, 'No fue posible registrarlo porque se encontró un coincidencia en la base de datos')
@@ -620,8 +617,7 @@ class AsignacionClases(View):
                             id_materia=materia
                         )
                 except Exception:
-                    messages.error(
-                        request, 'Ocurrio un error, introduzca datos válidos')
+                    messages.error(request, 'Ocurrio un error, introduzca datos válidos')
             else:
                 # Al no ser lo anterior
                 # Se edita un registro
@@ -639,6 +635,7 @@ def EliminarAsigacionClases(request, id):
         materia = Materia.objects.get(id_materia = grado_seccion_materia.id_materia.id_materia)
         grado_seccion_materia.delete()
         materia.delete()
+        messages.success(request, '¡Muy bien!, el registro se eliminó exitosamente')
 
     except Exception:
         messages.error(request, 'No es posible eliminar este registro')
