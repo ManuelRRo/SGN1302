@@ -10,6 +10,12 @@
 {% load static %}
 {% if user.is_superuser %}
 <br><br>
+<button id="btn1" type="submit" class=" ms-3 btn btn-primary">
+  <i class="me-1" data-feather="file" ></i>
+  Descargar Archivo Excel
+</button>
+<br>
+<br>
 <div class="container-sm px-4">
     <div class="card mb-3">
         <div class="card-header">
@@ -41,7 +47,7 @@
               {%else%}
               <td class="text-center">N/A</td>
               {% endif %}
-              <td class="text-center">{{detalles.pantalon}}</td>
+              <td class="text-center"l>{{detalles.pantalon}}</td>
             </tr>  
             {% endfor %}
             <td class="d-none"></td>
@@ -105,18 +111,11 @@
             </tr>
           </thead>
           <tbody>
-            {% for docente in docentes %}
+            {% for color in yardas_colores %}
             <tr>
-              <td></td>
-              <td></td>
-              <td class="d-none"></td>
-              <td class="d-none"></td>
-              <td class="d-none"></td>
-              <td class="d-none"></td>
-              <td class="d-none"></td>
-              <td class="d-none"></td>
-              <td class="d-none">No utilizado</td>
-              <td class="d-none">No utilizado</td>
+              {% for yardacolor in color %}
+              <td class="text-center">{{yardacolor}}</td>
+              {% endfor %}
             </tr>
             {% endfor %}
   
