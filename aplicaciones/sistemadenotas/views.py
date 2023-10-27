@@ -28,6 +28,7 @@ import base64
 from asgiref.sync import sync_to_async
 from django.db.models import Count, Q 
 from operator import itemgetter
+from decimal import Decimal
 
 def asignacionClases(request):
     context = {}
@@ -1044,3 +1045,122 @@ def cuadro_honor(request):
     contexto={"cuadroHonor":cuadroHonor,"trimestre":trimestre}
     contexto.update(asignacionClases(request))
     return render(request, "estudiante/cuadro_honor.html",contexto)
+#HU-18
+def GestionTelas(request):
+    context = {}
+
+    yardasPorNivel = {
+        "parvularia":
+        {
+            "nivel": Gradoseccion.Nivel.PARVULARIA.label,
+            "blusa": Decimal(0.75),
+            "falda": round(Decimal(0.60),2),
+            "camisa": Decimal(0.75),
+            "pantaloncorto": Decimal(0.75),
+            "pantalon": Decimal(0.75)
+        },
+        "primerciclo":
+        {
+            "nivel": Gradoseccion.Nivel.PRIMERCICLO.label,
+            "blusa": Decimal(1.00),
+            "falda": Decimal(0.75),
+            "camisa": Decimal(1.00),
+            "pantalon": Decimal(1.00)
+        },
+        "segundociclo":
+        {
+            "nivel": Gradoseccion.Nivel.SEGUNDOCICLO.label,
+            "blusa": Decimal(1.25),
+            "falda": Decimal(1.00),
+            "camisa": Decimal(1.25),
+            "pantalon": Decimal(1.25)
+        },
+        "tercerciclo":
+        {
+            "nivel": Gradoseccion.Nivel.TERCERCICLO.label,
+            "blusa": Decimal(1.50),
+            "falda": Decimal(1.25),
+            "camisa": Decimal(1.50),
+            "pantalon": Decimal(1.50)
+        },
+    }
+
+    
+
+    #TABLA TOTAL ALUMNOS CENTRO ESCOLAR
+    resumen_alumnos = [
+        [
+            "Parvularia",
+            Alumno.objects.filter(id_gradoseccion__nivel=Gradoseccion.Nivel.PARVULARIA,sexo=Alumno.Sexo.MASCULINO).count(),
+            Alumno.objects.filter(id_gradoseccion__nivel=Gradoseccion.Nivel.PARVULARIA,sexo=Alumno.Sexo.FEMENINO).count(),
+        ],
+        [
+            "Básica",
+            Alumno.objects.filter(sexo=Alumno.Sexo.MASCULINO).count() - Alumno.objects.filter(id_gradoseccion__nivel=Gradoseccion.Nivel.PARVULARIA,sexo=Alumno.Sexo.MASCULINO).count(),
+            Alumno.objects.filter(sexo=Alumno.Sexo.FEMENINO).count() - Alumno.objects.filter(id_gradoseccion__nivel=Gradoseccion.Nivel.PARVULARIA,sexo=Alumno.Sexo.FEMENINO).count(),
+             
+        ]
+    ]
+    
+    #TABLA TOTAL POR COLOT DE TELA
+    celeste = 0
+    blanca = 0
+    azul = 0
+    beige = 0
+
+    #TABLA PRENDAS PARVULARIA
+    camisa_p = yardas(Alumno.Sexo.MASCULINO,Gradoseccion.Nivel.PARVULARIA,yardasPorNivel,"parvularia","camisa")
+    blusa_p = yardas(Alumno.Sexo.FEMENINO,Gradoseccion.Nivel.PARVULARIA,yardasPorNivel,"parvularia","blusa")
+    short_p = yardas(Alumno.Sexo.MASCULINO,Gradoseccion.Nivel.PARVULARIA,yardasPorNivel,"parvularia","pantaloncorto")
+    falda_p = yardas(Alumno.Sexo.FEMENINO,Gradoseccion.Nivel.PARVULARIA,yardasPorNivel,"parvularia","falda")
+    
+    #TABLA PRENDAS PRIMERCICLO
+    camisa_pc = yardas(Alumno.Sexo.MASCULINO,Gradoseccion.Nivel.PRIMERCICLO,yardasPorNivel,"primerciclo","camisa")
+    blusa_pc = yardas(Alumno.Sexo.FEMENINO,Gradoseccion.Nivel.PRIMERCICLO,yardasPorNivel,"primerciclo","blusa")
+    falda_pc = yardas(Alumno.Sexo.FEMENINO,Gradoseccion.Nivel.PRIMERCICLO,yardasPorNivel,"primerciclo","falda")
+    pantalon_pc = yardas(Alumno.Sexo.MASCULINO,Gradoseccion.Nivel.PRIMERCICLO,yardasPorNivel,"primerciclo","pantalon")
+    print("helfjalsdf ",falda_pc)
+    #TABLA PRENDAS SEGUNDOCICLO
+    camisa_sc = yardas(Alumno.Sexo.MASCULINO,Gradoseccion.Nivel.SEGUNDOCICLO,yardasPorNivel,"segundociclo","camisa")
+    blusa_sc = yardas(Alumno.Sexo.FEMENINO,Gradoseccion.Nivel.SEGUNDOCICLO,yardasPorNivel,"segundociclo","blusa")
+    falda_sc = yardas(Alumno.Sexo.FEMENINO,Gradoseccion.Nivel.SEGUNDOCICLO,yardasPorNivel,"segundociclo","falda")
+    pantalon_sc = yardas(Alumno.Sexo.MASCULINO,Gradoseccion.Nivel.SEGUNDOCICLO,yardasPorNivel,"segundociclo","pantalon")
+
+    #TABLA PRENDAS TERCERCICLO
+    camisa_tc = yardas(Alumno.Sexo.MASCULINO,Gradoseccion.Nivel.TERCERCICLO,yardasPorNivel,"tercerciclo","camisa")
+    blusa_tc = yardas(Alumno.Sexo.FEMENINO,Gradoseccion.Nivel.TERCERCICLO,yardasPorNivel,"tercerciclo","blusa")
+    falda_tc = yardas(Alumno.Sexo.FEMENINO,Gradoseccion.Nivel.TERCERCICLO,yardasPorNivel,"tercerciclo","falda")
+    pantalon_tc = yardas(Alumno.Sexo.MASCULINO,Gradoseccion.Nivel.TERCERCICLO,yardasPorNivel,"tercerciclo","pantalon")
+
+    parvularia = [camisa_p,blusa_p,short_p,falda_p]
+    primer_ciclo = [camisa_pc,blusa_pc,falda_pc,pantalon_pc]
+    segundo_ciclo = [camisa_sc,blusa_sc,falda_sc,pantalon_sc]
+    tercer_ciclo = [camisa_tc,blusa_tc,falda_tc,pantalon_tc]
+    
+    context["parvularia"] = parvularia
+    context["primer_ciclo"] = primer_ciclo
+    context["segundo_ciclo"] = segundo_ciclo
+    context["tercer_ciclo"] = tercer_ciclo
+    context["resumen_alumnos"] = resumen_alumnos
+    context["yardas_por_nivel"] = yardasPorNivel
+
+    return render (request,'gestion-tela/telas.html',context)
+
+
+def yardas(sexo_,nivel_,yardas_,nivel_2,nombre_prenda):
+    txt = ""
+    
+    query = Alumno.objects.filter(id_gradoseccion__nivel=nivel_,sexo=sexo_).count()
+    
+    total_yardas = yardas_[nivel_2][nombre_prenda] * query
+
+    if nombre_prenda=="pantaloncorto":
+        txt = "Pantalón Corto"
+    elif nombre_prenda == "pantalon":
+        txt = "Pantalón"
+    else: 
+        txt =nombre_prenda.title()
+    
+    lista = [txt,query,round(Decimal(total_yardas),2)]
+    
+    return lista

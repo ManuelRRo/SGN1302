@@ -39,6 +39,12 @@ urlpatterns = [
     #HU-15:Reporte de Alumnos Masculinos/Femeninos
     path('graficosEstadisticos/',views.graficos, name='graficos'),
     # Gestión Alumnos -----------------------------
+    #HU-18: Gestion Telas
+    path(
+        'gestion-telas/',
+        views.GestionTelas,
+        name='gestion_telas'
+    ),
     # HU-21: Insertar Alumnos
     path(
         'estudiante/crear-estudiante',

@@ -1,0 +1,249 @@
+{% extends 'layouts/dashboard.html' %}
+
+{% comment %} {% include 'registration/login.html' %} {% endcomment %}
+
+{% block metadata %}
+<title>SGN1302 Telas</title>
+{% endblock %}
+
+{% block content %}
+{% load static %}
+{% if user.is_superuser %}
+<br><br>
+<div class="container-sm px-4">
+    <div class="card mb-3">
+        <div class="card-header">
+            Cuadro de medidas
+          </div>
+      <div class="card-body">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="text-center">Nivel Educativo</th>
+              <th class="text-center">Blusa o Camisa</th>
+              <th class="text-center">Falda</th>
+              <th class="text-center">Pantalón Corto</th>
+              <th class="text-center">Pantalón</th>
+              <th class="d-none" colspan="2">Acciones</th>
+              <th class="d-none">Status</th>
+              <th class="d-none">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            {% for nivel, detalles in yardas_por_nivel.items %}
+            <tr>
+              <td class="text-center">{{detalles.nivel}}</td>
+              <td class="text-center">{{detalles.camisa}}</td>
+              <td class="text-center">{{detalles.falda}}</td>
+              {% if nivel == "parvularia"%}
+              <td class="text-center">{{detalles.pantaloncorto}}</td>
+              {%else%}
+              <td class="text-center">N/A</td>
+              {% endif %}
+              <td class="text-center">{{detalles.pantalon}}</td>
+            </tr>  
+            {% endfor %}
+            <td class="d-none"></td>
+              <td class="d-none"></td>
+              <td class="d-none"></td>
+              <td class="d-none">No utilizado</td>
+              <td class="d-none">No utilizado</td>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="container-sm px-4">
+    <div class="card mb-3">
+        <div class="card-header">
+            Resumen Estudiantes
+          </div>
+      <div class="card-body">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="text-center">Nivel Educativo</th>
+              <th class="text-center">Número de Alumnos</th>
+              <th class="text-center">Número de Alumnas</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for sublist in resumen_alumnos %}
+            <tr>
+                {% for item in sublist %}
+                
+                    <td class="text-center">{{item}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+<div class="container-sm px-4">
+    <div class="card mb-3">
+        <div class="card-header">
+            Resumen Yardas
+          </div>
+      <div class="card-body">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="text-center">Color</th>
+              <th class="text-center">Total en Yardas</th>
+              <th class="d-none">Número de Alumnas</th>
+              <th class="d-none">Apellidos</th>
+              <th class="d-none">Estado</th>
+              <th class="d-none" colspan="2">Acciones</th>
+              <th class="d-none">Status</th>
+              <th class="d-none">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for docente in docentes %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td class="d-none"></td>
+              <td class="d-none"></td>
+              <td class="d-none"></td>
+              <td class="d-none"></td>
+              <td class="d-none"></td>
+              <td class="d-none"></td>
+              <td class="d-none">No utilizado</td>
+              <td class="d-none">No utilizado</td>
+            </tr>
+            {% endfor %}
+  
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container-sm px-4">
+    <div class="card mb-3">
+        <div class="card-header">
+            Parvularia
+          </div>
+      <div class="card-body">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="text-center">Prenda</th>
+              <th class="text-center">Cantidad</th>
+              <th class="text-center">Total(yardas)</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for sublist in parvularia %}
+          <tr>
+              {% for item in sublist %}
+                  <td class="text-center">{{item}}</td>
+              {% endfor %}
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container-sm px-4">
+    <div class="card mb-3">
+        <div class="card-header">
+            Primer Ciclo
+          </div>
+      <div class="card-body">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="text-center">Prenda</th>
+              <th class="text-center">Cantidad</th>
+              <th class="text-center">Total(yardas)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for sublist in primer_ciclo %}
+          <tr>
+              {% for item in sublist %}
+                  <td class="text-center">{{item}}</td>
+              {% endfor %}
+          </tr>
+          {% endfor %}
+  
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container-sm px-4">
+    <div class="card mb-3">
+        <div class="card-header">
+            Segundo Ciclo
+          </div>
+      <div class="card-body">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="text-center">Prenda</th>
+              <th class="text-center">Cantidad</th>
+              <th class="text-center">Total(yardas)</th>
+
+            </tr>
+          </thead>
+          {% for sublist in segundo_ciclo %}
+          <tr>
+              {% for item in sublist %}
+                  <td class="text-center">{{item}}</td>
+              {% endfor %}
+          </tr>
+          {% endfor %}
+  
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container-sm px-4">
+    <div class="card mb-3">
+        <div class="card-header">
+            Tercer Ciclo
+          </div>
+      <div class="card-body">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="text-center">Prenda</th>
+              <th class="text-center">Cantidad</th>
+              <th class="text-center">Total(yardas)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for sublist in tercer_ciclo %}
+            <tr>
+                {% for item in sublist %}
+                    <td class="text-center">{{item}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+  
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+{% else %}
+<h1>Acceso denegado</h1>
+{% endif %}
+
+
+{% endblock %}

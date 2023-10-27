@@ -96,10 +96,16 @@ class Grado(models.Model):
 
 
 class Gradoseccion(models.Model):
+    class Nivel(models.TextChoices):
+        PARVULARIA = 'PRV','Parvularia'
+        PRIMERCICLO = 'PRC', 'Primer Ciclo'
+        SEGUNDOCICLO = 'SDC', 'Segundo Ciclo'
+        TERCERCICLO = 'TRC', 'Tercer Ciclo'
     id_gradoseccion = models.AutoField(db_column='ID_GRADOSECCION', primary_key=True)  # Field name made lowercase.
     id_grado = models.ForeignKey(Grado, models.DO_NOTHING, db_column='ID_GRADO', blank=True, null=True)  # Field name made lowercase.
     id_seccion = models.ForeignKey('Seccion', models.DO_NOTHING, db_column='ID_SECCION', blank=True, null=True)  # Field name made lowercase.
     turno_gradoseccion = models.CharField(db_column='TURNO_GRADOSECCION', max_length=1)  # Field name made lowercase.
+    nivel = models.CharField(db_column='NIVEL', max_length=3,default=Nivel.PRIMERCICLO,choices=Nivel.choices)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -109,9 +115,11 @@ class Gradoseccion(models.Model):
 
 
 class Gradoseccionmateria(models.Model):
+    
     id_gradoseccionmateria = models.AutoField(db_column='ID_GRADOSECCIONMATERIA', primary_key=True)  # Field name made lowercase.
     id_gradoseccion = models.ForeignKey(Gradoseccion, models.DO_NOTHING, db_column='ID_GRADOSECCION', blank=True, null=True)  # Field name made lowercase.
     id_materia = models.ForeignKey('Materia', models.DO_NOTHING, db_column='ID_MATERIA', blank=True, null=True)  # Field name made lowercase.
+    
 
     class Meta:
         managed = False
