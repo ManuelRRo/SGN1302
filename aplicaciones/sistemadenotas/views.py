@@ -772,6 +772,7 @@ def CrearTrimestre(request):
     if request.method == 'POST':
         if form_trimestre.is_valid():
             form_trimestre.save()
+            messages.success(request, "¡El trimestre se creo exitosamente!")
             return redirect('sgn_app:crear_trimestre')
         else:
             messages.error(request, "¡El trimestre ya existe para ese año!")
@@ -810,6 +811,7 @@ def EliminarTrimestre(request, id):
     try:
         trimestre = Trimestre.objects.get(id_trimestre=id)
         trimestre.delete()
+        messages.success(request, "¡El trimestre se eliminó exitosamente!")
     except Exception:
         messages.error(request, "¡No se puede eliminar el trimestre!")
     return redirect('sgn_app:listar_trimestres')
