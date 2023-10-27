@@ -22,6 +22,7 @@
     <link href="{% static 'css/styles.css'%}" rel="stylesheet" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js" crossorigin="anonymous"></script>
+    <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js" crossorigin="anonymous"></script>
 
 </head>
 
@@ -72,9 +73,25 @@
                                         </button>
                                         
                                     </form>
-                                    
-                                
                                 </div>
+                                {% if messages %}
+                                {% for message in messages %}
+
+                                    <div class="container-xl">
+                                    <div class="alert alert-primary alert-icon border-start-lg" role="alert">
+                                        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        <div class="alert-icon-aside">
+                                        <i class="far fa-bell"></i>
+                                        </div>
+                                        <div class="alert-icon-content">
+                                        <h6 class="alert-heading">Notificación</h6>
+                                        {{message}}
+                                        </div>
+                                    </div>
+                                    </div>
+
+                                {% endfor %}
+                                {% endif %}
                             </div>
                         </div>
                     </div>
