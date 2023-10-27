@@ -1101,13 +1101,7 @@ def GestionTelas(request):
              
         ]
     ]
-    
-    #TABLA TOTAL POR COLOT DE TELA
-    celeste = 0
-    blanca = 0
-    azul = 0
-    beige = 0
-
+        
     #TABLA PRENDAS PARVULARIA
     camisa_p = yardas(Alumno.Sexo.MASCULINO,Gradoseccion.Nivel.PARVULARIA,yardasPorNivel,"parvularia","camisa")
     blusa_p = yardas(Alumno.Sexo.FEMENINO,Gradoseccion.Nivel.PARVULARIA,yardasPorNivel,"parvularia","blusa")
@@ -1136,6 +1130,18 @@ def GestionTelas(request):
     primer_ciclo = [camisa_pc,blusa_pc,falda_pc,pantalon_pc]
     segundo_ciclo = [camisa_sc,blusa_sc,falda_sc,pantalon_sc]
     tercer_ciclo = [camisa_tc,blusa_tc,falda_tc,pantalon_tc]
+
+    #TABLA TOTAL POR COLOT DE TELA
+    celeste = camisa_p[2] + blusa_p[2]
+    blanca = camisa_pc[2] + blusa_pc[2] + camisa_sc[2] + blusa_sc[2] + camisa_tc[2] + blusa_tc[2]
+    azul = falda_tc[2] + pantalon_tc[2] + falda_sc[2] + pantalon_sc[2] +falda_pc[2] + pantalon_pc[2] + short_p[2] + falda_p[2]
+    beige = 0
+
+    yardas_colores = [
+        ["Celeste",celeste],
+        ["Blanca",blanca],
+        ["Azul",azul]
+    ]
     
     context["parvularia"] = parvularia
     context["primer_ciclo"] = primer_ciclo
@@ -1143,6 +1149,7 @@ def GestionTelas(request):
     context["tercer_ciclo"] = tercer_ciclo
     context["resumen_alumnos"] = resumen_alumnos
     context["yardas_por_nivel"] = yardasPorNivel
+    context["yardas_colores"] = yardas_colores
 
     return render (request,'gestion-tela/telas.html',context)
 
