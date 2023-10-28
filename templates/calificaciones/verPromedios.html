@@ -54,7 +54,7 @@
                                         {% if nulos %}
                                         <button id="btn1" type="submit" class="btn btn-primary" disabled>
                                             <i class="me-1" data-feather="file" ></i>
-                                            Descargar Archivo Nulo
+                                            Archivo Nulo
                                         </button>
                                         {% else %}
                                         <button id="btn1" type="submit" class="btn btn-primary">
@@ -113,7 +113,7 @@
                                                 <input type="hidden" name="promedio_{{ alumno.id_alumno }}"
                                                     value="{{ promedio.promedio }}">
                                                 <td>
-                                                    {% if promedio.promedio > 5 %}
+                                                    {% if promedio.promedio >= 5 %}
                                                     <a class="btn btn-outline-green btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Aprobado">
                                                         <i data-feather="feather"></i>
                                                     </a>

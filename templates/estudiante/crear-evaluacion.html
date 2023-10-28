@@ -48,7 +48,7 @@
 {% endif%}
 
 <div class="row align-items-center justify-content-center">
-    <div class="col-xl-8 px-4 mt-4">
+    <div class="col-xl-8 px-4">
         <!-- Account details card-->
         <div class="card mb-4">
             <div class="card-header">Datos Evaluación</div>
@@ -56,64 +56,43 @@
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="row">
-                        <div class="col-lg-5 mx-auto">
-
+                        <div class="col-xl-6">
+                            <div class="mb-0">Nombre de Evaluación</div>
                             <div class="mb-3">
-                                <div class="">
-                                    <div class="text-center">
-                                        <h3 class="d-flex justify-content-center mt-lg-5">{{ form.id_categoria.label}}
-                                        </h3>
-                                    </div>
-
-                                    {{ form.id_categoria}}
-
-                                </div>
-
-                                <div class="mb-3">
-                                    <div class="">
-                                        <div class="text-center">
-                                            <h3 class="d-flex justify-content-center mt-lg-5">{{form.id_gradoseccionmateria.label}}</h3>
-                                        </div>
-
-                                        {{ form.id_gradoseccionmateria}}
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <div class="">
-                                            <div class="text-center">
-                                                <h3 class="d-flex justify-content-center mt-lg-5">{{form.nombre_evaluacion.label}}</h3>
-                                            </div>
-
-                                            {{ form.nombre_evaluacion}}
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <div class="">
-                                                <div class="text-center">
-                                                    <h3 class="d-flex justify-content-center mt-lg-5">{{form.porcentaje.label}}</h3>
-                                                </div>
-                                                {{ form.porcentaje}}
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <div class="">
-                                                    <div class="text-center">
-                                                        <h3 class="d-flex justify-content-center mt-lg-5">{{form.id_trimestre.label}}</h3>
-                                                    </div>
-                                                    {{ form.id_trimestre}}
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-                                        <div class="d-flex justify-content-center">
-                                            <button type="submit" class="btn btn-primary" id="save">Registrar</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                {{ form.nombre_evaluacion}}
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="mb-0">Porcentaje</div>
+                            <div class="mb-3">
+                                {{ form.porcentaje}}
                             </div>
                         </div>
                     </div>
+
+                    <div class="mb-0"><label>Grado/Materia</label></div>
+                    <div class="mb-3">
+                        {{ form.id_gradoseccionmateria}}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="mb-0">Categoria</div>
+                            <div class="mb-3">
+                                {{ form.id_categoria}}
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="mb-0">Trimestre</div>
+                            <div class="mb-3">
+                                {{ form.id_trimestre}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <button type="submit" class="btn btn-primary" id="save">Registrar</button>
+                    </div>
+
                 </form>
             </div>
         </div>
