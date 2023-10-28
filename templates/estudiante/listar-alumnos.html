@@ -12,33 +12,28 @@
 {{s.nombre_evaluacion}} {{s.id_gradoseccionmateria.id_materia}}
 {% endfor %}
 
-<table class="table">
-    <thead>
-        <th>nie</th>
-        <th>Apellidos</th>
-        <th>Nombres</th>
-        {% for s in eva %}
-        <th>{{s.nombre_evaluacion}}</th>
-        {% endfor %}
-        
-    </thead>
-    <tbody>
-        {% for d in estudiante%}
-        <tr>
-            <td> {{d.nie}}</td>
-            <td> {{d.apellidos_alumno}}</td>
-            <td> {{d.nombres_alumno}}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-
-</table>
-
-
-   
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <th>nie</th>
+            <th>Apellidos</th>
+            <th>Nombres</th>
+            {% for s in eva %}
+            <th>{{s.nombre_evaluacion}}</th>
+            {% endfor %}
+            
+        </thead>
+        <tbody>
+            {% for d in estudiante%}
+            <tr>
+                <td> {{d.nie}}</td>
+                <td> {{d.apellidos_alumno}}</td>
+                <td> {{d.nombres_alumno}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
     
-    
-
-
+    </table>    
+</div>
 
 {% endblock %}

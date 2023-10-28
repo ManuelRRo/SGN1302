@@ -42,7 +42,7 @@
 {% endif %}
 <div class="container-xl px-4">
   <div class="card mb-4">
-    <div class="card-body">
+    <div class="card-body table-responsive">
       <table id="datatablesSimple" class="table table-hover">
         <thead>
           <tr>
@@ -76,14 +76,14 @@
             </td>
             <td class="text-center">
               <a class="btn btn-outline-primary" title="Editar usuario del sistema" href="{% url 'sgn_app:editar_docente' docente.numidentificacion %}">
-                <i data-feather="edit"></i>&nbsp;
+                <i class="me-1" data-feather="edit"></i>
                 Editar
               </a>
             </td>
 
             <td class="text-center">
               <a class="btn btn-outline-primary" title="Cambiar Contraseña" href="{% url 'sgn_app:editar_docente_password' docente.numidentificacion %}">
-                <i data-feather="key"></i>&nbsp;
+                <i class="me-1" data-feather="key"></i>
               </a>
             </td>
             
@@ -92,12 +92,12 @@
               {% if usuario.username == docente.numidentificacion %}
               {% if usuario.is_active %}
               <a class="btn btn-outline-danger" title="Deshabilitar al usuario del sistema" href="{% url 'sgn_app:deshabilitar_usuario' docente.numidentificacion %}">
-                <i data-feather="user-x"></i>&nbsp;
+                <i class="me-1" data-feather="user-x"></i>
                 Deshabilitar
               </a>
               {% else %}
               <a class="btn btn-outline-success" title="Habilitar al usuario para el sistema" href="{% url 'sgn_app:habilitar_usuario' docente.numidentificacion %}">
-                <i data-feather="user-check"></i>&nbsp;
+                <i class="me-1" data-feather="user-check"></i>
                 Habilitar
               </a>
               {% endif %}
