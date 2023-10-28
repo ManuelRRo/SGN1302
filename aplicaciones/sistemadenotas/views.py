@@ -4,7 +4,7 @@ from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import Evaluacion, Evaluacionalumno, Alumno, Gradoseccion, Docente, Materia, Gradoseccionmateria
 from django.shortcuts import render, redirect
-from .models import Evaluacion, Evaluacionalumno, Alumno, Gradoseccion, Docente, Materia, Gradoseccionmateria, Trimestre, Promediomateria
+from .models import Evaluacion, Evaluacionalumno, Alumno, Gradoseccion, Docente, Materia, Gradoseccionmateria, Trimestre
 from .forms import EvaluacionForm, EvaluacionAlumnoForm, DocenteForm, AlumnoForm, TrimestreActualizarForm, EvaluacionEditarForm, TrimestreForm
 from aplicaciones.usuarios.forms import RegisterUserForm
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View, TemplateView

@@ -2,8 +2,7 @@ from django.contrib import admin
 from .models import (
     Alumno,Categoria,Docente,Evaluacion,
     Evaluacionalumno,Grado,Gradoseccion,
-    Gradoseccionmateria,Materia,Seccion,Trimestre,
-    Promediomateria)
+    Gradoseccionmateria,Materia,Seccion,Trimestre,)
 
 admin.site.register(Alumno)
 admin.site.register(Categoria)
@@ -16,7 +15,6 @@ admin.site.register(Gradoseccionmateria)
 admin.site.register(Materia)
 admin.site.register(Seccion)
 admin.site.register(Trimestre)
-admin.site.register(Promediomateria)
 
 @admin.register(Gradoseccion)
 class GradoSeccionAdmin(admin.ModelAdmin):
