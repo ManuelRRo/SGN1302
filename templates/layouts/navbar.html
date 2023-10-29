@@ -42,13 +42,13 @@
                     {% if grado_seccion %}
                     <!-- Sidenav Accordion (Gestion Alumnos) -->
                     <div class="sidenav-menu-heading">GESTOR DE ORIENTADOR</div>
-                    <a class="nav-link collapsed active" href="javascript:void(0);" data-bs-toggle="collapse"
+                    <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
                         data-bs-target="#collapseAlumnos" aria-expanded="false" aria-controls="collapseAlumnos">
                         <div class="nav-link-icon"><i data-feather="grid"></i></div>
                         Alumnos
                         <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
-                    <div class="show" id="collapseAlumnos" data-bs-parent="#accordionAlumnos">
+                    <div class="collapse" id="collapseAlumnos" data-bs-parent="#accordionAlumnos">
                         {% for gradoseccion in grado_seccion %}    
                         <nav class="sidenav-menu-nested nav accordion" id="accordionAlumnosPagesMenu">
                             <a class="nav-link" href="{% url 'sgn_app:ListarAlumno' gradoseccion.id_gradoseccion%}">
