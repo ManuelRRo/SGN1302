@@ -447,6 +447,7 @@ class HabDeshabiAlumno(ListView):
         context = super().get_context_data(**kwargs)
         id = self.kwargs['id']
         context['seccion'] = Gradoseccion.objects.get(id_gradoseccion=id)
+        context.update(asignacionClases(self.request))
         return context
 
     def get_queryset(self):
