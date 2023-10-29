@@ -161,6 +161,22 @@
                         </a> 
                         </nav>                      
                     </div>
+
+                    <a id="navTelas" class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
+                        data-bs-target="#collapseTelas" aria-expanded="false" aria-controls="collapseTelas"
+                        >
+                        <div class="nav-link-icon"><i class="fa fa-tshirt"></i></div>
+                        Gestión de Telas
+                        <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="show" id="collapseTelas" data-bs-parent="#accordionTelas">
+                        <nav class="sidenav-menu-nested nav accordion" id="accordionAlumnosPagesMenu">
+                        <a class="nav-link" href="{% url 'sgn_app:gestion_telas' %}">
+                            Telas
+                        </a> 
+                        </nav>                      
+                    </div>
+
                 
                     <!-- FIN GESTOR DEL ADMINISTRADOR-->
 

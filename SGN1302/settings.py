@@ -67,7 +67,7 @@ WSGI_APPLICATION = 'SGN1302.wsgi.application'
 DATABASES = {
 'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':'dbsgn1302',
+        'NAME':'dbjulio',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',

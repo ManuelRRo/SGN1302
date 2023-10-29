@@ -20,6 +20,7 @@ from django.http.response import HttpResponse
 from aplicaciones.sistemadenotas.filters import EvaluacionFilter
 from datetime import datetime
 from openpyxl import load_workbook
+from openpyxl.styles import Alignment
 import matplotlib
 matplotlib.use('Agg')
 from matplotlib import pyplot as plt
@@ -1141,6 +1142,84 @@ def GestionTelas(request):
         ["Blanca",blanca],
         ["Azul",azul]
     ]
+
+    if request.method == "POST":
+        # Crear un libro de trabajo
+        wb = Workbook()
+        ws = wb.active
+
+        # Datos de ejemplo para las tablas
+        table_data = [
+            ["Cuadro de Medidas"],
+            ["Nivel", "Blusa o camisa", "Falda","Pantalon corto","Pantalon"],
+            ["Parvularia",0.75,0.60,0.75,0.75],
+            ["Primer Ciclo",1,0.75,"N/A",1],
+            ["Segundo Ciclo",1.25,1,"N/A",1.25],
+            ["Tercer Ciclo",1.5,1.25,"N/A",1.50],
+            [" "," "," "],
+            [" "," "," "],
+            #resumen Estudiantes
+            ["Resumen Estudiantes"],
+            ["Nivel Educativo","Numero de Alumnos","Numero de Alumnas"],
+            [
+                "Parvularia",
+                Alumno.objects.filter(id_gradoseccion__nivel=Gradoseccion.Nivel.PARVULARIA,sexo=Alumno.Sexo.MASCULINO).count(),
+                Alumno.objects.filter(id_gradoseccion__nivel=Gradoseccion.Nivel.PARVULARIA,sexo=Alumno.Sexo.FEMENINO).count()
+            ],
+            [
+                "Basica",
+                Alumno.objects.filter(sexo=Alumno.Sexo.MASCULINO).count() - Alumno.objects.filter(id_gradoseccion__nivel=Gradoseccion.Nivel.PARVULARIA,sexo=Alumno.Sexo.MASCULINO).count(),
+                Alumno.objects.filter(sexo=Alumno.Sexo.FEMENINO).count() - Alumno.objects.filter(id_gradoseccion__nivel=Gradoseccion.Nivel.PARVULARIA,sexo=Alumno.Sexo.FEMENINO).count(),
+            ],
+            [" "," "," "],
+            [" "," "," "],
+            ["Resumen Yardas"],
+            ["Color","Total en Yardas"],
+            ["Celeste",celeste],
+            ["Blanca",blanca],
+            ["Azul",azul],
+            [" "," "," "],
+            [" "," "," "],
+
+        ]
+        
+        for row_data in table_data:
+            ws.append(row_data)
+
+        ws.append(["Parvularia"])
+        for row in parvularia:
+            ws.append(row)
+        
+        ws.append([" "," "," "])
+        ws.append([" "," "," "])
+        
+        ws.append(["Primer Ciclo"])
+        for row in primer_ciclo:
+            ws.append(row)    
+        
+        ws.append([" "," "," "])
+        ws.append([" "," "," "])
+
+        ws.append(["Segundo Ciclo"])
+        for row in segundo_ciclo:
+            ws.append(row)
+        
+        ws.append([" "," "," "])
+        ws.append([" "," "," "])
+
+        ws.append(["Tercer Ciclo"])
+        for row in tercer_ciclo:
+            ws.append(row)
+
+        ws.append([" "," "," "])
+        ws.append([" "," "," "])
+        
+        nombre_archivo = "Resumen de telas.xlsx"
+        response = HttpResponse(content_type="application/ms-excel")
+        content = "attachment; filename={0}".format(nombre_archivo)
+        response['Content-Disposition'] = content
+        wb.save(response)
+        return response
     
     context["parvularia"] = parvularia
     context["primer_ciclo"] = primer_ciclo

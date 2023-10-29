@@ -10,10 +10,23 @@
 {% load static %}
 {% if user.is_superuser %}
 <br><br>
-<button id="btn1" type="submit" class=" ms-3 btn btn-primary">
-  <i class="me-1" data-feather="file" ></i>
-  Descargar Archivo Excel
-</button>
+<div class="container">
+  <div class="row">
+      <div class="col-12 d-flex flex-row">
+        <form action="" method="post">
+          <button type="submit" class="ms-3 btn btn-primary">
+            <i class="me-1" data-feather="file" ></i>
+            Descargar Archivo Excel
+          </button>
+          {% csrf_token %}
+        </form>
+        <button type="submit" class="ms-3 btn btn-secondary" id="imprimir-btn">
+          <i class="me-1" data-feather="file" ></i>
+          Descargar Archivo PDF
+        </button>
+      </div>
+  </div>
+</div>
 <br>
 <br>
 <div class="container-sm px-4">
